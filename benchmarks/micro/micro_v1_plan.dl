@@ -11,6 +11,10 @@
 .decl isArrayType(?t:ArrayType)
 .decl isClassType(?t:ClassType)
 .decl isInterfaceType(?t:InterfaceType)
+.decl DirectSuperclass(?class:ClassType, ?superclass:ClassType)
+.input DirectSuperclass(IO="file", filename="DirectSuperclass.facts", delimiter="\t")
+.decl DirectSuperinterface(?ref:ReferenceType, ?interface:InterfaceType)
+.input DirectSuperinterface(IO="file", filename="DirectSuperinterface.facts", delimiter="\t")
 .decl ApplicationClass(?ref:ReferenceType)
 .decl MainClass(?class:ClassType)
 .input MainClass(IO="file", filename="MainClass.facts", delimiter="\t")
@@ -25,10 +29,17 @@
 .decl Method_Descriptor(?method:Method, ?descriptor:MethodDescriptor)
 .decl Method_Modifier(?mod:Modifier, ?method:Method)
 .input Method_Modifier(IO="file", filename="Method-Modifier.facts", delimiter="\t")
+.decl FormalParam(?index:number, ?method:Method, ?var:Var)
+.input FormalParam(IO="file", filename="FormalParam.facts", delimiter="\t")
 .decl ThisVar(?method:Method, ?var:Var)
 .type Var = symbol
+.decl Var_Type(?var:Var, ?type:Type)
+.input Var_Type(IO="file", filename="Var-Type.facts", delimiter="\t")
+.decl Var_DeclaringMethod(?var:Var, ?method:Method)
 .type HeapAllocation = symbol
 .decl HeapAllocation_Type(?heap:HeapAllocation, ?type:Type)
+.decl MainMethodArgArray(?heap:HeapAllocation)
+.decl MainMethodArgArrayContent(?heap:HeapAllocation)
 .type Instruction = symbol
 .decl Instruction_Method(?insn:Instruction, ?inMethod:Method)
 .type FieldInstruction = Instruction
@@ -57,6 +68,8 @@
 .decl StoreInstanceField_Base(?insn:StoreInstanceField_Insn, ?var:Var)
 .decl LoadStaticField_To(?insn:LoadStaticField_Insn, ?var:Var)
 .decl StoreStaticField_From(?insn:StoreStaticField_Insn, ?var:Var)
+.decl ComponentType(?arrayType:ArrayType, ?componentType:Type)
+.input ComponentType(IO="file", filename="ComponentType.facts", delimiter="\t")
 .decl LoadArrayIndex_Base(?insn:LoadArrayIndex_Insn, ?var:Var)
 .decl LoadArrayIndex_To(?insn:LoadArrayIndex_Insn, var:Var)
 .decl StoreArrayIndex_From(?insn:StoreArrayIndex_Insn, ?var:Var)
@@ -68,7 +81,13 @@
 .decl AssignHeapAllocation_Heap(?insn:AssignHeapAllocation_Insn, ?heap:HeapAllocation)
 .decl ReturnNonvoid_Var(?return:ReturnNonvoid_Insn, ?var:Var)
 .decl MethodInvocation_Method(?invocation:MethodInvocation, ?signature:Method)
+.decl AssignReturnValue(?invocation:MethodInvocation, ?to:Var)
+.input AssignReturnValue(IO="file", filename="AssignReturnValue.facts", delimiter="\t")
+.decl ActualParam(?index:number, ?invocation:MethodInvocation, ?var:Var)
+.input ActualParam(IO="file", filename="ActualParam.facts", delimiter="\t")
 .decl VirtualMethodInvocation_Base(?invocation:VirtualMethodInvocation_Insn, ?base:Var)
+.decl VirtualMethodInvocation_SimpleName(?invocation:MethodInvocation, ?simplename:symbol)
+.decl VirtualMethodInvocation_Descriptor(?invocation:MethodInvocation, ?descriptor:MethodDescriptor)
 .decl SpecialMethodInvocation_Base(?invocation:MethodInvocation, ?base:Var)
 .decl MethodInvocation_Base(?invocation:MethodInvocation, ?base:Var)
 
@@ -102,6 +121,10 @@ isType(?interface),
 isReferenceType(?interface),
 isInterfaceType(?interface) :-
   _InterfaceType(?interface).
+.decl _Var_DeclaringMethod(?var:symbol, ?method:symbol)
+.input _Var_DeclaringMethod(IO="file", filename="Var-DeclaringMethod.facts", delimiter="\t")
+Var_DeclaringMethod(?var, ?method) :-
+  _Var_DeclaringMethod(?var, ?method).
 .decl _ApplicationClass(?type:symbol)
 .input _ApplicationClass(IO="file", filename="ApplicationClass.facts", delimiter="\t")
 isType(?type),
@@ -145,8 +168,8 @@ AssignInstruction_To(?instruction, ?to) :-
 Field_DeclaringType(?signature, ?declaringType) :-
   _Field(?signature, ?declaringType, _, _).
 MethodInvocation_Base(?invocation, ?base) :-
-  ( VirtualMethodInvocation_Base(?invocation, ?base) ;
-  SpecialMethodInvocation_Base(?invocation, ?base) ).
+  VirtualMethodInvocation_Base(?invocation, ?base) ;
+  SpecialMethodInvocation_Base(?invocation, ?base).
 .decl _StaticMethodInvocation(?instruction:symbol, ?index:number, ?signature:symbol, ?method:symbol)
 .input _StaticMethodInvocation(IO="file", filename="StaticMethodInvocation.facts", delimiter="\t")
 Instruction_Method(?instruction, ?method),
@@ -166,8 +189,6 @@ isVirtualMethodInvocation_Insn(?instruction),
 VirtualMethodInvocation_Base(?instruction, ?base),
 MethodInvocation_Method(?instruction, ?signature) :-
   _VirtualMethodInvocation(?instruction, _, ?signature, ?base, ?method).
-
-
 .decl _Method(?method:symbol, ?simplename:symbol, ?descriptor:symbol, ?declaringType:symbol, ?returnType:symbol, ?jvmDescriptor:symbol, ?arity:number)
 .input _Method(IO="file", filename="Method.facts", delimiter="\t")
 Method_SimpleName(?method, ?simplename),
@@ -179,8 +200,6 @@ Method_Descriptor(?method, ?descriptor) :-
   Method_ReturnType(?method, ?returnType),
   Method_ParamTypes(?method, ?params),
   ?descriptor = cat(?returnType, cat("(", cat(?params, ")"))).
-
-
 .decl _StoreInstanceField(?instruction:symbol, ?index:number, ?from:symbol, ?base:symbol, ?signature:symbol, ?method:symbol)
 .input _StoreInstanceField(IO="file", filename="StoreInstanceField.facts", delimiter="\t")
 Instruction_Method(?instruction, ?method),
@@ -263,22 +282,104 @@ StaticMethodInvocation(?invocation, ?signature, ?inmethod) :-
   isStaticMethodInvocation_Insn(?invocation),
   Instruction_Method(?invocation, ?inmethod),
   MethodInvocation_Method(?invocation, ?signature).
-//HeapAllocation_Type(?heap, ?type),
-//MainMethodArgArray(?heap) :-
-//  ?heap = "<<main method array>>",
-//  ?type = "java.lang.String[]".
-//HeapAllocation_Type(?heap, ?type),
-//MainMethodArgArrayContent(?heap) :-
-//  ?heap = "<<main method array content>>",
-//  ?type = "java.lang.String".
-//VirtualMethodInvocation_SimpleName(?invocation, ?simplename),
-//VirtualMethodInvocation_Descriptor(?invocation, ?descriptor) :-
-//  isVirtualMethodInvocation_Insn(?invocation),
-//  MethodInvocation_Method(?invocation, ?signature),
-//  Method_SimpleName(?signature, ?simplename),
-//  Method_Descriptor(?signature, ?descriptor).
+HeapAllocation_Type(?heap, ?type),
+MainMethodArgArray(?heap) :-
+  ?heap = "<<main method array>>",
+  ?type = "java.lang.String[]".
+HeapAllocation_Type(?heap, ?type),
+MainMethodArgArrayContent(?heap) :-
+  ?heap = "<<main method array content>>",
+  ?type = "java.lang.String".
+VirtualMethodInvocation_SimpleName(?invocation, ?simplename),
+VirtualMethodInvocation_Descriptor(?invocation, ?descriptor) :-
+  isVirtualMethodInvocation_Insn(?invocation),
+  MethodInvocation_Method(?invocation, ?signature),
+  Method_SimpleName(?signature, ?simplename),
+  Method_Descriptor(?signature, ?descriptor).
 
+// Basic (type-based) analysis
+.decl MethodLookup(?simplename:symbol, ?descriptor:MethodDescriptor, ?type:Type, ?method:Method)
+.decl MethodImplemented(?simplename:symbol, ?descriptor:MethodDescriptor, ?type:Type, ?method:Method)
+.decl DirectSubclass(?a:Type, ?c:Type)
+.decl Subclass(?c:Type, ?a:Type)
+.decl Superclass(?c:Type, ?a:Type)
+.decl Superinterface(?k:Type, ?c:Type)
+.decl SubtypeOf(?subtype:Type, ?type:Type)
+.decl SupertypeOf(?supertype:Type, ?type:Type)
+.decl SubtypeOfDifferent(?subtype:Type, ?type:Type)
 .decl MainMethodDeclaration(?method:Method)
+MethodLookup(?simplename, ?descriptor, ?type, ?method) :-
+  MethodImplemented(?simplename, ?descriptor, ?type, ?method).
+MethodLookup(?simplename, ?descriptor, ?type, ?method) :-
+  (DirectSuperclass(?type, ?supertype) ;
+   DirectSuperinterface(?type, ?supertype)),
+  MethodLookup(?simplename, ?descriptor, ?supertype, ?method),
+  ! MethodImplemented(?simplename, ?descriptor, ?type, _).
+MethodImplemented(?simplename, ?descriptor, ?type, ?method) :-
+  Method_SimpleName(?method, ?simplename),
+  Method_Descriptor(?method, ?descriptor),
+  Method_DeclaringType(?method, ?type),
+  ! Method_Modifier("abstract", ?method).
+DirectSubclass(?a, ?c) :-
+  DirectSuperclass(?a, ?c).
+Subclass(?c, ?a) :-
+  DirectSubclass(?a, ?c).
+Subclass(?c, ?a) :-
+  Subclass(?b, ?a),
+  DirectSubclass(?b, ?c).
+Superclass(?c, ?a) :-
+  Subclass(?a, ?c).
+Superinterface(?k, ?c) :-
+  DirectSuperinterface(?c, ?k).
+Superinterface(?k, ?c) :-
+  DirectSuperinterface(?c, ?j),
+  Superinterface(?k, ?j).
+Superinterface(?k, ?c) :-
+  DirectSuperclass(?c, ?super),
+  Superinterface(?k, ?super).
+SupertypeOf(?s, ?t) :-
+  SubtypeOf(?t, ?s).
+SubtypeOf(?s, ?s) :-
+  isClassType(?s).
+SubtypeOf(?s, ?t) :-
+  Subclass(?t, ?s).
+SubtypeOf(?s, ?t) :-
+  isClassType(?s),
+  Superinterface(?t, ?s).
+SubtypeOf(?s, ?t) :-
+  isInterfaceType(?s),
+  isType(?t),
+  ?t = "java.lang.Object".
+SubtypeOf(?s, ?s) :-
+  isInterfaceType(?s).
+SubtypeOf(?s, ?t) :-
+  isInterfaceType(?s),
+  Superinterface(?t, ?s).
+SubtypeOf(?s, ?t) :-
+  isArrayType(?s),
+  isType(?t),
+  ?t = "java.lang.Object".
+SubtypeOf(?s, ?t) :-
+  ComponentType(?s, ?sc),
+  ComponentType(?t, ?tc),
+  isReferenceType(?sc),
+  isReferenceType(?tc),
+  SubtypeOf(?sc, ?tc).
+SubtypeOf(?s, ?t) :-
+  isArrayType(?s),
+  isInterfaceType(?t),
+  isType(?t),
+  ?t = "java.lang.Cloneable".
+SubtypeOf(?s, ?t) :-
+  isArrayType(?s),
+  isInterfaceType(?t),
+  isType(?t),
+  ?t = "java.io.Serializable".
+SubtypeOf(?t, ?t) :-
+  isType(?t).
+SubtypeOfDifferent(?s, ?t) :-
+  SubtypeOf(?s, ?t),
+  ?s != ?t.
 MainMethodDeclaration(?method) :-
   MainClass(?type),
   Method_DeclaringType(?method, ?type),
@@ -290,10 +391,47 @@ MainMethodDeclaration(?method) :-
   Method_Modifier("public", ?method),
   Method_Modifier("static", ?method).
 
+// class initialization
+.decl ClassInitializer(?type:Type, ?method:Method)
+.decl InitializedClass(?classOrInterface:Type)
+ClassInitializer(?type, ?method) :-
+   MethodImplemented("<clinit>", "void()", ?type, ?method).
+InitializedClass(?superclass) :-
+   InitializedClass(?class),
+   DirectSuperclass(?class, ?superclass).
+InitializedClass(?superinterface) :-
+   InitializedClass(?classOrInterface),
+   DirectSuperinterface(?classOrInterface, ?superinterface).
+InitializedClass(?class) :-
+   MainMethodDeclaration(?method),
+   Method_DeclaringType(?method, ?class).
+InitializedClass(?class) :-
+   Reachable(?inmethod),
+   AssignHeapAllocation(?heap, _, ?inmethod),
+   HeapAllocation_Type(?heap, ?class).
+InitializedClass(?class) :-
+   Reachable(?inmethod),
+   Instruction_Method(?invocation, ?inmethod),
+   isStaticMethodInvocation_Insn(?invocation),
+   MethodInvocation_Method(?invocation, ?signature),
+   Method_DeclaringType(?signature, ?class).
+InitializedClass(?classOrInterface) :-
+   Reachable(?inmethod),
+   StoreStaticField(_, ?signature, ?inmethod),
+   Field_DeclaringType(?signature, ?classOrInterface).
+InitializedClass(?classOrInterface) :-
+   Reachable(?inmethod),
+   LoadStaticField(?signature, _, ?inmethod),
+   Field_DeclaringType(?signature, ?classOrInterface).
+Reachable(?clinit) :-
+   InitializedClass(?class),
+   ClassInitializer(?class, ?clinit).
+
 // Main (value-based) analysis
 .decl VarPointsTo(?heap:HeapAllocation, ?var:Var)
 .output VarPointsTo
 .decl Reachable(?method:Method)
+.output Reachable
 VarPointsTo(?heap, ?var) :-
   AssignHeapAllocation(?heap, ?var, ?inMethod),
   Reachable(?inMethod).
@@ -301,8 +439,46 @@ VarPointsTo(?heap, ?to) :-
   Reachable(?inmethod),
   AssignLocal(?from, ?to, ?inmethod),
   VarPointsTo(?heap, ?from).
+ .plan 1:(3,2,1)
+VarPointsTo(?heap, ?to) :-
+  Reachable(?method),
+  AssignCast(?type, ?from, ?to, ?method),
+  SupertypeOf(?type, ?heaptype),
+  HeapAllocation_Type(?heap, ?heaptype),
+  VarPointsTo(?heap, ?from).
+ .plan 1:(5,2,1,4,3)
+VarPointsTo(?heap, ?this) :-
+  Reachable(?inMethod),
+  Instruction_Method(?invocation, ?inMethod),
+  VirtualMethodInvocation_Base(?invocation, ?base),
+  VarPointsTo(?heap, ?base),
+  HeapAllocation_Type(?heap, ?heaptype),
+  VirtualMethodInvocation_SimpleName(?invocation, ?simplename),
+  VirtualMethodInvocation_Descriptor(?invocation, ?descriptor),
+  MethodLookup(?simplename, ?descriptor, ?heaptype, ?toMethod),
+  ThisVar(?toMethod, ?this).
+ .plan 1:(4,3,2,1,5,6,7,8,9)
+Reachable(?toMethod) :-
+  Reachable(?inMethod),
+  Instruction_Method(?invocation, ?inMethod),
+  VirtualMethodInvocation_Base(?invocation, ?base),
+  VarPointsTo(?heap, ?base),
+  HeapAllocation_Type(?heap, ?heaptype),
+  VirtualMethodInvocation_SimpleName(?invocation, ?simplename),
+  VirtualMethodInvocation_Descriptor(?invocation, ?descriptor),
+  MethodLookup(?simplename, ?descriptor, ?heaptype, ?toMethod).
+ .plan 1:(4,3,2,1,5,6,7,8)
 Reachable(?tomethod) :-
   Reachable(?inmethod),
   StaticMethodInvocation(_, ?tomethod, ?inmethod).
+Reachable(?tomethod),
+VarPointsTo(?heap, ?this) :-
+  Reachable(?inmethod),
+  Instruction_Method(?invocation, ?inmethod),
+  SpecialMethodInvocation_Base(?invocation, ?base),
+  VarPointsTo(?heap, ?base),
+  MethodInvocation_Method(?invocation, ?tomethod),
+  ThisVar(?tomethod, ?this).
+ .plan 1:(4,3,2,1,5,6)
 Reachable(?method) :-
   MainMethodDeclaration(?method).
