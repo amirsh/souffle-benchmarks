@@ -3,6 +3,9 @@
 
 # destinguish benchmark sizes
 case $SIZE in
+    tiny)
+        N=512
+        ;;
     small)
         N=1756
         ;;
