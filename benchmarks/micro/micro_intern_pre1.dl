@@ -1,0 +1,161 @@
+.input DirectSuperclass(IO=file, filename="DirectSuperclass.csv", delimiter="\t")
+.input DirectSuperinterface(IO=file, filename="DirectSuperinterface.csv", delimiter="\t")
+.input MainClass(IO=file, filename="MainClass.csv", delimiter="\t")
+.input Method_Modifier(IO=file, filename="Method-Modifier.csv", delimiter="\t")
+.input FormalParam(IO=file, filename="FormalParam.csv", delimiter="\t")
+.input Var_Type(IO=file, filename="Var-Type.csv", delimiter="\t")
+.input ComponentType(IO=file, filename="ComponentType.csv", delimiter="\t")
+.input AssignReturnValue(IO=file, filename="AssignReturnValue.csv", delimiter="\t")
+.input ActualParam(IO=file, filename="ActualParam.csv", delimiter="\t")
+.input _ClassType(IO=file, filename="ClassType.csv", delimiter="\t")
+.input _ArrayType(IO=file, filename="ArrayType.csv", delimiter="\t")
+.input _InterfaceType(IO=file, filename="InterfaceType.csv", delimiter="\t")
+.input _Var_DeclaringMethod(IO=file, filename="Var-DeclaringMethod.csv", delimiter="\t")
+.input _ApplicationClass(IO=file, filename="ApplicationClass.csv", delimiter="\t")
+.input _ThisVar(IO=file, filename="ThisVar.csv", delimiter="\t")
+.input _NormalHeap(IO=file, filename="NormalHeap.csv", delimiter="\t")
+.input _StringConstant(IO=file, filename="StringConstant.csv", delimiter="\t")
+.input _AssignHeapAllocation(IO=file, filename="AssignHeapAllocation.csv", delimiter="\t")
+.input _AssignLocal(IO=file, filename="AssignLocal.csv", delimiter="\t")
+.input _AssignCast(IO=file, filename="AssignCast.csv", delimiter="\t")
+.input _Field(IO=file, filename="Field.csv", delimiter="\t")
+.input _StaticMethodInvocation(IO=file, filename="StaticMethodInvocation.csv", delimiter="\t")
+.input _SpecialMethodInvocation(IO=file, filename="SpecialMethodInvocation.csv", delimiter="\t")
+.input _VirtualMethodInvocation(IO=file, filename="VirtualMethodInvocation.csv", delimiter="\t")
+.input _Method(IO=file, filename="Method.csv", delimiter="\t")
+.input _Method_Descriptor(IO=file, filename="_Method_Descriptor.csv", delimiter="\t")
+.input _StoreInstanceField(IO=file, filename="StoreInstanceField.csv", delimiter="\t")
+.input _LoadInstanceField(IO=file, filename="LoadInstanceField.csv", delimiter="\t")
+.input _StoreStaticField(IO=file, filename="StoreStaticField.csv", delimiter="\t")
+.input _LoadStaticField(IO=file, filename="LoadStaticField.csv", delimiter="\t")
+.input _StoreArrayIndex(IO=file, filename="StoreArrayIndex.csv", delimiter="\t")
+.input _LoadArrayIndex(IO=file, filename="LoadArrayIndex.csv", delimiter="\t")
+.input _Return(IO=file, filename="Return.csv", delimiter="\t")
+.decl DirectSuperclass(?class: symbol, ?superclass: symbol)
+.decl DirectSuperinterface(?ref: symbol, ?interface: symbol)
+.decl MainClass(?class: symbol)
+.decl _Method_Descriptor(?method: symbol, ?descriptor: symbol)
+.decl Method_Modifier(?mod: symbol, ?method: symbol)
+.decl FormalParam(?index: number, ?method: symbol, ?var: symbol)
+.decl Var_Type(?var: symbol, ?type: symbol)
+.decl ComponentType(?arrayType: symbol, ?componentType: symbol)
+.decl AssignReturnValue(?invocation: symbol, ?to: symbol)
+.decl ActualParam(?index: number, ?invocation: symbol, ?var: symbol)
+.decl _ClassType(?class: symbol)
+.decl _ArrayType(?arrayType: symbol)
+.decl _InterfaceType(?interface: symbol)
+.decl _Var_DeclaringMethod(?var: symbol, ?method: symbol)
+.decl _ApplicationClass(?type: symbol)
+.decl _ThisVar(?method: symbol, ?var: symbol)
+.decl _NormalHeap(?id: symbol, ?type: symbol)
+.decl _StringConstant(?id: symbol)
+.decl _AssignHeapAllocation(?instruction: symbol, ?index: number, ?heap: symbol, ?to: symbol, ?inmethod: symbol, ?linenumber: number)
+.decl _AssignLocal(?instruction: symbol, ?index: number, ?from: symbol, ?to: symbol, ?inmethod: symbol)
+.decl _AssignCast(?instruction: symbol, ?index: number, ?from: symbol, ?to: symbol, ?type: symbol, ?inmethod: symbol)
+.decl _Field(?signature: symbol, ?declaringClass: symbol, ?simplename: symbol, ?type: symbol)
+.decl _StaticMethodInvocation(?instruction: symbol, ?index: number, ?signature: symbol, ?method: symbol)
+.decl _SpecialMethodInvocation(?instruction: symbol, ?index: number, ?signature: symbol, ?base: symbol, ?method: symbol)
+.decl _VirtualMethodInvocation(?instruction: symbol, ?index: number, ?signature: symbol, ?base: symbol, ?method: symbol)
+.decl _Method(?method: symbol, ?simplename: symbol, ?descriptor: symbol, ?declaringType: symbol, ?returnType: symbol, ?jvmDescriptor: symbol, ?arity: number)
+.decl _StoreInstanceField(?instruction: symbol, ?index: number, ?from: symbol, ?base: symbol, ?signature: symbol, ?method: symbol)
+.decl _LoadInstanceField(?instruction: symbol, ?index: number, ?to: symbol, ?base: symbol, ?signature: symbol, ?method: symbol)
+.decl _StoreStaticField(?instruction: symbol, ?index: number, ?from: symbol, ?signature: symbol, ?method: symbol)
+.decl _LoadStaticField(?instruction: symbol, ?index: number, ?to: symbol, ?signature: symbol, ?method: symbol)
+.decl _StoreArrayIndex(?instruction: symbol, ?index: number, ?from: symbol, ?base: symbol, ?method: symbol)
+.decl _LoadArrayIndex(?instruction: symbol, ?index: number, ?to: symbol, ?base: symbol, ?method: symbol)
+.decl _Return(?instruction: symbol, ?index: number, ?var: symbol, ?method: symbol)
+.decl All_Strings(str: symbol)
+.output All_Strings
+All_Strings(?class) :- DirectSuperclass(?class, _).
+All_Strings(?superclass) :- DirectSuperclass(_, ?superclass).
+All_Strings(?ref) :- DirectSuperinterface(?ref, _).
+All_Strings(?interface) :- DirectSuperinterface(_, ?interface).
+All_Strings(?class) :- MainClass(?class).
+All_Strings(?mod) :- Method_Modifier(?mod, _).
+All_Strings(?method) :- Method_Modifier(_, ?method).
+All_Strings(?method) :- FormalParam(_, ?method, _).
+All_Strings(?var) :- FormalParam(_, _, ?var).
+All_Strings(?var) :- Var_Type(?var, _).
+All_Strings(?type) :- Var_Type(_, ?type).
+All_Strings(?arrayType) :- ComponentType(?arrayType, _).
+All_Strings(?componentType) :- ComponentType(_, ?componentType).
+All_Strings(?invocation) :- AssignReturnValue(?invocation, _).
+All_Strings(?to) :- AssignReturnValue(_, ?to).
+All_Strings(?invocation) :- ActualParam(_, ?invocation, _).
+All_Strings(?var) :- ActualParam(_, _, ?var).
+All_Strings(?class) :- _ClassType(?class).
+All_Strings(?arrayType) :- _ArrayType(?arrayType).
+All_Strings(?interface) :- _InterfaceType(?interface).
+All_Strings(?var) :- _Var_DeclaringMethod(?var, _).
+All_Strings(?method) :- _Var_DeclaringMethod(_, ?method).
+All_Strings(?type) :- _ApplicationClass(?type).
+All_Strings(?method) :- _ThisVar(?method, _).
+All_Strings(?var) :- _ThisVar(_, ?var).
+All_Strings(?id) :- _NormalHeap(?id, _).
+All_Strings(?type) :- _NormalHeap(_, ?type).
+All_Strings(?id) :- _StringConstant(?id).
+All_Strings(?instruction) :- _AssignHeapAllocation(?instruction, _, _, _, _, _).
+All_Strings(?heap) :- _AssignHeapAllocation(_, _, ?heap, _, _, _).
+All_Strings(?to) :- _AssignHeapAllocation(_, _, _, ?to, _, _).
+All_Strings(?inmethod) :- _AssignHeapAllocation(_, _, _, _, ?inmethod, _).
+All_Strings(?instruction) :- _AssignLocal(?instruction, _, _, _, _).
+All_Strings(?from) :- _AssignLocal(_, _, ?from, _, _).
+All_Strings(?to) :- _AssignLocal(_, _, _, ?to, _).
+All_Strings(?inmethod) :- _AssignLocal(_, _, _, _, ?inmethod).
+All_Strings(?instruction) :- _AssignCast(?instruction, _, _, _, _, _).
+All_Strings(?from) :- _AssignCast(_, _, ?from, _, _, _).
+All_Strings(?to) :- _AssignCast(_, _, _, ?to, _, _).
+All_Strings(?type) :- _AssignCast(_, _, _, _, ?type, _).
+All_Strings(?inmethod) :- _AssignCast(_, _, _, _, _, ?inmethod).
+All_Strings(?signature) :- _Field(?signature, _, _, _).
+All_Strings(?declaringClass) :- _Field(_, ?declaringClass, _, _).
+All_Strings(?simplename) :- _Field(_, _, ?simplename, _).
+All_Strings(?type) :- _Field(_, _, _, ?type).
+All_Strings(?instruction) :- _StaticMethodInvocation(?instruction, _, _, _).
+All_Strings(?signature) :- _StaticMethodInvocation(_, _, ?signature, _).
+All_Strings(?method) :- _StaticMethodInvocation(_, _, _, ?method).
+All_Strings(?instruction) :- _SpecialMethodInvocation(?instruction, _, _, _, _).
+All_Strings(?signature) :- _SpecialMethodInvocation(_, _, ?signature, _, _).
+All_Strings(?base) :- _SpecialMethodInvocation(_, _, _, ?base, _).
+All_Strings(?method) :- _SpecialMethodInvocation(_, _, _, _, ?method).
+All_Strings(?instruction) :- _VirtualMethodInvocation(?instruction, _, _, _, _).
+All_Strings(?signature) :- _VirtualMethodInvocation(_, _, ?signature, _, _).
+All_Strings(?base) :- _VirtualMethodInvocation(_, _, _, ?base, _).
+All_Strings(?method) :- _VirtualMethodInvocation(_, _, _, _, ?method).
+All_Strings(?method) :- _Method(?method, _, _, _, _, _, _).
+All_Strings(?simplename) :- _Method(_, ?simplename, _, _, _, _, _).
+All_Strings(?descriptor) :- _Method(_, _, ?descriptor, _, _, _, _).
+All_Strings(?declaringType) :- _Method(_, _, _, ?declaringType, _, _, _).
+All_Strings(?returnType) :- _Method(_, _, _, _, ?returnType, _, _).
+All_Strings(?jvmDescriptor) :- _Method(_, _, _, _, _, ?jvmDescriptor, _).
+All_Strings(?method) :- _Method_Descriptor(?method, _).
+All_Strings(?descriptor) :- _Method_Descriptor(_, ?descriptor).
+All_Strings(?instruction) :- _StoreInstanceField(?instruction, _, _, _, _, _).
+All_Strings(?from) :- _StoreInstanceField(_, _, ?from, _, _, _).
+All_Strings(?base) :- _StoreInstanceField(_, _, _, ?base, _, _).
+All_Strings(?signature) :- _StoreInstanceField(_, _, _, _, ?signature, _).
+All_Strings(?method) :- _StoreInstanceField(_, _, _, _, _, ?method).
+All_Strings(?instruction) :- _LoadInstanceField(?instruction, _, _, _, _, _).
+All_Strings(?to) :- _LoadInstanceField(_, _, ?to, _, _, _).
+All_Strings(?base) :- _LoadInstanceField(_, _, _, ?base, _, _).
+All_Strings(?signature) :- _LoadInstanceField(_, _, _, _, ?signature, _).
+All_Strings(?method) :- _LoadInstanceField(_, _, _, _, _, ?method).
+All_Strings(?instruction) :- _StoreStaticField(?instruction, _, _, _, _).
+All_Strings(?from) :- _StoreStaticField(_, _, ?from, _, _).
+All_Strings(?signature) :- _StoreStaticField(_, _, _, ?signature, _).
+All_Strings(?method) :- _StoreStaticField(_, _, _, _, ?method).
+All_Strings(?instruction) :- _LoadStaticField(?instruction, _, _, _, _).
+All_Strings(?to) :- _LoadStaticField(_, _, ?to, _, _).
+All_Strings(?signature) :- _LoadStaticField(_, _, _, ?signature, _).
+All_Strings(?method) :- _LoadStaticField(_, _, _, _, ?method).
+All_Strings(?instruction) :- _StoreArrayIndex(?instruction, _, _, _, _).
+All_Strings(?from) :- _StoreArrayIndex(_, _, ?from, _, _).
+All_Strings(?base) :- _StoreArrayIndex(_, _, _, ?base, _).
+All_Strings(?method) :- _StoreArrayIndex(_, _, _, _, ?method).
+All_Strings(?instruction) :- _LoadArrayIndex(?instruction, _, _, _, _).
+All_Strings(?to) :- _LoadArrayIndex(_, _, ?to, _, _).
+All_Strings(?base) :- _LoadArrayIndex(_, _, _, ?base, _).
+All_Strings(?method) :- _LoadArrayIndex(_, _, _, _, ?method).
+All_Strings(?instruction) :- _Return(?instruction, _, _, _).
+All_Strings(?var) :- _Return(_, _, ?var, _).
+All_Strings(?method) :- _Return(_, _, _, ?method).

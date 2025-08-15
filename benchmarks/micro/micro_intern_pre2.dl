@@ -1,0 +1,167 @@
+.input DirectSuperclass(IO=file, filename="DirectSuperclass.csv", delimiter="\t")
+.input DirectSuperinterface(IO=file, filename="DirectSuperinterface.csv", delimiter="\t")
+.input MainClass(IO=file, filename="MainClass.csv", delimiter="\t")
+.input Method_Modifier(IO=file, filename="Method-Modifier.csv", delimiter="\t")
+.input FormalParam(IO=file, filename="FormalParam.csv", delimiter="\t")
+.input Var_Type(IO=file, filename="Var-Type.csv", delimiter="\t")
+.input ComponentType(IO=file, filename="ComponentType.csv", delimiter="\t")
+.input AssignReturnValue(IO=file, filename="AssignReturnValue.csv", delimiter="\t")
+.input ActualParam(IO=file, filename="ActualParam.csv", delimiter="\t")
+.input _ClassType(IO=file, filename="ClassType.csv", delimiter="\t")
+.input _ArrayType(IO=file, filename="ArrayType.csv", delimiter="\t")
+.input _InterfaceType(IO=file, filename="InterfaceType.csv", delimiter="\t")
+.input _Var_DeclaringMethod(IO=file, filename="Var-DeclaringMethod.csv", delimiter="\t")
+.input _ApplicationClass(IO=file, filename="ApplicationClass.csv", delimiter="\t")
+.input _ThisVar(IO=file, filename="ThisVar.csv", delimiter="\t")
+.input _NormalHeap(IO=file, filename="NormalHeap.csv", delimiter="\t")
+.input _StringConstant(IO=file, filename="StringConstant.csv", delimiter="\t")
+.input _AssignHeapAllocation(IO=file, filename="AssignHeapAllocation.csv", delimiter="\t")
+.input _AssignLocal(IO=file, filename="AssignLocal.csv", delimiter="\t")
+.input _AssignCast(IO=file, filename="AssignCast.csv", delimiter="\t")
+.input _Field(IO=file, filename="Field.csv", delimiter="\t")
+.input _StaticMethodInvocation(IO=file, filename="StaticMethodInvocation.csv", delimiter="\t")
+.input _SpecialMethodInvocation(IO=file, filename="SpecialMethodInvocation.csv", delimiter="\t")
+.input _VirtualMethodInvocation(IO=file, filename="VirtualMethodInvocation.csv", delimiter="\t")
+.input _Method(IO=file, filename="Method.csv", delimiter="\t")
+.input _Method_Descriptor(IO=file, filename="_Method_Descriptor.csv", delimiter="\t")
+.input _StoreInstanceField(IO=file, filename="StoreInstanceField.csv", delimiter="\t")
+.input _LoadInstanceField(IO=file, filename="LoadInstanceField.csv", delimiter="\t")
+.input _StoreStaticField(IO=file, filename="StoreStaticField.csv", delimiter="\t")
+.input _LoadStaticField(IO=file, filename="LoadStaticField.csv", delimiter="\t")
+.input _StoreArrayIndex(IO=file, filename="StoreArrayIndex.csv", delimiter="\t")
+.input _LoadArrayIndex(IO=file, filename="LoadArrayIndex.csv", delimiter="\t")
+.input _Return(IO=file, filename="Return.csv", delimiter="\t")
+.input Global_String_Dictionary(IO=file, filename="Global_String_Dictionary.csv", delimiter="\t")
+.decl DirectSuperclass(?class: symbol, ?superclass: symbol)
+.decl DirectSuperinterface(?ref: symbol, ?interface: symbol)
+.decl MainClass(?class: symbol)
+.decl _Method_Descriptor(?method: symbol, ?descriptor: symbol)
+.decl Method_Modifier(?mod: symbol, ?method: symbol)
+.decl FormalParam(?index: number, ?method: symbol, ?var: symbol)
+.decl Var_Type(?var: symbol, ?type: symbol)
+.decl ComponentType(?arrayType: symbol, ?componentType: symbol)
+.decl AssignReturnValue(?invocation: symbol, ?to: symbol)
+.decl ActualParam(?index: number, ?invocation: symbol, ?var: symbol)
+.decl _ClassType(?class: symbol)
+.decl _ArrayType(?arrayType: symbol)
+.decl _InterfaceType(?interface: symbol)
+.decl _Var_DeclaringMethod(?var: symbol, ?method: symbol)
+.decl _ApplicationClass(?type: symbol)
+.decl _ThisVar(?method: symbol, ?var: symbol)
+.decl _NormalHeap(?id: symbol, ?type: symbol)
+.decl _StringConstant(?id: symbol)
+.decl _AssignHeapAllocation(?instruction: symbol, ?index: number, ?heap: symbol, ?to: symbol, ?inmethod: symbol, ?linenumber: number)
+.decl _AssignLocal(?instruction: symbol, ?index: number, ?from: symbol, ?to: symbol, ?inmethod: symbol)
+.decl _AssignCast(?instruction: symbol, ?index: number, ?from: symbol, ?to: symbol, ?type: symbol, ?inmethod: symbol)
+.decl _Field(?signature: symbol, ?declaringClass: symbol, ?simplename: symbol, ?type: symbol)
+.decl _StaticMethodInvocation(?instruction: symbol, ?index: number, ?signature: symbol, ?method: symbol)
+.decl _SpecialMethodInvocation(?instruction: symbol, ?index: number, ?signature: symbol, ?base: symbol, ?method: symbol)
+.decl _VirtualMethodInvocation(?instruction: symbol, ?index: number, ?signature: symbol, ?base: symbol, ?method: symbol)
+.decl _Method(?method: symbol, ?simplename: symbol, ?descriptor: symbol, ?declaringType: symbol, ?returnType: symbol, ?jvmDescriptor: symbol, ?arity: number)
+.decl _StoreInstanceField(?instruction: symbol, ?index: number, ?from: symbol, ?base: symbol, ?signature: symbol, ?method: symbol)
+.decl _LoadInstanceField(?instruction: symbol, ?index: number, ?to: symbol, ?base: symbol, ?signature: symbol, ?method: symbol)
+.decl _StoreStaticField(?instruction: symbol, ?index: number, ?from: symbol, ?signature: symbol, ?method: symbol)
+.decl _LoadStaticField(?instruction: symbol, ?index: number, ?to: symbol, ?signature: symbol, ?method: symbol)
+.decl _StoreArrayIndex(?instruction: symbol, ?index: number, ?from: symbol, ?base: symbol, ?method: symbol)
+.decl _LoadArrayIndex(?instruction: symbol, ?index: number, ?to: symbol, ?base: symbol, ?method: symbol)
+.decl _Return(?instruction: symbol, ?index: number, ?var: symbol, ?method: symbol)
+.decl DirectSuperclass_interned(?class_h: number, ?superclass_h: number)
+.decl DirectSuperinterface_interned(?ref_h: number, ?interface_h: number)
+.decl MainClass_interned(?class_h: number)
+.decl Method_Modifier_interned(?mod_h: number, ?method_h: number)
+.decl FormalParam_interned(?index: number, ?method_h: number, ?var_h: number)
+.decl Var_Type_interned(?var_h: number, ?type_h: number)
+.decl ComponentType_interned(?arrayType_h: number, ?componentType_h: number)
+.decl AssignReturnValue_interned(?invocation_h: number, ?to_h: number)
+.decl ActualParam_interned(?index: number, ?invocation_h: number, ?var_h: number)
+.decl _ClassType_interned(?class_h: number)
+.decl _ArrayType_interned(?arrayType_h: number)
+.decl _InterfaceType_interned(?interface_h: number)
+.decl _Var_DeclaringMethod_interned(?var_h: number, ?method_h: number)
+.decl _ApplicationClass_interned(?type_h: number)
+.decl _ThisVar_interned(?method_h: number, ?var_h: number)
+.decl _NormalHeap_interned(?id_h: number, ?type_h: number)
+.decl _StringConstant_interned(?id_h: number)
+.decl _AssignHeapAllocation_interned(?instruction_h: number, ?index: number, ?heap_h: number, ?to_h: number, ?inmethod_h: number, ?linenumber: number)
+.decl _AssignLocal_interned(?instruction_h: number, ?index: number, ?from_h: number, ?to_h: number, ?inmethod_h: number)
+.decl _AssignCast_interned(?instruction_h: number, ?index: number, ?from_h: number, ?to_h: number, ?type_h: number, ?inmethod_h: number)
+.decl _Field_interned(?signature_h: number, ?declaringClass_h: number, ?simplename_h: number, ?type_h: number)
+.decl _StaticMethodInvocation_interned(?instruction_h: number, ?index: number, ?signature_h: number, ?method_h: number)
+.decl _SpecialMethodInvocation_interned(?instruction_h: number, ?index: number, ?signature_h: number, ?base_h: number, ?method_h: number)
+.decl _VirtualMethodInvocation_interned(?instruction_h: number, ?index: number, ?signature_h: number, ?base_h: number, ?method_h: number)
+.decl _Method_interned(?method_h: number, ?simplename_h: number, ?descriptor_h: number, ?declaringType_h: number, ?returnType_h: number, ?jvmDescriptor_h: number, ?arity: number)
+.decl _Method_Descriptor_interned(?method_h: number, ?descriptor_h: number)
+.decl _StoreInstanceField_interned(?instruction_h: number, ?index: number, ?from_h: number, ?base_h: number, ?signature_h: number, ?method_h: number)
+.decl _LoadInstanceField_interned(?instruction_h: number, ?index: number, ?to_h: number, ?base_h: number, ?signature_h: number, ?method_h: number)
+.decl _StoreStaticField_interned(?instruction_h: number, ?index: number, ?from_h: number, ?signature_h: number, ?method_h: number)
+.decl _LoadStaticField_interned(?instruction_h: number, ?index: number, ?to_h: number, ?signature_h: number, ?method_h: number)
+.decl _StoreArrayIndex_interned(?instruction_h: number, ?index: number, ?from_h: number, ?base_h: number, ?method_h: number)
+.decl _LoadArrayIndex_interned(?instruction_h: number, ?index: number, ?to_h: number, ?base_h: number, ?method_h: number)
+.decl _Return_interned(?instruction_h: number, ?index: number, ?var_h: number, ?method_h: number)
+.decl Global_String_Dictionary(str: symbol, ind: number)
+.output DirectSuperclass_interned
+.output DirectSuperinterface_interned
+.output MainClass_interned
+.output Method_Modifier_interned
+.output FormalParam_interned
+.output Var_Type_interned
+.output ComponentType_interned
+.output AssignReturnValue_interned
+.output ActualParam_interned
+.output _ClassType_interned
+.output _ArrayType_interned
+.output _InterfaceType_interned
+.output _Var_DeclaringMethod_interned
+.output _ApplicationClass_interned
+.output _ThisVar_interned
+.output _NormalHeap_interned
+.output _StringConstant_interned
+.output _AssignHeapAllocation_interned
+.output _AssignLocal_interned
+.output _AssignCast_interned
+.output _Field_interned
+.output _StaticMethodInvocation_interned
+.output _SpecialMethodInvocation_interned
+.output _VirtualMethodInvocation_interned
+.output _Method_interned
+.output _Method_Descriptor_interned
+.output _StoreInstanceField_interned
+.output _LoadInstanceField_interned
+.output _StoreStaticField_interned
+.output _LoadStaticField_interned
+.output _StoreArrayIndex_interned
+.output _LoadArrayIndex_interned
+.output _Return_interned
+DirectSuperclass_interned(?class_h, ?superclass_h) :- DirectSuperclass(?class, ?superclass), Global_String_Dictionary(?class, ?class_h), Global_String_Dictionary(?superclass, ?superclass_h).
+DirectSuperinterface_interned(?ref_h, ?interface_h) :- DirectSuperinterface(?ref, ?interface), Global_String_Dictionary(?ref, ?ref_h), Global_String_Dictionary(?interface, ?interface_h).
+MainClass_interned(?class_h) :- MainClass(?class), Global_String_Dictionary(?class, ?class_h).
+Method_Modifier_interned(?mod_h, ?method_h) :- Method_Modifier(?mod, ?method), Global_String_Dictionary(?mod, ?mod_h), Global_String_Dictionary(?method, ?method_h).
+FormalParam_interned(?index, ?method_h, ?var_h) :- FormalParam(?index, ?method, ?var), Global_String_Dictionary(?method, ?method_h), Global_String_Dictionary(?var, ?var_h).
+Var_Type_interned(?var_h, ?type_h) :- Var_Type(?var, ?type), Global_String_Dictionary(?var, ?var_h), Global_String_Dictionary(?type, ?type_h).
+ComponentType_interned(?arrayType_h, ?componentType_h) :- ComponentType(?arrayType, ?componentType), Global_String_Dictionary(?arrayType, ?arrayType_h), Global_String_Dictionary(?componentType, ?componentType_h).
+AssignReturnValue_interned(?invocation_h, ?to_h) :- AssignReturnValue(?invocation, ?to), Global_String_Dictionary(?invocation, ?invocation_h), Global_String_Dictionary(?to, ?to_h).
+ActualParam_interned(?index, ?invocation_h, ?var_h) :- ActualParam(?index, ?invocation, ?var), Global_String_Dictionary(?invocation, ?invocation_h), Global_String_Dictionary(?var, ?var_h).
+_ClassType_interned(?class_h) :- _ClassType(?class), Global_String_Dictionary(?class, ?class_h).
+_ArrayType_interned(?arrayType_h) :- _ArrayType(?arrayType), Global_String_Dictionary(?arrayType, ?arrayType_h).
+_InterfaceType_interned(?interface_h) :- _InterfaceType(?interface), Global_String_Dictionary(?interface, ?interface_h).
+_Var_DeclaringMethod_interned(?var_h, ?method_h) :- _Var_DeclaringMethod(?var, ?method), Global_String_Dictionary(?var, ?var_h), Global_String_Dictionary(?method, ?method_h).
+_ApplicationClass_interned(?type_h) :- _ApplicationClass(?type), Global_String_Dictionary(?type, ?type_h).
+_ThisVar_interned(?method_h, ?var_h) :- _ThisVar(?method, ?var), Global_String_Dictionary(?method, ?method_h), Global_String_Dictionary(?var, ?var_h).
+_NormalHeap_interned(?id_h, ?type_h) :- _NormalHeap(?id, ?type), Global_String_Dictionary(?id, ?id_h), Global_String_Dictionary(?type, ?type_h).
+_StringConstant_interned(?id_h) :- _StringConstant(?id), Global_String_Dictionary(?id, ?id_h).
+_AssignHeapAllocation_interned(?instruction_h, ?index, ?heap_h, ?to_h, ?inmethod_h, ?linenumber) :- _AssignHeapAllocation(?instruction, ?index, ?heap, ?to, ?inmethod, ?linenumber), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?heap, ?heap_h), Global_String_Dictionary(?to, ?to_h), Global_String_Dictionary(?inmethod, ?inmethod_h).
+_AssignLocal_interned(?instruction_h, ?index, ?from_h, ?to_h, ?inmethod_h) :- _AssignLocal(?instruction, ?index, ?from, ?to, ?inmethod), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?from, ?from_h), Global_String_Dictionary(?to, ?to_h), Global_String_Dictionary(?inmethod, ?inmethod_h).
+_AssignCast_interned(?instruction_h, ?index, ?from_h, ?to_h, ?type_h, ?inmethod_h) :- _AssignCast(?instruction, ?index, ?from, ?to, ?type, ?inmethod), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?from, ?from_h), Global_String_Dictionary(?to, ?to_h), Global_String_Dictionary(?type, ?type_h), Global_String_Dictionary(?inmethod, ?inmethod_h).
+_Field_interned(?signature_h, ?declaringClass_h, ?simplename_h, ?type_h) :- _Field(?signature, ?declaringClass, ?simplename, ?type), Global_String_Dictionary(?signature, ?signature_h), Global_String_Dictionary(?declaringClass, ?declaringClass_h), Global_String_Dictionary(?simplename, ?simplename_h), Global_String_Dictionary(?type, ?type_h).
+_StaticMethodInvocation_interned(?instruction_h, ?index, ?signature_h, ?method_h) :- _StaticMethodInvocation(?instruction, ?index, ?signature, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?signature, ?signature_h), Global_String_Dictionary(?method, ?method_h).
+_SpecialMethodInvocation_interned(?instruction_h, ?index, ?signature_h, ?base_h, ?method_h) :- _SpecialMethodInvocation(?instruction, ?index, ?signature, ?base, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?signature, ?signature_h), Global_String_Dictionary(?base, ?base_h), Global_String_Dictionary(?method, ?method_h).
+_VirtualMethodInvocation_interned(?instruction_h, ?index, ?signature_h, ?base_h, ?method_h) :- _VirtualMethodInvocation(?instruction, ?index, ?signature, ?base, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?signature, ?signature_h), Global_String_Dictionary(?base, ?base_h), Global_String_Dictionary(?method, ?method_h).
+_Method_interned(?method_h, ?simplename_h, ?descriptor_h, ?declaringType_h, ?returnType_h, ?jvmDescriptor_h, ?arity) :- _Method(?method, ?simplename, ?descriptor, ?declaringType, ?returnType, ?jvmDescriptor, ?arity), Global_String_Dictionary(?method, ?method_h), Global_String_Dictionary(?simplename, ?simplename_h), Global_String_Dictionary(?descriptor, ?descriptor_h), Global_String_Dictionary(?declaringType, ?declaringType_h), Global_String_Dictionary(?returnType, ?returnType_h), Global_String_Dictionary(?jvmDescriptor, ?jvmDescriptor_h).
+_Method_Descriptor_interned(?method_h, ?descriptor_h) :- _Method_Descriptor(?method, ?descriptor), Global_String_Dictionary(?method, ?method_h), Global_String_Dictionary(?descriptor, ?descriptor_h).
+_StoreInstanceField_interned(?instruction_h, ?index, ?from_h, ?base_h, ?signature_h, ?method_h) :- _StoreInstanceField(?instruction, ?index, ?from, ?base, ?signature, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?from, ?from_h), Global_String_Dictionary(?base, ?base_h), Global_String_Dictionary(?signature, ?signature_h), Global_String_Dictionary(?method, ?method_h).
+_LoadInstanceField_interned(?instruction_h, ?index, ?to_h, ?base_h, ?signature_h, ?method_h) :- _LoadInstanceField(?instruction, ?index, ?to, ?base, ?signature, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?to, ?to_h), Global_String_Dictionary(?base, ?base_h), Global_String_Dictionary(?signature, ?signature_h), Global_String_Dictionary(?method, ?method_h).
+_StoreStaticField_interned(?instruction_h, ?index, ?from_h, ?signature_h, ?method_h) :- _StoreStaticField(?instruction, ?index, ?from, ?signature, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?from, ?from_h), Global_String_Dictionary(?signature, ?signature_h), Global_String_Dictionary(?method, ?method_h).
+_LoadStaticField_interned(?instruction_h, ?index, ?to_h, ?signature_h, ?method_h) :- _LoadStaticField(?instruction, ?index, ?to, ?signature, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?to, ?to_h), Global_String_Dictionary(?signature, ?signature_h), Global_String_Dictionary(?method, ?method_h).
+_StoreArrayIndex_interned(?instruction_h, ?index, ?from_h, ?base_h, ?method_h) :- _StoreArrayIndex(?instruction, ?index, ?from, ?base, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?from, ?from_h), Global_String_Dictionary(?base, ?base_h), Global_String_Dictionary(?method, ?method_h).
+_LoadArrayIndex_interned(?instruction_h, ?index, ?to_h, ?base_h, ?method_h) :- _LoadArrayIndex(?instruction, ?index, ?to, ?base, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?to, ?to_h), Global_String_Dictionary(?base, ?base_h), Global_String_Dictionary(?method, ?method_h).
+_Return_interned(?instruction_h, ?index, ?var_h, ?method_h) :- _Return(?instruction, ?index, ?var, ?method), Global_String_Dictionary(?instruction, ?instruction_h), Global_String_Dictionary(?var, ?var_h), Global_String_Dictionary(?method, ?method_h).
