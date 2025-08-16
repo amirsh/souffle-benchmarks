@@ -134,46 +134,12 @@
 .decl InitializedClass(?classOrInterface_h: number)
 .decl Assign(?to_h: number, ?from_h: number)
 .decl VarPointsTo(?heap_h: number, ?var_h: number)
+.output VarPointsTo
 .decl InstanceFieldPointsTo(?heap_h: number, ?fld_h: number, ?baseheap_h: number)
 .decl StaticFieldPointsTo(?heap_h: number, ?fld_h: number)
 .decl CallGraphEdge(?invocation_h: number, ?meth_h: number)
 .decl ArrayIndexPointsTo(?baseheap_h: number, ?heap_h: number)
 .decl Reachable(?method_h: number)
-.decl StrLit0(ind: number)
-.decl StrLit1(ind: number)
-.decl StrLit2(ind: number)
-.decl StrLit3(ind: number)
-.decl StrLit4(ind: number)
-.decl StrLit5(ind: number)
-.decl StrLit6(ind: number)
-.decl StrLit7(ind: number)
-.decl StrLit8(ind: number)
-.decl StrLit9(ind: number)
-.decl StrLit10(ind: number)
-.decl StrLit11(ind: number)
-.decl StrLit12(ind: number)
-.decl StrLit13(ind: number)
-.decl StrLit14(ind: number)
-.decl StrLit15(ind: number)
-.decl StrLit16(ind: number)
-.output VarPointsTo
-StrLit0(ind) :- Global_String_Dictionary("static", ind).
-StrLit1(ind) :- Global_String_Dictionary("java.io.Serializable", ind).
-StrLit2(ind) :- Global_String_Dictionary("<<main method array>>", ind).
-StrLit3(ind) :- Global_String_Dictionary("java.lang.Cloneable", ind).
-StrLit4(ind) :- Global_String_Dictionary("void()", ind).
-StrLit5(ind) :- Global_String_Dictionary("abstract", ind).
-StrLit6(ind) :- Global_String_Dictionary("<sun.security.provider.PolicyParser: void main(java.lang.String[])>", ind).
-StrLit7(ind) :- Global_String_Dictionary("<java.util.prefs.Base64: void main(java.lang.String[])>", ind).
-StrLit8(ind) :- Global_String_Dictionary("public", ind).
-StrLit9(ind) :- Global_String_Dictionary("main", ind).
-StrLit10(ind) :- Global_String_Dictionary("java.lang.String[]", ind).
-StrLit11(ind) :- Global_String_Dictionary("<<main method array content>>", ind).
-StrLit12(ind) :- Global_String_Dictionary("void(java.lang.String[])", ind).
-StrLit13(ind) :- Global_String_Dictionary("<clinit>", ind).
-StrLit14(ind) :- Global_String_Dictionary("java.lang.Object", ind).
-StrLit15(ind) :- Global_String_Dictionary("java.lang.String", ind).
-StrLit16(ind) :- Global_String_Dictionary("<sun.java2d.loops.GraphicsPrimitiveMgr: void main(java.lang.String[])>", ind).
 isType(?class_h) :- _ClassType_interned(?class_h).
 isReferenceType(?class_h) :- _ClassType_interned(?class_h).
 isClassType(?class_h) :- _ClassType_interned(?class_h).
@@ -261,7 +227,7 @@ VirtualMethodInvocation_Descriptor(?invocation_h, ?descriptor_h) :- isVirtualMet
 MethodLookup(?simplename_h, ?descriptor_h, ?type_h, ?method_h) :- MethodImplemented(?simplename_h, ?descriptor_h, ?type_h, ?method_h).
 MethodLookup(?simplename_h, ?descriptor_h, ?type_h, ?method_h) :- MethodLookup(?simplename_h, ?descriptor_h, ?supertype_h, ?method_h), !MethodImplemented(?simplename_h, ?descriptor_h, ?type_h, _), DirectSuperclass_interned(?type_h, ?supertype_h).
 MethodLookup(?simplename_h, ?descriptor_h, ?type_h, ?method_h) :- MethodLookup(?simplename_h, ?descriptor_h, ?supertype_h, ?method_h), !MethodImplemented(?simplename_h, ?descriptor_h, ?type_h, _), DirectSuperinterface_interned(?type_h, ?supertype_h).
-MethodImplemented(?simplename_h, ?descriptor_h, ?type_h, ?method_h) :- Method_SimpleName(?method_h, ?simplename_h), Method_Descriptor(?method_h, ?descriptor_h), Method_DeclaringType(?method_h, ?type_h), StrLit5(__ind5), Method_Modifier_interned(__ind5, ?method_h).
+MethodImplemented(?simplename_h, ?descriptor_h, ?type_h, ?method_h) :- Method_SimpleName(?method_h, ?simplename_h), Method_Descriptor(?method_h, ?descriptor_h), Method_DeclaringType(?method_h, ?type_h), StrLit5(__ind5), !Method_Modifier_interned(__ind5, ?method_h).
 DirectSubclass(?a_h, ?c_h) :- DirectSuperclass_interned(?a_h, ?c_h).
 Subclass(?c_h, ?a_h) :- DirectSubclass(?a_h, ?c_h).
 Subclass(?c_h, ?a_h) :- Subclass(?b_h, ?a_h), DirectSubclass(?b_h, ?c_h).
@@ -313,3 +279,38 @@ Reachable(?tomethod_h) :- Reachable(?inmethod_h), Instruction_Method(?invocation
 CallGraphEdge(?invocation_h, ?tomethod_h) :- Reachable(?inmethod_h), Instruction_Method(?invocation_h, ?inmethod_h), SpecialMethodInvocation_Base(?invocation_h, ?base_h), VarPointsTo(?heap_h, ?base_h), MethodInvocation_Method(?invocation_h, ?tomethod_h), ThisVar(?tomethod_h, ?this_h).
 VarPointsTo(?heap_h, ?this_h) :- Reachable(?inmethod_h), Instruction_Method(?invocation_h, ?inmethod_h), SpecialMethodInvocation_Base(?invocation_h, ?base_h), VarPointsTo(?heap_h, ?base_h), MethodInvocation_Method(?invocation_h, ?tomethod_h), ThisVar(?tomethod_h, ?this_h).
 Reachable(?method_h) :- MainMethodDeclaration(?method_h).
+
+.decl StrLit0(ind: number)
+.decl StrLit1(ind: number)
+.decl StrLit2(ind: number)
+.decl StrLit3(ind: number)
+.decl StrLit4(ind: number)
+.decl StrLit5(ind: number)
+.decl StrLit6(ind: number)
+.decl StrLit7(ind: number)
+.decl StrLit8(ind: number)
+.decl StrLit9(ind: number)
+.decl StrLit10(ind: number)
+.decl StrLit11(ind: number)
+.decl StrLit12(ind: number)
+.decl StrLit13(ind: number)
+.decl StrLit14(ind: number)
+.decl StrLit15(ind: number)
+.decl StrLit16(ind: number)
+StrLit0(ind) :- Global_String_Dictionary("static", ind).
+StrLit1(ind) :- Global_String_Dictionary("java.io.Serializable", ind).
+StrLit2(ind) :- Global_String_Dictionary("<<main method array>>", ind).
+StrLit3(ind) :- Global_String_Dictionary("java.lang.Cloneable", ind).
+StrLit4(ind) :- Global_String_Dictionary("void()", ind).
+StrLit5(ind) :- Global_String_Dictionary("abstract", ind).
+StrLit6(ind) :- Global_String_Dictionary("<sun.security.provider.PolicyParser: void main(java.lang.String[])>", ind).
+StrLit7(ind) :- Global_String_Dictionary("<java.util.prefs.Base64: void main(java.lang.String[])>", ind).
+StrLit8(ind) :- Global_String_Dictionary("public", ind).
+StrLit9(ind) :- Global_String_Dictionary("main", ind).
+StrLit10(ind) :- Global_String_Dictionary("java.lang.String[]", ind).
+StrLit11(ind) :- Global_String_Dictionary("<<main method array content>>", ind).
+StrLit12(ind) :- Global_String_Dictionary("void(java.lang.String[])", ind).
+StrLit13(ind) :- Global_String_Dictionary("<clinit>", ind).
+StrLit14(ind) :- Global_String_Dictionary("java.lang.Object", ind).
+StrLit15(ind) :- Global_String_Dictionary("java.lang.String", ind).
+StrLit16(ind) :- Global_String_Dictionary("<sun.java2d.loops.GraphicsPrimitiveMgr: void main(java.lang.String[])>", ind).

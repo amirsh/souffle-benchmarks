@@ -26,13 +26,7 @@ else:
 	input_file = "All_Strings.csv"
 	output_file = os.path.join(folder_path, "Global_String_Dictionary.csv")
 
-	# Read the input file (tab-separated)
-	df = pd.read_csv(input_file, sep="\t", header=None)
-
-	output_df = pd.DataFrame({
-	    0: df.iloc[:, 0],       # first column (original data)
-	    1: df.index             # second column (row index)
-	})
-
-	# Save to new CSV file (comma-separated by default)
-	output_df.to_csv(output_file, sep="\t", index=False, header=False)
+	with open(input_file, "r") as infile, open(output_file, "w") as outfile:
+	    for i, line in enumerate(infile, start=1):
+	        # Strip newline, append tab + line number, then add newline back
+	        outfile.write(line.rstrip("\n") + "\t" + str(i) + "\n")

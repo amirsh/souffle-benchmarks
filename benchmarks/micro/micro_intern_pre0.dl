@@ -1,0 +1,13 @@
+.decl _Method(?method:symbol, ?simplename:symbol, ?descriptor:symbol, ?declaringType:symbol, ?returnType:symbol, ?jvmDescriptor:symbol, ?arity:number)
+.input _Method(IO="file", filename="Method.csv", delimiter="\t")
+.decl _Method_Descriptor(?method: symbol, ?descriptor: symbol)
+.decl Method_ReturnType(?method:symbol, ?returnType:symbol)
+.decl Method_ParamTypes(?method:symbol, ?params:symbol)
+.output _Method_Descriptor
+Method_ParamTypes(?method, ?params),
+Method_ReturnType(?method, ?returnType) :-
+  _Method(?method, _, ?params, _, ?returnType, _, _).
+_Method_Descriptor(?method, ?descriptor) :-
+  Method_ReturnType(?method, ?returnType),
+  Method_ParamTypes(?method, ?params),
+  ?descriptor = cat(?returnType, cat("(", cat(?params, ")"))).
