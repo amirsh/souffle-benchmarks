@@ -1,0 +1,84 @@
+.input Global_String_Dictionary(IO=file, filename="Global_String_Dictionary.csv", delimiter="\t")
+.input MainClass_interned(IO=file, filename="MainClass_interned.csv", delimiter="\t")
+.input Method_Modifier_interned(IO=file, filename="Method_Modifier_interned.csv", delimiter="\t")
+.input _AssignHeapAllocation_interned(IO=file, filename="_AssignHeapAllocation_interned.csv", delimiter="\t")
+.input _AssignLocal_interned(IO=file, filename="_AssignLocal_interned.csv", delimiter="\t")
+.input _AssignCast_interned(IO=file, filename="_AssignCast_interned.csv", delimiter="\t")
+.input _StaticMethodInvocation_interned(IO=file, filename="_StaticMethodInvocation_interned.csv", delimiter="\t")
+.input _SpecialMethodInvocation_interned(IO=file, filename="_SpecialMethodInvocation_interned.csv", delimiter="\t")
+.input _VirtualMethodInvocation_interned(IO=file, filename="_VirtualMethodInvocation_interned.csv", delimiter="\t")
+.input _Method_interned(IO=file, filename="_Method_interned.csv", delimiter="\t")
+.input _Method_Descriptor_interned(IO=file, filename="_Method_Descriptor_interned.csv", delimiter="\t")
+.input _StoreInstanceField_interned(IO=file, filename="_StoreInstanceField_interned.csv", delimiter="\t")
+.input _LoadInstanceField_interned(IO=file, filename="_LoadInstanceField_interned.csv", delimiter="\t")
+.input _StoreStaticField_interned(IO=file, filename="_StoreStaticField_interned.csv", delimiter="\t")
+.input _LoadStaticField_interned(IO=file, filename="_LoadStaticField_interned.csv", delimiter="\t")
+.input _StoreArrayIndex_interned(IO=file, filename="_StoreArrayIndex_interned.csv", delimiter="\t")
+.input _LoadArrayIndex_interned(IO=file, filename="_LoadArrayIndex_interned.csv", delimiter="\t")
+.input _Return_interned(IO=file, filename="_Return_interned.csv", delimiter="\t")
+.decl Global_String_Dictionary(str: symbol, ind: number)
+.decl MainClass_interned(?class_h: number)
+.decl Method_Modifier_interned(?mod_h: number, ?method_h: number)
+.decl _AssignHeapAllocation_interned(?instruction_h: number, ?index: number, ?heap_h: number, ?to_h: number, ?inmethod_h: number, ?linenumber: number)
+.decl _AssignLocal_interned(?instruction_h: number, ?index: number, ?from_h: number, ?to_h: number, ?inmethod_h: number)
+.decl _AssignCast_interned(?instruction_h: number, ?index: number, ?from_h: number, ?to_h: number, ?type_h: number, ?inmethod_h: number)
+.decl _StaticMethodInvocation_interned(?instruction_h: number, ?index: number, ?signature_h: number, ?method_h: number)
+.decl _SpecialMethodInvocation_interned(?instruction_h: number, ?index: number, ?signature_h: number, ?base_h: number, ?method_h: number)
+.decl _VirtualMethodInvocation_interned(?instruction_h: number, ?index: number, ?signature_h: number, ?base_h: number, ?method_h: number)
+.decl _Method_interned(?method_h: number, ?simplename_h: number, ?descriptor_h: number, ?declaringType_h: number, ?returnType_h: number, ?jvmDescriptor_h: number, ?arity: number)
+.decl _Method_Descriptor_interned(?method_h: number, ?descriptor_h: number)
+.decl _StoreInstanceField_interned(?instruction_h: number, ?index: number, ?from_h: number, ?base_h: number, ?signature_h: number, ?method_h: number)
+.decl _LoadInstanceField_interned(?instruction_h: number, ?index: number, ?to_h: number, ?base_h: number, ?signature_h: number, ?method_h: number)
+.decl _StoreStaticField_interned(?instruction_h: number, ?index: number, ?from_h: number, ?signature_h: number, ?method_h: number)
+.decl _LoadStaticField_interned(?instruction_h: number, ?index: number, ?to_h: number, ?signature_h: number, ?method_h: number)
+.decl _StoreArrayIndex_interned(?instruction_h: number, ?index: number, ?from_h: number, ?base_h: number, ?method_h: number)
+.decl _LoadArrayIndex_interned(?instruction_h: number, ?index: number, ?to_h: number, ?base_h: number, ?method_h: number)
+.decl _Return_interned(?instruction_h: number, ?index: number, ?var_h: number, ?method_h: number)
+.decl Method_DeclaringType(?method_h: number, ?declaringType_h: number)
+.decl Method_SimpleName(?method_h: number, ?simpleName_h: number)
+.decl Method_Descriptor(?method_h: number, ?descriptor_h: number)
+.decl Instruction_Method(?insn_h: number, ?inMethod_h: number)
+.decl isStaticMethodInvocation_Insn(?insn_h: number)
+.decl MethodInvocation_Method(?invocation_h: number, ?signature_h: number)
+.decl StaticMethodInvocation(?invocation_h: number, ?signature_h: number, ?inmethod_h: number)
+.decl MainMethodDeclaration(?method_h: number)
+.decl Reachable(?method_h: number)
+.output Reachable
+.decl StrLit0(ind: number)
+.decl StrLit6(ind: number)
+.decl StrLit7(ind: number)
+.decl StrLit8(ind: number)
+.decl StrLit9(ind: number)
+.decl StrLit12(ind: number)
+.decl StrLit16(ind: number)
+StrLit0(ind) :- Global_String_Dictionary("static", ind).
+StrLit6(ind) :- Global_String_Dictionary("<sun.security.provider.PolicyParser: void main(java.lang.String[])>", ind).
+StrLit7(ind) :- Global_String_Dictionary("<java.util.prefs.Base64: void main(java.lang.String[])>", ind).
+StrLit8(ind) :- Global_String_Dictionary("public", ind).
+StrLit9(ind) :- Global_String_Dictionary("main", ind).
+StrLit12(ind) :- Global_String_Dictionary("void(java.lang.String[])", ind).
+StrLit16(ind) :- Global_String_Dictionary("<sun.java2d.loops.GraphicsPrimitiveMgr: void main(java.lang.String[])>", ind).
+Instruction_Method(?instruction_h, ?method_h) :- _AssignHeapAllocation_interned(?instruction_h, _, ?heap_h, ?to_h, ?method_h, _).
+Instruction_Method(?instruction_h, ?method_h) :- _AssignLocal_interned(?instruction_h, _, ?from_h, ?to_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _AssignCast_interned(?instruction_h, _, ?from_h, ?to_h, ?type_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _StaticMethodInvocation_interned(?instruction_h, _, ?signature_h, ?method_h).
+isStaticMethodInvocation_Insn(?instruction_h) :- _StaticMethodInvocation_interned(?instruction_h, _, ?signature_h, ?method_h).
+MethodInvocation_Method(?instruction_h, ?signature_h) :- _StaticMethodInvocation_interned(?instruction_h, _, ?signature_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _SpecialMethodInvocation_interned(?instruction_h, _, ?signature_h, ?base_h, ?method_h).
+MethodInvocation_Method(?instruction_h, ?signature_h) :- _SpecialMethodInvocation_interned(?instruction_h, _, ?signature_h, ?base_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _VirtualMethodInvocation_interned(?instruction_h, _, ?signature_h, ?base_h, ?method_h).
+MethodInvocation_Method(?instruction_h, ?signature_h) :- _VirtualMethodInvocation_interned(?instruction_h, _, ?signature_h, ?base_h, ?method_h).
+Method_SimpleName(?method_h, ?simplename_h) :- _Method_interned(?method_h, ?simplename_h, ?params_h, ?declaringType_h, ?returnType_h, _, _).
+Method_DeclaringType(?method_h, ?declaringType_h) :- _Method_interned(?method_h, ?simplename_h, ?params_h, ?declaringType_h, ?returnType_h, _, _).
+Method_Descriptor(?method_h, ?descriptor_h) :- _Method_Descriptor_interned(?method_h, ?descriptor_h).
+Instruction_Method(?instruction_h, ?method_h) :- _StoreInstanceField_interned(?instruction_h, _, ?from_h, ?base_h, ?signature_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _LoadInstanceField_interned(?instruction_h, _, ?to_h, ?base_h, ?signature_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _StoreStaticField_interned(?instruction_h, _, ?from_h, ?signature_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _LoadStaticField_interned(?instruction_h, _, ?to_h, ?signature_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _StoreArrayIndex_interned(?instruction_h, _, ?from_h, ?base_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _LoadArrayIndex_interned(?instruction_h, _, ?to_h, ?base_h, ?method_h).
+Instruction_Method(?instruction_h, ?method_h) :- _Return_interned(?instruction_h, _, ?var_h, ?method_h).
+StaticMethodInvocation(?invocation_h, ?signature_h, ?inmethod_h) :- isStaticMethodInvocation_Insn(?invocation_h), Instruction_Method(?invocation_h, ?inmethod_h), MethodInvocation_Method(?invocation_h, ?signature_h).
+MainMethodDeclaration(?method_h) :- MainClass_interned(?type_h), Method_DeclaringType(?method_h, ?type_h), !StrLit7(?method_h), !StrLit16(?method_h), !StrLit6(?method_h), StrLit9(__ind9), Method_SimpleName(?method_h, __ind9), StrLit12(__ind12), Method_Descriptor(?method_h, __ind12), StrLit8(__ind8), Method_Modifier_interned(__ind8, ?method_h), StrLit0(__ind0), Method_Modifier_interned(__ind0, ?method_h).
+Reachable(?tomethod_h) :- Reachable(?inmethod_h), StaticMethodInvocation(?invocation_h, ?tomethod_h, ?inmethod_h).
+Reachable(?method_h) :- MainMethodDeclaration(?method_h).
