@@ -1,0 +1,8 @@
+.decl Edge(src: number, dest: number)
+.input Edge(IO=file, filename="soc-Epinions1.txt", delimiter=" ")
+.decl Reach(src: number, dest: number)
+.output Reach
+
+Reach(a, b) :- Edge(a, b).
+Reach(a, b) :- Edge(a, c), Reach(c, b).
+
