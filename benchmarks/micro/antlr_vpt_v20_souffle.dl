@@ -1,61 +1,59 @@
-# EDBs
-.in
+// EDBs
 .decl Reachable(method:number)
-.input Reachable.csv
 .decl Assign(to:number, from:number)
-.input Assign.csv
 .decl AssignHeapAllocation(heap:number, to:number, inmethod:number)
-.input AssignHeapAllocation.csv
 .decl AssignLocal(from:number, to:number, inmethod:number)
-.input AssignLocal.csv
 .decl AssignCast(type:number, from:number, to:number, inmethod:number)
-.input AssignCast.csv
 .decl SupertypeOf(supertype:number, type:number)
-.input SupertypeOf.csv
 .decl HeapAllocation_Type(heap:number, type:number)
-.input HeapAllocation_Type.csv
 .decl StoreArrayIndex(from:number, base:number, inmethod:number)
-.input StoreArrayIndex.csv
 .decl ComponentType(arrayType:number, componentType:number)
-.input ComponentType.csv
 .decl LoadArrayIndex(base:number, to:number, inmethod:number)
-.input LoadArrayIndex.csv
 .decl Var_Type(var:number, type:number)
-.input Var_Type.csv
 .decl LoadInstanceField(base:number, sig:number, to:number, inmethod:number)
-.input LoadInstanceField.csv
 .decl StoreInstanceField(from:number, base:number, signature:number, inmethod:number)
-.input StoreInstanceField.csv
 .decl LoadStaticField(sig:number, to:number, inmethod:number)
-.input LoadStaticField.csv
 .decl StoreStaticField(from:number, signature:number, inmethod:number)
-.input StoreStaticField.csv
 .decl Instruction_Method(insn:number, inMethod:number)
-.input Instruction_Method.csv
 .decl VirtualMethodInvocation_Base(invocation:number, base:number)
-.input VirtualMethodInvocation_Base.csv
 .decl VirtualMethodInvocation_SimpleName(invocation:number, simplename:number)
-.input VirtualMethodInvocation_SimpleName.csv
 .decl VirtualMethodInvocation_Descriptor(invocation:number, descriptor:number)
-.input VirtualMethodInvocation_Descriptor.csv
 .decl MethodLookup(simplename:number, descriptor:number, type:number, method:number)
-.input MethodLookup.csv
 .decl ThisVar(method:number, var:number)
-.input ThisVar.csv
 .decl SpecialMethodInvocation_Base(invocation:number, base:number)
-.input SpecialMethodInvocation_Base.csv
 .decl MethodInvocation_Method(invocation:number, signature:number)
-.input MethodInvocation_Method.csv
+.input Reachable(ID=file, filename="Reachable.csv", delimiter=",")
+.input Assign(ID=file, filename="Assign.csv", delimiter=",")
+.input AssignHeapAllocation(ID=file, filename="AssignHeapAllocation.csv", delimiter=",")
+.input AssignLocal(ID=file, filename="AssignLocal.csv", delimiter=",")
+.input AssignCast(ID=file, filename="AssignCast.csv", delimiter=",")
+.input SupertypeOf(ID=file, filename="SupertypeOf.csv", delimiter=",")
+.input HeapAllocation_Type(ID=file, filename="HeapAllocation_Type.csv", delimiter=",")
+.input StoreArrayIndex(ID=file, filename="StoreArrayIndex.csv", delimiter=",")
+.input ComponentType(ID=file, filename="ComponentType.csv", delimiter=",")
+.input LoadArrayIndex(ID=file, filename="LoadArrayIndex.csv", delimiter=",")
+.input Var_Type(ID=file, filename="Var_Type.csv", delimiter=",")
+.input LoadInstanceField(ID=file, filename="LoadInstanceField.csv", delimiter=",")
+.input StoreInstanceField(ID=file, filename="StoreInstanceField.csv", delimiter=",")
+.input LoadStaticField(ID=file, filename="LoadStaticField.csv", delimiter=",")
+.input StoreStaticField(ID=file, filename="StoreStaticField.csv", delimiter=",")
+.input Instruction_Method(ID=file, filename="Instruction_Method.csv", delimiter=",")
+.input VirtualMethodInvocation_Base(ID=file, filename="VirtualMethodInvocation_Base.csv", delimiter=",")
+.input VirtualMethodInvocation_SimpleName(ID=file, filename="VirtualMethodInvocation_SimpleName.csv", delimiter=",")
+.input VirtualMethodInvocation_Descriptor(ID=file, filename="VirtualMethodInvocation_Descriptor.csv", delimiter=",")
+.input MethodLookup(ID=file, filename="MethodLookup.csv", delimiter=",")
+.input ThisVar(ID=file, filename="ThisVar.csv", delimiter=",")
+.input SpecialMethodInvocation_Base(ID=file, filename="SpecialMethodInvocation_Base.csv", delimiter=",")
+.input MethodInvocation_Method(ID=file, filename="MethodInvocation_Method.csv", delimiter=",")
 
-# IDBs
-.printsize 
+// IDBs
 .decl VarPointsTo(heap:number, var:number)
 .decl InstanceFieldPointsTo(heap:number , fld:number, baseheap:number)
 .decl StaticFieldPointsTo(heap:number, fld:number)
 .decl ArrayIndexPointsTo(baseheap:number, heap:number)
 
+.printsize VarPointsTo
 
-.rule
 VarPointsTo(heap, var) :-
   AssignHeapAllocation(heap, var, inMethod),
   Reachable(inMethod).
@@ -99,16 +97,8 @@ VarPointsTo(heap, to) :-
   Reachable(inmethod),
   LoadStaticField(fld, to, inmethod),
   StaticFieldPointsTo(heap, fld).
-VarPointsTo(heap, this) :-
-  Reachable(inMethod),
-  Instruction_Method(invocation, inMethod),
-  VirtualMethodInvocation_Base(invocation, base),
-  VarPointsTo(heap, base),
-  HeapAllocation_Type(heap, heaptype),
-  VirtualMethodInvocation_SimpleName(invocation, simplename),
-  VirtualMethodInvocation_Descriptor(invocation, descriptor),
-  MethodLookup(simplename, descriptor, heaptype, toMethod),
-  ThisVar(toMethod, this).
+// Expensive 4
+VarPointsTo(heap, this) :- ThisVar(toMethod, this), MethodLookup(simplename, descriptor, heaptype, toMethod), VirtualMethodInvocation_SimpleName(invocation, simplename), Instruction_Method(invocation, inMethod), Reachable(inMethod), VirtualMethodInvocation_Base(invocation, base), HeapAllocation_Type(heap, heaptype), VarPointsTo(heap, base), VirtualMethodInvocation_Descriptor(invocation, descriptor).//mod
 InstanceFieldPointsTo(heap, fld, baseheap) :-
   Reachable(inmethod),
   StoreInstanceField(from, base, fld, inmethod),

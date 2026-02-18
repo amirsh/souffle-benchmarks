@@ -99,16 +99,8 @@ VarPointsTo(heap, to) :-
   Reachable(inmethod),
   LoadStaticField(fld, to, inmethod),
   StaticFieldPointsTo(heap, fld).
-VarPointsTo(heap, this) :-
-  Reachable(inMethod),
-  Instruction_Method(invocation, inMethod),
-  VirtualMethodInvocation_Base(invocation, base),
-  VarPointsTo(heap, base),
-  HeapAllocation_Type(heap, heaptype),
-  VirtualMethodInvocation_SimpleName(invocation, simplename),
-  VirtualMethodInvocation_Descriptor(invocation, descriptor),
-  MethodLookup(simplename, descriptor, heaptype, toMethod),
-  ThisVar(toMethod, this).
+# Expensive 4
+VarPointsTo(heap, this) :- ThisVar(toMethod, this), MethodLookup(simplename, descriptor, heaptype, toMethod), VirtualMethodInvocation_SimpleName(invocation, simplename), Instruction_Method(invocation, inMethod), Reachable(inMethod), VirtualMethodInvocation_Base(invocation, base), HeapAllocation_Type(heap, heaptype), VarPointsTo(heap, base), VirtualMethodInvocation_Descriptor(invocation, descriptor).#mod
 InstanceFieldPointsTo(heap, fld, baseheap) :-
   Reachable(inmethod),
   StoreInstanceField(from, base, fld, inmethod),
