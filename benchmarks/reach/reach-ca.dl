@@ -1,8 +1,11 @@
 .decl Edge(src: number, dest: number)
 .input Edge(IO=file, filename="ca-GrQc.txt", delimiter=" ")
 .decl Reach(src: number, dest: number)
-.output Reach
+//.output Reach
+.decl Out(v: number)
+.output Out
 
 Reach(a, b) :- Edge(a, b).
 Reach(a, b) :- Edge(a, c), Reach(c, b).
-
+//Reach(a, b) :- Reach(a, c), Reach(c, b).
+Out(c):- c = count:{ Reach(_, _)}.
