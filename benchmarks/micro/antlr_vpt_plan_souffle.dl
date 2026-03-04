@@ -22,29 +22,29 @@
 .decl ThisVar(method:number, var:number)
 .decl SpecialMethodInvocation_Base(invocation:number, base:number)
 .decl MethodInvocation_Method(invocation:number, signature:number)
-.input Reachable(ID=file, filename="Reachable.csv", delimiter=",")
-.input Assign(ID=file, filename="Assign.csv", delimiter=",")
-.input AssignHeapAllocation(ID=file, filename="AssignHeapAllocation.csv", delimiter=",")
-.input AssignLocal(ID=file, filename="AssignLocal.csv", delimiter=",")
-.input AssignCast(ID=file, filename="AssignCast.csv", delimiter=",")
-.input SupertypeOf(ID=file, filename="SupertypeOf.csv", delimiter=",")
-.input HeapAllocation_Type(ID=file, filename="HeapAllocation_Type.csv", delimiter=",")
-.input StoreArrayIndex(ID=file, filename="StoreArrayIndex.csv", delimiter=",")
-.input ComponentType(ID=file, filename="ComponentType.csv", delimiter=",")
-.input LoadArrayIndex(ID=file, filename="LoadArrayIndex.csv", delimiter=",")
-.input Var_Type(ID=file, filename="Var_Type.csv", delimiter=",")
-.input LoadInstanceField(ID=file, filename="LoadInstanceField.csv", delimiter=",")
-.input StoreInstanceField(ID=file, filename="StoreInstanceField.csv", delimiter=",")
-.input LoadStaticField(ID=file, filename="LoadStaticField.csv", delimiter=",")
-.input StoreStaticField(ID=file, filename="StoreStaticField.csv", delimiter=",")
-.input Instruction_Method(ID=file, filename="Instruction_Method.csv", delimiter=",")
-.input VirtualMethodInvocation_Base(ID=file, filename="VirtualMethodInvocation_Base.csv", delimiter=",")
-.input VirtualMethodInvocation_SimpleName(ID=file, filename="VirtualMethodInvocation_SimpleName.csv", delimiter=",")
-.input VirtualMethodInvocation_Descriptor(ID=file, filename="VirtualMethodInvocation_Descriptor.csv", delimiter=",")
-.input MethodLookup(ID=file, filename="MethodLookup.csv", delimiter=",")
-.input ThisVar(ID=file, filename="ThisVar.csv", delimiter=",")
-.input SpecialMethodInvocation_Base(ID=file, filename="SpecialMethodInvocation_Base.csv", delimiter=",")
-.input MethodInvocation_Method(ID=file, filename="MethodInvocation_Method.csv", delimiter=",")
+.input Reachable(IO=file, filename="Reachable.csv", delimiter=",")
+.input Assign(IO=file, filename="Assign.csv", delimiter=",")
+.input AssignHeapAllocation(IO=file, filename="AssignHeapAllocation.csv", delimiter=",")
+.input AssignLocal(IO=file, filename="AssignLocal.csv", delimiter=",")
+.input AssignCast(IO=file, filename="AssignCast.csv", delimiter=",")
+.input SupertypeOf(IO=file, filename="SupertypeOf.csv", delimiter=",")
+.input HeapAllocation_Type(IO=file, filename="HeapAllocation_Type.csv", delimiter=",")
+.input StoreArrayIndex(IO=file, filename="StoreArrayIndex.csv", delimiter=",")
+.input ComponentType(IO=file, filename="ComponentType.csv", delimiter=",")
+.input LoadArrayIndex(IO=file, filename="LoadArrayIndex.csv", delimiter=",")
+.input Var_Type(IO=file, filename="Var_Type.csv", delimiter=",")
+.input LoadInstanceField(IO=file, filename="LoadInstanceField.csv", delimiter=",")
+.input StoreInstanceField(IO=file, filename="StoreInstanceField.csv", delimiter=",")
+.input LoadStaticField(IO=file, filename="LoadStaticField.csv", delimiter=",")
+.input StoreStaticField(IO=file, filename="StoreStaticField.csv", delimiter=",")
+.input Instruction_Method(IO=file, filename="Instruction_Method.csv", delimiter=",")
+.input VirtualMethodInvocation_Base(IO=file, filename="VirtualMethodInvocation_Base.csv", delimiter=",")
+.input VirtualMethodInvocation_SimpleName(IO=file, filename="VirtualMethodInvocation_SimpleName.csv", delimiter=",")
+.input VirtualMethodInvocation_Descriptor(IO=file, filename="VirtualMethodInvocation_Descriptor.csv", delimiter=",")
+.input MethodLookup(IO=file, filename="MethodLookup.csv", delimiter=",")
+.input ThisVar(IO=file, filename="ThisVar.csv", delimiter=",")
+.input SpecialMethodInvocation_Base(IO=file, filename="SpecialMethodInvocation_Base.csv", delimiter=",")
+.input MethodInvocation_Method(IO=file, filename="MethodInvocation_Method.csv", delimiter=",")
 
 // IDBs
 .decl VarPointsTo(heap:number, var:number)
@@ -52,139 +52,159 @@
 .decl StaticFieldPointsTo(heap:number, fld:number)
 .decl ArrayIndexPointsTo(baseheap:number, heap:number)
 
-// intermediates
-.decl K_Reachable_(method:number)
-.decl Kv_VarPointsTo_(from:number, heap:number)
-.decl Kv_AssignLocal_(inmethod:number, from:number, to:number)
-.decl JnKvK_Kv_AssignLocal___K_Reachable__(from:number, to:number)
-.decl Kv_StoreInstanceField_(inmethod:number, from:number, base:number, fld:number)
-.decl JnKvK_Kv_StoreInstanceField___K_Reachable__(from:number, base:number, fld:number)
-.decl JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreInstanceField___K_Reachable___(base:number, heap:number, fld:number)
-.decl Kv_InstanceFieldPointsTo_(baseheap:number, signature:number, heap:number)
-.decl Kv_LoadInstanceField_(inmethod:number, base:number, signature:number, to:number)
-.decl JnKvK_Kv_LoadInstanceField___K_Reachable__(base:number, signature:number, to:number)
-.decl JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadInstanceField___K_Reachable___(baseheap:number, signature:number, to:number)
-.decl Kv_ComponentType_(baseheaptype:number, basecomponenttype:number)
-.decl Kv_HeapAllocation_Type_(baseheap:number, baseheaptype:number)
-.decl Kv_Var_Type_(to:number, type:number)
-.decl Kv_ArrayIndexPointsTo_(baseheap:number, heap:number)
-.decl Kv_LoadArrayIndex_(inmethod:number, base:number, to:number)
-.decl JnKvK_Kv_LoadArrayIndex___K_Reachable__(base:number, to:number)
-.decl JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable___(baseheap:number, to:number)
-.decl JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable____(to:number, baseheap:number, heap:number)
-.decl JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable_____(baseheap:number, to:number, type:number, heap:number)
-.decl JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable______(baseheaptype:number, to:number, type:number, heap:number)
-.decl JnKvKv_Kv_ComponentType___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable_______(basecomponenttype:number, type:number, to:number, heap:number)
-.decl Kv_Assign_(from:number, to:number)
-.decl Kv_ThisVar_(toMethod:number, this:number)
-.decl Kv_MethodLookup_(descriptor:number, simplename:number, heaptype:number, toMethod:number)
-.decl Kv_VirtualMethodInvocation_Descriptor_(invocation:number, descriptor:number)
-.decl Kv_VirtualMethodInvocation_SimpleName_(invocation:number, simplename:number)
-.decl Kv_VirtualMethodInvocation_Base_(invocation:number, base:number)
-.decl Kv_Instruction_Method_(inMethod:number, invocation:number)
-.decl JnKvK_Kv_Instruction_Method___K_Reachable__(invocation:number)
-.decl JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable___(base:number, invocation:number)
-.decl JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable____(heap:number, invocation:number)
-.decl JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_____(invocation:number, heap:number, heaptype:number)
-.decl JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable______(invocation:number, simplename:number, heap:number, heaptype:number)
-.decl JnKvKv_Kv_VirtualMethodInvocation_Descriptor___JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_______(descriptor:number, simplename:number, heaptype:number, heap:number)
-.decl JnKvKv_Kv_MethodLookup___JnKvKv_Kv_VirtualMethodInvocation_Descriptor___JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable________(toMethod:number, heap:number)
-.decl K_SupertypeOf_(componenttype:number, heaptype:number)
-.decl Kv_StoreArrayIndex_(inmethod:number, base:number, from:number)
-.decl JnKvK_Kv_StoreArrayIndex___K_Reachable__(base:number, from:number)
-.decl JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable___(from:number, baseheap:number)
-.decl JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable____(heap:number, baseheap:number)
-.decl JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable_____(baseheap:number, heap:number, heaptype:number)
-.decl JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable______(baseheaptype:number, baseheap:number, heap:number, heaptype:number)
-.decl JnKvKv_Kv_ComponentType___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable_______(componenttype:number, heaptype:number, baseheap:number, heap:number)
-.decl Kv_StoreStaticField_(inmethod:number, from:number, fld:number)
-.decl JnKvK_Kv_StoreStaticField___K_Reachable__(from:number, fld:number)
-.decl Kv_StaticFieldPointsTo_(fld:number, heap:number)
-.decl Kv_LoadStaticField_(inmethod:number, fld:number, to:number)
-.decl JnKvK_Kv_LoadStaticField___K_Reachable__(fld:number, to:number)
-.decl Kv_MethodInvocation_Method_(invocation:number, tomethod:number)
-.decl Kv_SpecialMethodInvocation_Base_(invocation:number, base:number)
-.decl JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable___(base:number, invocation:number)
-.decl JnKvKv_Kv_VarPointsTo___JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable____(invocation:number, heap:number)
-.decl JnKvKv_Kv_MethodInvocation_Method___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_____(tomethod:number, heap:number)
-.decl Kv_AssignCast_(inmethod:number, from:number, type:number, to:number)
-.decl JnKvK_Kv_AssignCast___K_Reachable__(from:number, type:number, to:number)
-.decl JnKvKv_Kv_VarPointsTo___JnKvK_Kv_AssignCast___K_Reachable___(heap:number, type:number, to:number)
-.decl JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_AssignCast___K_Reachable____(heaptype:number, type:number, heap:number, to:number)
+.decl kv0(x0:number, x1:number, x2:number)
+.decl k_1(x0:number)
+.decl jn2(x0:number, x1:number)
+.decl k_3(x0:number, x1:number)
+.decl kv4(x0:number, x1:number)
+.decl kv5(x0:number, x1:number)
+.decl kv6(x0:number, x1:number, x2:number, x3:number)
+.decl jn7(x0:number, x1:number, x2:number)
+.decl jn8(x0:number, x1:number, x2:number)
+.decl jn9(x0:number, x1:number, x2:number)
+.decl jn10(x0:number, x1:number)
+.decl k_11(x0:number, x1:number)
+.decl kv12(x0:number, x1:number)
+.decl kv13(x0:number, x1:number)
+.decl kv14(x0:number, x1:number)
+.decl kv15(x0:number, x1:number)
+.decl kv16(x0:number, x1:number)
+.decl kv17(x0:number, x1:number, x2:number)
+.decl jn18(x0:number, x1:number)
+.decl jn19(x0:number, x1:number)
+.decl jn20(x0:number, x1:number, x2:number)
+.decl jn21(x0:number, x1:number, x2:number, x3:number)
+.decl jn22(x0:number, x1:number, x2:number, x3:number)
+.decl jn23(x0:number, x1:number, x2:number, x3:number)
+.decl jn24(x0:number, x1:number)
+.decl kv25(x0:number, x1:number, x2:number, x3:number)
+.decl jn26(x0:number, x1:number, x2:number)
+.decl jn27(x0:number, x1:number, x2:number)
+.decl jn28(x0:number, x1:number, x2:number)
+.decl kv29(x0:number, x1:number, x2:number)
+.decl kv30(x0:number, x1:number, x2:number, x3:number)
+.decl jn31(x0:number, x1:number, x2:number)
+.decl jn32(x0:number, x1:number, x2:number)
+.decl jn33(x0:number, x1:number)
+.decl k_34(x0:number, x1:number)
+.decl kv35(x0:number, x1:number, x2:number)
+.decl jn36(x0:number, x1:number)
+.decl jn37(x0:number, x1:number)
+.decl jn38(x0:number, x1:number)
+.decl jn39(x0:number, x1:number, x2:number)
+.decl jn40(x0:number, x1:number, x2:number, x3:number)
+.decl jn41(x0:number, x1:number, x2:number, x3:number)
+.decl jn42(x0:number, x1:number)
+.decl kv43(x0:number, x1:number)
+.decl jn44(x0:number, x1:number)
+.decl kv45(x0:number, x1:number, x2:number)
+.decl jn46(x0:number, x1:number)
+.decl jn47(x0:number, x1:number)
+.decl kv48(x0:number, x1:number)
+.decl kv49(x0:number, x1:number, x2:number)
+.decl jn50(x0:number, x1:number)
+.decl jn51(x0:number, x1:number)
+.decl kv52(x0:number, x1:number)
+.decl kv53(x0:number, x1:number)
+.decl kv54(x0:number, x1:number)
+.decl kv55(x0:number, x1:number)
+.decl jn56(x0:number)
+.decl jn57(x0:number, x1:number)
+.decl jn58(x0:number, x1:number)
+.decl jn59(x0:number, x1:number)
+.decl jn60(x0:number, x1:number)
+.decl kv61(x0:number, x1:number, x2:number, x3:number)
+.decl kv62(x0:number, x1:number)
+.decl kv63(x0:number, x1:number)
+.decl kv64(x0:number, x1:number)
+.decl jn65(x0:number, x1:number)
+.decl jn66(x0:number, x1:number)
+.decl jn67(x0:number, x1:number, x2:number)
+.decl jn68(x0:number, x1:number, x2:number, x3:number)
+.decl jn69(x0:number, x1:number, x2:number, x3:number)
+.decl jn70(x0:number, x1:number)
+.decl jn71(x0:number, x1:number)
+.decl kv72(x0:number, x1:number, x2:number)
+.decl jn73(x0:number, x1:number)
+.decl jn74(x0:number, x1:number)
 
-.printsize VarPointsTo
+.output VarPointsTo
 
-VarPointsTo(heap, var) :-
-  AssignHeapAllocation(heap, var, inMethod),
-  Reachable(inMethod).
+// strata #0
+kv0(inMethod, heap, var) :- AssignHeapAllocation(heap, var, inMethod).
+k_1(inMethod) :- Reachable(inMethod).
+VarPointsTo(heap, var) :- kv0(inMethod, heap, var), k_1(inMethod).
 
-K_Reachable_(inmethod) :- Reachable(inmethod).
-Kv_VarPointsTo_(from, heap) :- VarPointsTo(heap, from).
-Kv_AssignLocal_(inmethod, from, to) :- AssignLocal(from, to, inmethod).
-JnKvK_Kv_AssignLocal___K_Reachable__(from, to) :- Kv_AssignLocal_(inmethod, from, to), K_Reachable_(inmethod).
-VarPointsTo(heap, to) :- Kv_VarPointsTo_(from, heap), JnKvK_Kv_AssignLocal___K_Reachable__(from, to).
-Kv_StoreInstanceField_(inmethod, from, base, fld) :- StoreInstanceField(from, base, fld, inmethod).
-JnKvK_Kv_StoreInstanceField___K_Reachable__(from, base, fld) :- Kv_StoreInstanceField_(inmethod, from, base, fld), K_Reachable_(inmethod).
-JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreInstanceField___K_Reachable___(base, heap, fld) :- Kv_VarPointsTo_(from, heap), JnKvK_Kv_StoreInstanceField___K_Reachable__(from, base, fld).
-InstanceFieldPointsTo(heap, fld, baseheap) :- Kv_VarPointsTo_(base, baseheap), JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreInstanceField___K_Reachable___(base, heap, fld).
-Kv_InstanceFieldPointsTo_(baseheap, signature, heap) :- InstanceFieldPointsTo(heap, signature, baseheap).
-Kv_LoadInstanceField_(inmethod, base, signature, to) :- LoadInstanceField(base, signature, to, inmethod).
-JnKvK_Kv_LoadInstanceField___K_Reachable__(base, signature, to) :- Kv_LoadInstanceField_(inmethod, base, signature, to), K_Reachable_(inmethod).
-JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadInstanceField___K_Reachable___(baseheap, signature, to) :- Kv_VarPointsTo_(base, baseheap), JnKvK_Kv_LoadInstanceField___K_Reachable__(base, signature, to).
-VarPointsTo(heap, to) :- Kv_InstanceFieldPointsTo_(baseheap, signature, heap), JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadInstanceField___K_Reachable___(baseheap, signature, to).
-K_SupertypeOf_(basecomponenttype, type) :- SupertypeOf(type, basecomponenttype).
-Kv_ComponentType_(baseheaptype, basecomponenttype) :- ComponentType(baseheaptype, basecomponenttype).
-Kv_HeapAllocation_Type_(baseheap, baseheaptype) :- HeapAllocation_Type(baseheap, baseheaptype).
-Kv_Var_Type_(to, type) :- Var_Type(to, type).
-Kv_ArrayIndexPointsTo_(baseheap, heap) :- ArrayIndexPointsTo(baseheap, heap).
-Kv_LoadArrayIndex_(inmethod, base, to) :- LoadArrayIndex(base, to, inmethod).
-JnKvK_Kv_LoadArrayIndex___K_Reachable__(base, to) :- Kv_LoadArrayIndex_(inmethod, base, to), K_Reachable_(inmethod).
-JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable___(baseheap, to) :- Kv_VarPointsTo_(base, baseheap), JnKvK_Kv_LoadArrayIndex___K_Reachable__(base, to).
-JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable____(to, baseheap, heap) :- Kv_ArrayIndexPointsTo_(baseheap, heap), JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable___(baseheap, to).
-JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable_____(baseheap, to, type, heap) :- Kv_Var_Type_(to, type), JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable____(to, baseheap, heap).
-JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable______(baseheaptype, to, type, heap) :- Kv_HeapAllocation_Type_(baseheap, baseheaptype), JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable_____(baseheap, to, type, heap).
-JnKvKv_Kv_ComponentType___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable_______(basecomponenttype, type, to, heap) :- Kv_ComponentType_(baseheaptype, basecomponenttype), JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable______(baseheaptype, to, type, heap).
-VarPointsTo(heap, to) :- K_SupertypeOf_(basecomponenttype, type), JnKvKv_Kv_ComponentType___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_Var_Type___JnKvKv_Kv_ArrayIndexPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_LoadArrayIndex___K_Reachable_______(basecomponenttype, type, to, heap).
-Kv_Assign_(from, to) :- Assign(from, to).
-VarPointsTo(heap, to) :- Kv_VarPointsTo_(from, heap), Kv_Assign_(from, to).
-Kv_ThisVar_(toMethod, this) :- ThisVar(toMethod, this).
-Kv_MethodLookup_(descriptor, simplename, heaptype, toMethod) :- MethodLookup(simplename, descriptor, heaptype, toMethod).
-Kv_VirtualMethodInvocation_Descriptor_(invocation, descriptor) :- VirtualMethodInvocation_Descriptor(invocation, descriptor).
-Kv_VirtualMethodInvocation_SimpleName_(invocation, simplename) :- VirtualMethodInvocation_SimpleName(invocation, simplename).
-Kv_VirtualMethodInvocation_Base_(invocation, base) :- VirtualMethodInvocation_Base(invocation, base).
-Kv_Instruction_Method_(inMethod, invocation) :- Instruction_Method(invocation, inMethod).
-JnKvK_Kv_Instruction_Method___K_Reachable__(invocation) :- Kv_Instruction_Method_(inMethod, invocation), K_Reachable_(inMethod).
-JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable___(base, invocation) :- Kv_VirtualMethodInvocation_Base_(invocation, base), JnKvK_Kv_Instruction_Method___K_Reachable__(invocation).
-JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable____(heap, invocation) :- Kv_VarPointsTo_(base, heap), JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable___(base, invocation).
-JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_____(invocation, heap, heaptype) :- Kv_HeapAllocation_Type_(heap, heaptype), JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable____(heap, invocation).
-JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable______(invocation, simplename, heap, heaptype) :- Kv_VirtualMethodInvocation_SimpleName_(invocation, simplename), JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_____(invocation, heap, heaptype).
-JnKvKv_Kv_VirtualMethodInvocation_Descriptor___JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_______(descriptor, simplename, heaptype, heap) :- Kv_VirtualMethodInvocation_Descriptor_(invocation, descriptor), JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable______(invocation, simplename, heap, heaptype).
-JnKvKv_Kv_MethodLookup___JnKvKv_Kv_VirtualMethodInvocation_Descriptor___JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable________(toMethod, heap) :- Kv_MethodLookup_(descriptor, simplename, heaptype, toMethod), JnKvKv_Kv_VirtualMethodInvocation_Descriptor___JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_______(descriptor, simplename, heaptype, heap).
-VarPointsTo(heap, this) :- Kv_ThisVar_(toMethod, this), JnKvKv_Kv_MethodLookup___JnKvKv_Kv_VirtualMethodInvocation_Descriptor___JnKvKv_Kv_VirtualMethodInvocation_SimpleName___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_VirtualMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable________(toMethod, heap).
-K_SupertypeOf_(componenttype, heaptype) :- SupertypeOf(componenttype, heaptype).
-Kv_StoreArrayIndex_(inmethod, base, from) :- StoreArrayIndex(from, base, inmethod).
-JnKvK_Kv_StoreArrayIndex___K_Reachable__(base, from) :- Kv_StoreArrayIndex_(inmethod, base, from), K_Reachable_(inmethod).
-JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable___(from, baseheap) :- Kv_VarPointsTo_(base, baseheap), JnKvK_Kv_StoreArrayIndex___K_Reachable__(base, from).
-JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable____(heap, baseheap) :- Kv_VarPointsTo_(from, heap), JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable___(from, baseheap).
-JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable_____(baseheap, heap, heaptype) :- Kv_HeapAllocation_Type_(heap, heaptype), JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable____(heap, baseheap).
-JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable______(baseheaptype, baseheap, heap, heaptype) :- Kv_HeapAllocation_Type_(baseheap, baseheaptype), JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable_____(baseheap, heap, heaptype).
-JnKvKv_Kv_ComponentType___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable_______(componenttype, heaptype, baseheap, heap) :- Kv_ComponentType_(baseheaptype, componenttype), JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable______(baseheaptype, baseheap, heap, heaptype).
-ArrayIndexPointsTo(baseheap, heap) :- K_SupertypeOf_(componenttype, heaptype), JnKvKv_Kv_ComponentType___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_StoreArrayIndex___K_Reachable_______(componenttype, heaptype, baseheap, heap).
-Kv_StoreStaticField_(inmethod, from, fld) :- StoreStaticField(from, fld, inmethod).
-JnKvK_Kv_StoreStaticField___K_Reachable__(from, fld) :- Kv_StoreStaticField_(inmethod, from, fld), K_Reachable_(inmethod).
-StaticFieldPointsTo(heap, fld) :- Kv_VarPointsTo_(from, heap), JnKvK_Kv_StoreStaticField___K_Reachable__(from, fld).
-Kv_StaticFieldPointsTo_(fld, heap) :- StaticFieldPointsTo(heap, fld).
-Kv_LoadStaticField_(inmethod, fld, to) :- LoadStaticField(fld, to, inmethod).
-JnKvK_Kv_LoadStaticField___K_Reachable__(fld, to) :- Kv_LoadStaticField_(inmethod, fld, to), K_Reachable_(inmethod).
-VarPointsTo(heap, to) :- Kv_StaticFieldPointsTo_(fld, heap), JnKvK_Kv_LoadStaticField___K_Reachable__(fld, to).
-Kv_MethodInvocation_Method_(invocation, tomethod) :- MethodInvocation_Method(invocation, tomethod).
-Kv_SpecialMethodInvocation_Base_(invocation, base) :- SpecialMethodInvocation_Base(invocation, base).
-JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable___(base, invocation) :- Kv_SpecialMethodInvocation_Base_(invocation, base), JnKvK_Kv_Instruction_Method___K_Reachable__(invocation).
-JnKvKv_Kv_VarPointsTo___JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable____(invocation, heap) :- Kv_VarPointsTo_(base, heap), JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable___(base, invocation).
-JnKvKv_Kv_MethodInvocation_Method___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_____(tomethod, heap) :- Kv_MethodInvocation_Method_(invocation, tomethod), JnKvKv_Kv_VarPointsTo___JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable____(invocation, heap).
-VarPointsTo(heap, this) :- Kv_ThisVar_(tomethod, this), JnKvKv_Kv_MethodInvocation_Method___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_SpecialMethodInvocation_Base___JnKvK_Kv_Instruction_Method___K_Reachable_____(tomethod, heap).
-Kv_AssignCast_(inmethod, from, type, to) :- AssignCast(type, from, to, inmethod).
-JnKvK_Kv_AssignCast___K_Reachable__(from, type, to) :- Kv_AssignCast_(inmethod, from, type, to), K_Reachable_(inmethod).
-JnKvKv_Kv_VarPointsTo___JnKvK_Kv_AssignCast___K_Reachable___(heap, type, to) :- Kv_VarPointsTo_(from, heap), JnKvK_Kv_AssignCast___K_Reachable__(from, type, to).
-JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_AssignCast___K_Reachable____(heaptype, type, heap, to) :- Kv_HeapAllocation_Type_(heap, heaptype), JnKvKv_Kv_VarPointsTo___JnKvK_Kv_AssignCast___K_Reachable___(heap, type, to).
-VarPointsTo(heap, to) :- K_SupertypeOf_(heaptype, type), JnKvKv_Kv_HeapAllocation_Type___JnKvKv_Kv_VarPointsTo___JnKvK_Kv_AssignCast___K_Reachable____(heaptype, type, heap, to).
+// strata #1 (recursive)
+k_3(heap, from) :- VarPointsTo(heap, from).
+kv4(heaptype, heap) :- HeapAllocation_Type(heap, heaptype).
+kv5(type, heaptype) :- SupertypeOf(type, heaptype).
+kv6(inmethod, type, from, to) :- AssignCast(type, from, to, inmethod).
+jn7(type, from, to) :- kv6(inmethod, type, from, to), k_1(inmethod).
+jn8(heaptype, from, to) :- kv5(type, heaptype), jn7(type, from, to).
+jn9(heap, from, to) :- kv4(heaptype, heap), jn8(heaptype, from, to).
+VarPointsTo(heap, to) :- k_3(heap, from), jn9(heap, from, to).
+k_11(basecomponenttype, type) :- SupertypeOf(type, basecomponenttype).
+kv12(baseheaptype, basecomponenttype) :- ComponentType(baseheaptype, basecomponenttype).
+kv13(baseheap, baseheaptype) :- HeapAllocation_Type(baseheap, baseheaptype).
+kv14(to, type) :- Var_Type(to, type).
+kv15(baseheap, heap) :- ArrayIndexPointsTo(baseheap, heap).
+kv16(base, baseheap) :- VarPointsTo(baseheap, base).
+kv17(inmethod, base, to) :- LoadArrayIndex(base, to, inmethod).
+jn18(base, to) :- kv17(inmethod, base, to), k_1(inmethod).
+jn19(baseheap, to) :- kv16(base, baseheap), jn18(base, to).
+jn20(to, baseheap, heap) :- kv15(baseheap, heap), jn19(baseheap, to).
+jn21(baseheap, to, type, heap) :- kv14(to, type), jn20(to, baseheap, heap).
+jn22(baseheaptype, to, type, heap) :- kv13(baseheap, baseheaptype), jn21(baseheap, to, type, heap).
+jn23(basecomponenttype, type, to, heap) :- kv12(baseheaptype, basecomponenttype), jn22(baseheaptype, to, type, heap).
+VarPointsTo(heap, to) :- k_11(basecomponenttype, type), jn23(basecomponenttype, type, to, heap).
+kv25(inmethod, from, base, fld) :- StoreInstanceField(from, base, fld, inmethod).
+jn26(from, base, fld) :- kv25(inmethod, from, base, fld), k_1(inmethod).
+jn27(base, heap, fld) :- kv16(from, heap), jn26(from, base, fld).
+InstanceFieldPointsTo(heap, fld, baseheap) :- kv16(base, baseheap), jn27(base, heap, fld).
+kv29(baseheap, signature, heap) :- InstanceFieldPointsTo(heap, signature, baseheap).
+kv30(inmethod, base, signature, to) :- LoadInstanceField(base, signature, to, inmethod).
+jn31(base, signature, to) :- kv30(inmethod, base, signature, to), k_1(inmethod).
+jn32(baseheap, signature, to) :- kv16(base, baseheap), jn31(base, signature, to).
+VarPointsTo(heap, to) :- kv29(baseheap, signature, heap), jn32(baseheap, signature, to).
+k_34(componenttype, heaptype) :- SupertypeOf(componenttype, heaptype).
+kv35(inmethod, base, from) :- StoreArrayIndex(from, base, inmethod).
+jn36(base, from) :- kv35(inmethod, base, from), k_1(inmethod).
+jn37(from, baseheap) :- kv16(base, baseheap), jn36(base, from).
+jn38(heap, baseheap) :- kv16(from, heap), jn37(from, baseheap).
+jn39(baseheap, heap, heaptype) :- kv13(heap, heaptype), jn38(heap, baseheap).
+jn40(baseheaptype, baseheap, heap, heaptype) :- kv13(baseheap, baseheaptype), jn39(baseheap, heap, heaptype).
+jn41(componenttype, heaptype, baseheap, heap) :- kv12(baseheaptype, componenttype), jn40(baseheaptype, baseheap, heap, heaptype).
+ArrayIndexPointsTo(baseheap, heap) :- k_34(componenttype, heaptype), jn41(componenttype, heaptype, baseheap, heap).
+kv43(from, to) :- Assign(from, to).
+VarPointsTo(heap, to) :- kv16(from, heap), kv43(from, to).
+kv45(inmethod, from, fld) :- StoreStaticField(from, fld, inmethod).
+jn46(from, fld) :- kv45(inmethod, from, fld), k_1(inmethod).
+StaticFieldPointsTo(heap, fld) :- kv16(from, heap), jn46(from, fld).
+kv48(fld, heap) :- StaticFieldPointsTo(heap, fld).
+kv49(inmethod, fld, to) :- LoadStaticField(fld, to, inmethod).
+jn50(fld, to) :- kv49(inmethod, fld, to), k_1(inmethod).
+VarPointsTo(heap, to) :- kv48(fld, heap), jn50(fld, to).
+kv52(tomethod, this) :- ThisVar(tomethod, this).
+kv53(invocation, tomethod) :- MethodInvocation_Method(invocation, tomethod).
+kv54(invocation, base) :- SpecialMethodInvocation_Base(invocation, base).
+kv55(inmethod, invocation) :- Instruction_Method(invocation, inmethod).
+jn56(invocation) :- kv55(inmethod, invocation), k_1(inmethod).
+jn57(base, invocation) :- kv54(invocation, base), jn56(invocation).
+jn58(invocation, heap) :- kv16(base, heap), jn57(base, invocation).
+jn59(tomethod, heap) :- kv53(invocation, tomethod), jn58(invocation, heap).
+VarPointsTo(heap, this) :- kv52(tomethod, this), jn59(tomethod, heap).
+kv61(descriptor, simplename, heaptype, toMethod) :- MethodLookup(simplename, descriptor, heaptype, toMethod).
+kv62(invocation, descriptor) :- VirtualMethodInvocation_Descriptor(invocation, descriptor).
+kv63(invocation, simplename) :- VirtualMethodInvocation_SimpleName(invocation, simplename).
+kv64(invocation, base) :- VirtualMethodInvocation_Base(invocation, base).
+jn65(base, invocation) :- kv64(invocation, base), jn56(invocation).
+jn66(heap, invocation) :- kv16(base, heap), jn65(base, invocation).
+jn67(invocation, heap, heaptype) :- kv13(heap, heaptype), jn66(heap, invocation).
+jn68(invocation, simplename, heap, heaptype) :- kv63(invocation, simplename), jn67(invocation, heap, heaptype).
+jn69(descriptor, simplename, heaptype, heap) :- kv62(invocation, descriptor), jn68(invocation, simplename, heap, heaptype).
+jn70(toMethod, heap) :- kv61(descriptor, simplename, heaptype, toMethod), jn69(descriptor, simplename, heaptype, heap).
+VarPointsTo(heap, this) :- kv52(toMethod, this), jn70(toMethod, heap).
+kv72(inmethod, from, to) :- AssignLocal(from, to, inmethod).
+jn73(from, to) :- kv72(inmethod, from, to), k_1(inmethod).
+VarPointsTo(heap, to) :- kv16(from, heap), jn73(from, to).
