@@ -48,572 +48,663 @@
 .input MethodInvocation_Method(ID=file, filename="MethodInvocation_Method.csv", delimiter=",")
 
 // IDBs
-.decl VarPointsTo(heap:number, var:number)
-.decl InstanceFieldPointsTo(heap:number , fld:number, baseheap:number)
-.decl StaticFieldPointsTo(heap:number, fld:number)
-.decl ArrayIndexPointsTo(baseheap:number, heap:number)
-
-// intermediates
-.decl K_Reachable_(method:number)
-.decl Kv_LoadArrayIndex_(inmethod:number, base:number, to:number)
-.decl LoadArrayIndex_sip0f0(base:number, to:number, inmethod:number)
-.decl Kv_VarPointsTo_(base:number, baseheap:number)
-.decl K_LoadArrayIndex_sip0f0_(base:number)
-.decl VarPointsTo_sip0f1(baseheap:number, base:number)
-.decl Kv_ArrayIndexPointsTo_(baseheap:number, heap:number)
-.decl K_VarPointsTo_sip0f1_(baseheap:number)
-.decl ArrayIndexPointsTo_sip0f2(baseheap:number, heap:number)
-.decl Kv_Var_Type_(to:number, type:number)
-.decl Var_Type_sip0f3(to:number, type:number)
-.decl Kv_HeapAllocation_Type_(baseheap:number, baseheaptype:number)
-.decl JnKvK_Kv_HeapAllocation_Type___K_VarPointsTo_sip0f1__(baseheap:number, baseheaptype:number)
-.decl K_ArrayIndexPointsTo_sip0f2_(baseheap:number)
-.decl HeapAllocation_Type_sip0f4(baseheap:number, baseheaptype:number)
-.decl Kv_ComponentType_(baseheaptype:number, basecomponenttype:number)
-.decl K_HeapAllocation_Type_sip0f4_(baseheaptype:number)
-.decl ComponentType_sip0f5(baseheaptype:number, basecomponenttype:number)
-.decl Kv_SupertypeOf_(type:number, basecomponenttype:number)
-.decl K_Var_Type_sip0f3_(type:number)
-.decl JnKvK_Kv_SupertypeOf___K_Var_Type_sip0f3__(basecomponenttype:number, type:number)
-.decl K_ComponentType_sip0f5_(basecomponenttype:number)
-.decl SupertypeOf_sip0f6(type:number, basecomponenttype:number)
-.decl Kv_ComponentType_sip0f5_(basecomponenttype:number, baseheaptype:number)
-.decl K_SupertypeOf_sip0f6_(basecomponenttype:number)
-.decl ComponentType_sip0f5_sip0b1(baseheaptype:number, basecomponenttype:number)
-.decl Kv_HeapAllocation_Type_sip0f4_(baseheaptype:number, baseheap:number)
-.decl K_ComponentType_sip0f5_sip0b1_(baseheaptype:number)
-.decl HeapAllocation_Type_sip0f4_sip0b2(baseheap:number, baseheaptype:number)
-.decl Kv_Var_Type_sip0f3_(type:number, to:number)
-.decl Var_Type_sip0f3_sip0b3(to:number, type:number)
-.decl Kv_ArrayIndexPointsTo_sip0f2_(baseheap:number, heap:number)
-.decl K_HeapAllocation_Type_sip0f4_sip0b2_(baseheap:number)
-.decl ArrayIndexPointsTo_sip0f2_sip0b4(baseheap:number, heap:number)
-.decl Kv_VarPointsTo_sip0f1_(baseheap:number, base:number)
-.decl JnKvK_Kv_VarPointsTo_sip0f1___K_HeapAllocation_Type_sip0f4_sip0b2__(baseheap:number, base:number)
-.decl K_ArrayIndexPointsTo_sip0f2_sip0b4_(baseheap:number)
-.decl VarPointsTo_sip0f1_sip0b5(baseheap:number, base:number)
-.decl Kv_LoadArrayIndex_sip0f0_(to:number, base:number, inmethod:number)
-.decl K_Var_Type_sip0f3_sip0b3_(to:number)
-.decl JnKvK_Kv_LoadArrayIndex_sip0f0___K_Var_Type_sip0f3_sip0b3__(base:number, to:number, inmethod:number)
-.decl K_VarPointsTo_sip0f1_sip0b5_(base:number)
-.decl LoadArrayIndex_sip0f0_sip0b6(base:number, to:number, inmethod:number)
-.decl Kv_HeapAllocation_Type_sip0f4_sip0b2_(baseheap:number, baseheaptype:number)
-.decl Kv_VarPointsTo_sip0f1_sip0b5_(base:number, baseheap:number)
-.decl Kv_LoadArrayIndex_sip0f0_sip0b6_(base:number, to:number)
-.decl JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6__(baseheap:number, to:number)
-.decl JnKvKv_Kv_HeapAllocation_Type_sip0f4_sip0b2___JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6___(baseheaptype:number, to:number, baseheap:number)
-.decl Kv_ComponentType_sip0f5_sip0b1_(basecomponenttype:number, baseheaptype:number)
-.decl Kv_SupertypeOf_sip0f6_(type:number, basecomponenttype:number)
-.decl Kv_Var_Type_sip0f3_sip0b3_(type:number, to:number)
-.decl JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3__(basecomponenttype:number, to:number)
-.decl JnKvKv_Kv_ComponentType_sip0f5_sip0b1___JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3___(baseheaptype:number, to:number)
-.decl JnKvK_JnKvKv_Kv_HeapAllocation_Type_sip0f4_sip0b2___JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6_____JnKvKv_Kv_ComponentType_sip0f5_sip0b1___JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3____(baseheap:number, to:number)
-.decl Kv_ArrayIndexPointsTo_sip0f2_sip0b4_(baseheap:number, heap:number)
-.decl Kv_LoadInstanceField_(inmethod:number, base:number, signature:number, to:number)
-.decl LoadInstanceField_sip1f0(base:number, signature:number, to:number, inmethod:number)
-.decl K_LoadInstanceField_sip1f0_(base:number)
-.decl VarPointsTo_sip1f1(baseheap:number, base:number)
-.decl Kv_InstanceFieldPointsTo_(signature:number, baseheap:number, heap:number)
-.decl JnKvK_Kv_InstanceFieldPointsTo___K_LoadInstanceField_sip1f0__(baseheap:number, heap:number, signature:number)
-.decl K_VarPointsTo_sip1f1_(baseheap:number)
-.decl InstanceFieldPointsTo_sip1f2(heap:number, signature:number, baseheap:number)
-.decl Kv_VarPointsTo_sip1f1_(baseheap:number, base:number)
-.decl K_InstanceFieldPointsTo_sip1f2_(baseheap:number)
-.decl VarPointsTo_sip1f1_sip1b1(baseheap:number, base:number)
-.decl Kv_LoadInstanceField_sip1f0_(signature:number, base:number, to:number, inmethod:number)
-.decl JnKvK_Kv_LoadInstanceField_sip1f0___K_InstanceFieldPointsTo_sip1f2__(base:number, signature:number, to:number, inmethod:number)
-.decl K_VarPointsTo_sip1f1_sip1b1_(base:number)
-.decl LoadInstanceField_sip1f0_sip1b2(base:number, signature:number, to:number, inmethod:number)
-.decl Kv_LoadInstanceField_sip1f0_sip1b2_(base:number, signature:number, to:number)
-.decl Kv_VarPointsTo_sip1f1_sip1b1_(base:number, baseheap:number)
-.decl JnKvKv_Kv_LoadInstanceField_sip1f0_sip1b2___Kv_VarPointsTo_sip1f1_sip1b1__(signature:number, baseheap:number, to:number)
-.decl Kv_InstanceFieldPointsTo_sip1f2_(signature:number, baseheap:number, heap:number)
-.decl Kv_StoreInstanceField_(inmethod:number, from:number, base:number, fld:number)
-.decl StoreInstanceField_sip2f0(from:number, base:number, fld:number, inmethod:number)
-.decl K_StoreInstanceField_sip2f0_(from:number)
-.decl VarPointsTo_sip2f1(heap:number, from:number)
-.decl VarPointsTo_sip2f2(baseheap:number, base:number)
-.decl Kv_StoreInstanceField_sip2f0_(base:number, from:number, fld:number, inmethod:number)
-.decl K_VarPointsTo_sip2f2_(base:number)
-.decl JnKvK_Kv_StoreInstanceField_sip2f0___K_VarPointsTo_sip2f2__(from:number, base:number, fld:number, inmethod:number)
-.decl K_VarPointsTo_sip2f1_(from:number)
-.decl StoreInstanceField_sip2f0_sip2b2(from:number, base:number, fld:number, inmethod:number)
-.decl Kv_StoreInstanceField_sip2f0_sip2b2_(from:number, base:number, fld:number)
-.decl Kv_VarPointsTo_sip2f1_(from:number, heap:number)
-.decl JnKvKv_Kv_StoreInstanceField_sip2f0_sip2b2___Kv_VarPointsTo_sip2f1__(base:number, fld:number, heap:number)
-.decl Kv_VarPointsTo_sip2f2_(base:number, baseheap:number)
-.decl Kv_StoreArrayIndex_(inmethod:number, from:number, base:number)
-.decl StoreArrayIndex_sip3f0(from:number, base:number, inmethod:number)
-.decl K_StoreArrayIndex_sip3f0_(base:number)
-.decl VarPointsTo_sip3f1(baseheap:number, base:number)
-.decl VarPointsTo_sip3f2(heap:number, from:number)
-.decl K_VarPointsTo_sip3f2_(heap:number)
-.decl HeapAllocation_Type_sip3f3(heap:number, heaptype:number)
-.decl K_VarPointsTo_sip3f1_(baseheap:number)
-.decl HeapAllocation_Type_sip3f4(baseheap:number, baseheaptype:number)
-.decl K_HeapAllocation_Type_sip3f4_(baseheaptype:number)
-.decl ComponentType_sip3f5(baseheaptype:number, componenttype:number)
-.decl K_HeapAllocation_Type_sip3f3_(heaptype:number)
-.decl JnKvK_Kv_SupertypeOf___K_HeapAllocation_Type_sip3f3__(componenttype:number, heaptype:number)
-.decl K_ComponentType_sip3f5_(componenttype:number)
-.decl SupertypeOf_sip3f6(componenttype:number, heaptype:number)
-.decl Kv_ComponentType_sip3f5_(componenttype:number, baseheaptype:number)
-.decl K_SupertypeOf_sip3f6_(componenttype:number)
-.decl ComponentType_sip3f5_sip3b1(baseheaptype:number, componenttype:number)
-.decl Kv_HeapAllocation_Type_sip3f4_(baseheaptype:number, baseheap:number)
-.decl K_ComponentType_sip3f5_sip3b1_(baseheaptype:number)
-.decl HeapAllocation_Type_sip3f4_sip3b2(baseheap:number, baseheaptype:number)
-.decl Kv_HeapAllocation_Type_sip3f3_(heaptype:number, heap:number)
-.decl HeapAllocation_Type_sip3f3_sip3b3(heap:number, heaptype:number)
-.decl Kv_VarPointsTo_sip3f2_(heap:number, from:number)
-.decl K_HeapAllocation_Type_sip3f3_sip3b3_(heap:number)
-.decl VarPointsTo_sip3f2_sip3b4(heap:number, from:number)
-.decl Kv_VarPointsTo_sip3f1_(baseheap:number, base:number)
-.decl K_HeapAllocation_Type_sip3f4_sip3b2_(baseheap:number)
-.decl VarPointsTo_sip3f1_sip3b5(baseheap:number, base:number)
-.decl Kv_StoreArrayIndex_sip3f0_(from:number, base:number, inmethod:number)
-.decl K_VarPointsTo_sip3f2_sip3b4_(from:number)
-.decl JnKvK_Kv_StoreArrayIndex_sip3f0___K_VarPointsTo_sip3f2_sip3b4__(base:number, from:number, inmethod:number)
-.decl K_VarPointsTo_sip3f1_sip3b5_(base:number)
-.decl StoreArrayIndex_sip3f0_sip3b6(from:number, base:number, inmethod:number)
-.decl Kv_HeapAllocation_Type_sip3f3_sip3b3_(heap:number, heaptype:number)
-.decl Kv_VarPointsTo_sip3f2_sip3b4_(from:number, heap:number)
-.decl Kv_StoreArrayIndex_sip3f0_sip3b6_(base:number, from:number)
-.decl Kv_VarPointsTo_sip3f1_sip3b5_(base:number, baseheap:number)
-.decl JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5__(from:number, baseheap:number)
-.decl JnKvKv_Kv_VarPointsTo_sip3f2_sip3b4___JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5___(heap:number, baseheap:number)
-.decl JnKvKv_Kv_HeapAllocation_Type_sip3f3_sip3b3___JnKvKv_Kv_VarPointsTo_sip3f2_sip3b4___JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5____(heaptype:number, baseheap:number, heap:number)
-.decl Kv_SupertypeOf_sip3f6_(componenttype:number, heaptype:number)
-.decl Kv_ComponentType_sip3f5_sip3b1_(baseheaptype:number, componenttype:number)
-.decl Kv_HeapAllocation_Type_sip3f4_sip3b2_(baseheaptype:number, baseheap:number)
-.decl JnKvKv_Kv_ComponentType_sip3f5_sip3b1___Kv_HeapAllocation_Type_sip3f4_sip3b2__(componenttype:number, baseheap:number)
-.decl JnKvKv_Kv_SupertypeOf_sip3f6___JnKvKv_Kv_ComponentType_sip3f5_sip3b1___Kv_HeapAllocation_Type_sip3f4_sip3b2___(heaptype:number, baseheap:number)
-.decl Kv_AssignLocal_(inmethod:number, from:number, to:number)
-.decl JnKvK_Kv_AssignLocal___K_Reachable__(from:number, to:number)
-.decl Kv_Instruction_Method_(inMethod:number, invocation:number)
-.decl Instruction_Method_sip5f0(invocation:number, inMethod:number)
-.decl Kv_VirtualMethodInvocation_Base_(invocation:number, base:number)
-.decl K_Instruction_Method_sip5f0_(invocation:number)
-.decl VirtualMethodInvocation_Base_sip5f1(invocation:number, base:number)
-.decl K_VirtualMethodInvocation_Base_sip5f1_(base:number)
-.decl VarPointsTo_sip5f2(heap:number, base:number)
-.decl K_VarPointsTo_sip5f2_(heap:number)
-.decl HeapAllocation_Type_sip5f3(heap:number, heaptype:number)
-.decl Kv_VirtualMethodInvocation_SimpleName_(invocation:number, simplename:number)
-.decl JnKvK_Kv_VirtualMethodInvocation_SimpleName___K_Instruction_Method_sip5f0__(invocation:number, simplename:number)
-.decl VirtualMethodInvocation_SimpleName_sip5f4(invocation:number, simplename:number)
-.decl Kv_VirtualMethodInvocation_Descriptor_(invocation:number, descriptor:number)
-.decl JnKvK_Kv_VirtualMethodInvocation_Descriptor___K_Instruction_Method_sip5f0__(invocation:number, descriptor:number)
-.decl JnKvK_JnKvK_Kv_VirtualMethodInvocation_Descriptor___K_Instruction_Method_sip5f0____K_VirtualMethodInvocation_Base_sip5f1__(invocation:number, descriptor:number)
-.decl K_VirtualMethodInvocation_SimpleName_sip5f4_(invocation:number)
-.decl VirtualMethodInvocation_Descriptor_sip5f5(invocation:number, descriptor:number)
-.decl Kv_MethodLookup_(heaptype:number, simplename:number, descriptor:number, toMethod:number)
-.decl K_HeapAllocation_Type_sip5f3_(heaptype:number)
-.decl JnKvK_Kv_MethodLookup___K_HeapAllocation_Type_sip5f3__(simplename:number, descriptor:number, heaptype:number, toMethod:number)
-.decl JnKvK_JnKvK_Kv_MethodLookup___K_HeapAllocation_Type_sip5f3____K_VirtualMethodInvocation_SimpleName_sip5f4__(descriptor:number, simplename:number, heaptype:number, toMethod:number)
-.decl K_VirtualMethodInvocation_Descriptor_sip5f5_(descriptor:number)
-.decl MethodLookup_sip5f6(simplename:number, descriptor:number, heaptype:number, toMethod:number)
-.decl Kv_ThisVar_(toMethod:number, this:number)
-.decl K_MethodLookup_sip5f6_(toMethod:number)
-.decl ThisVar_sip5f7(toMethod:number, this:number)
-.decl Kv_MethodLookup_sip5f6_(toMethod:number, simplename:number, descriptor:number, heaptype:number)
-.decl K_ThisVar_sip5f7_(toMethod:number)
-.decl MethodLookup_sip5f6_sip5b1(simplename:number, descriptor:number, heaptype:number, toMethod:number)
-.decl Kv_VirtualMethodInvocation_Descriptor_sip5f5_(descriptor:number, invocation:number)
-.decl K_MethodLookup_sip5f6_sip5b1_(descriptor:number)
-.decl VirtualMethodInvocation_Descriptor_sip5f5_sip5b2(invocation:number, descriptor:number)
-.decl Kv_VirtualMethodInvocation_SimpleName_sip5f4_(simplename:number, invocation:number)
-.decl JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4___K_MethodLookup_sip5f6_sip5b1__(invocation:number, simplename:number)
-.decl K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2_(invocation:number)
-.decl VirtualMethodInvocation_SimpleName_sip5f4_sip5b3(invocation:number, simplename:number)
-.decl Kv_HeapAllocation_Type_sip5f3_(heaptype:number, heap:number)
-.decl HeapAllocation_Type_sip5f3_sip5b4(heap:number, heaptype:number)
-.decl Kv_VarPointsTo_sip5f2_(heap:number, base:number)
-.decl K_HeapAllocation_Type_sip5f3_sip5b4_(heap:number)
-.decl VarPointsTo_sip5f2_sip5b5(heap:number, base:number)
-.decl Kv_VirtualMethodInvocation_Base_sip5f1_(invocation:number, base:number)
-.decl JnKvK_Kv_VirtualMethodInvocation_Base_sip5f1___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(invocation:number, base:number)
-.decl K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3_(invocation:number)
-.decl JnKvK_JnKvK_Kv_VirtualMethodInvocation_Base_sip5f1___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2____K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3__(base:number, invocation:number)
-.decl K_VarPointsTo_sip5f2_sip5b5_(base:number)
-.decl VirtualMethodInvocation_Base_sip5f1_sip5b6(invocation:number, base:number)
-.decl Kv_Instruction_Method_sip5f0_(invocation:number, inMethod:number)
-.decl JnKvK_Kv_Instruction_Method_sip5f0___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(invocation:number, inMethod:number)
-.decl JnKvK_JnKvK_Kv_Instruction_Method_sip5f0___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2____K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3__(invocation:number, inMethod:number)
-.decl K_VirtualMethodInvocation_Base_sip5f1_sip5b6_(invocation:number)
-.decl Instruction_Method_sip5f0_sip5b7(invocation:number, inMethod:number)
-.decl Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3_(invocation:number, simplename:number)
-.decl K_Instruction_Method_sip5f0_sip5b7_(invocation:number)
-.decl JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7__(invocation:number, simplename:number)
-.decl Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6_(base:number, invocation:number)
-.decl Kv_VarPointsTo_sip5f2_sip5b5_(base:number, heap:number)
-.decl JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5__(invocation:number, heap:number)
-.decl JnKvKv_JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7____JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5___(invocation:number, simplename:number, heap:number)
-.decl Kv_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2_(invocation:number, descriptor:number)
-.decl JnKvKv_JnKvKv_JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7____JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5_____Kv_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(simplename:number, descriptor:number, heap:number)
-.decl Kv_MethodLookup_sip5f6_sip5b1_(heaptype:number, simplename:number, descriptor:number, toMethod:number)
-.decl Kv_HeapAllocation_Type_sip5f3_sip5b4_(heaptype:number, heap:number)
-.decl JnKvKv_Kv_MethodLookup_sip5f6_sip5b1___Kv_HeapAllocation_Type_sip5f3_sip5b4__(toMethod:number, simplename:number, descriptor:number, heap:number)
-.decl Kv_ThisVar_sip5f7_(toMethod:number, this:number)
-.decl JnKvKv_JnKvKv_Kv_MethodLookup_sip5f6_sip5b1___Kv_HeapAllocation_Type_sip5f3_sip5b4____Kv_ThisVar_sip5f7__(simplename:number, descriptor:number, heap:number, this:number)
-.decl Kv_AssignCast_(inmethod:number, type:number, from:number, to:number)
-.decl AssignCast_sip6f0(type:number, from:number, to:number, inmethod:number)
-.decl K_AssignCast_sip6f0_(from:number)
-.decl VarPointsTo_sip6f1(heap:number, from:number)
-.decl K_VarPointsTo_sip6f1_(heap:number)
-.decl HeapAllocation_Type_sip6f2(heap:number, heaptype:number)
-.decl JnKvK_Kv_SupertypeOf___K_AssignCast_sip6f0__(heaptype:number, type:number)
-.decl K_HeapAllocation_Type_sip6f2_(heaptype:number)
-.decl SupertypeOf_sip6f3(type:number, heaptype:number)
-.decl Kv_HeapAllocation_Type_sip6f2_(heaptype:number, heap:number)
-.decl HeapAllocation_Type_sip6f2_sip6b1(heap:number, heaptype:number)
-.decl Kv_VarPointsTo_sip6f1_(heap:number, from:number)
-.decl K_HeapAllocation_Type_sip6f2_sip6b1_(heap:number)
-.decl VarPointsTo_sip6f1_sip6b2(heap:number, from:number)
-.decl Kv_AssignCast_sip6f0_(type:number, from:number, to:number, inmethod:number)
-.decl K_SupertypeOf_sip6f3_(type:number)
-.decl JnKvK_Kv_AssignCast_sip6f0___K_SupertypeOf_sip6f3__(from:number, type:number, to:number, inmethod:number)
-.decl K_VarPointsTo_sip6f1_sip6b2_(from:number)
-.decl AssignCast_sip6f0_sip6b3(type:number, from:number, to:number, inmethod:number)
-.decl Kv_AssignCast_sip6f0_sip6b3_(from:number, type:number, to:number)
-.decl Kv_VarPointsTo_sip6f1_sip6b2_(from:number, heap:number)
-.decl JnKvKv_Kv_AssignCast_sip6f0_sip6b3___Kv_VarPointsTo_sip6f1_sip6b2__(type:number, heap:number, to:number)
-.decl Kv_SupertypeOf_sip6f3_(heaptype:number, type:number)
-.decl Kv_HeapAllocation_Type_sip6f2_sip6b1_(heaptype:number, heap:number)
-.decl JnKvKv_Kv_SupertypeOf_sip6f3___Kv_HeapAllocation_Type_sip6f2_sip6b1__(type:number, heap:number)
-.decl Kv_Assign_(from:number, to:number)
-.decl Kv_StoreStaticField_(inmethod:number, from:number, fld:number)
-.decl JnKvK_Kv_StoreStaticField___K_Reachable__(from:number, fld:number)
-.decl Kv_StaticFieldPointsTo_(fld:number, heap:number)
-.decl Kv_LoadStaticField_(inmethod:number, fld:number, to:number)
-.decl JnKvK_Kv_LoadStaticField___K_Reachable__(fld:number, to:number)
-.decl Instruction_Method_sip10f0(invocation:number, inmethod:number)
-.decl Kv_SpecialMethodInvocation_Base_(invocation:number, base:number)
-.decl K_Instruction_Method_sip10f0_(invocation:number)
-.decl SpecialMethodInvocation_Base_sip10f1(invocation:number, base:number)
-.decl VarPointsTo_sip10f2(heap:number, base:number)
-.decl Kv_MethodInvocation_Method_(invocation:number, tomethod:number)
-.decl JnKvK_Kv_MethodInvocation_Method___K_Instruction_Method_sip10f0__(invocation:number, tomethod:number)
-.decl K_SpecialMethodInvocation_Base_sip10f1_(invocation:number)
-.decl MethodInvocation_Method_sip10f3(invocation:number, tomethod:number)
-.decl K_MethodInvocation_Method_sip10f3_(tomethod:number)
-.decl ThisVar_sip10f4(tomethod:number, this:number)
-.decl Kv_MethodInvocation_Method_sip10f3_(tomethod:number, invocation:number)
-.decl K_ThisVar_sip10f4_(tomethod:number)
-.decl MethodInvocation_Method_sip10f3_sip10b1(invocation:number, tomethod:number)
-.decl Kv_SpecialMethodInvocation_Base_sip10f1_(invocation:number, base:number)
-.decl K_MethodInvocation_Method_sip10f3_sip10b1_(invocation:number)
-.decl JnKvK_Kv_SpecialMethodInvocation_Base_sip10f1___K_MethodInvocation_Method_sip10f3_sip10b1__(base:number, invocation:number)
-.decl K_VarPointsTo_sip10f2_(base:number)
-.decl SpecialMethodInvocation_Base_sip10f1_sip10b3(invocation:number, base:number)
-.decl Kv_Instruction_Method_sip10f0_(invocation:number, inmethod:number)
-.decl JnKvK_Kv_Instruction_Method_sip10f0___K_MethodInvocation_Method_sip10f3_sip10b1__(invocation:number, inmethod:number)
-.decl K_SpecialMethodInvocation_Base_sip10f1_sip10b3_(invocation:number)
-.decl Instruction_Method_sip10f0_sip10b4(invocation:number, inmethod:number)
-.decl K_Instruction_Method_sip10f0_sip10b4_(invocation:number)
-.decl Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3_(base:number, invocation:number)
-.decl Kv_VarPointsTo_sip10f2_(base:number, heap:number)
-.decl JnKvKv_Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3___Kv_VarPointsTo_sip10f2__(invocation:number, heap:number)
-.decl JnKKv_K_Instruction_Method_sip10f0_sip10b4___JnKvKv_Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3___Kv_VarPointsTo_sip10f2___(invocation:number, heap:number)
-.decl Kv_MethodInvocation_Method_sip10f3_sip10b1_(tomethod:number, invocation:number)
-.decl Kv_ThisVar_sip10f4_(tomethod:number, this:number)
-.decl JnKvKv_Kv_MethodInvocation_Method_sip10f3_sip10b1___Kv_ThisVar_sip10f4__(invocation:number, this:number)
+.decl kv0(x0:number, x1:number, x2:number)
+.decl k_1(x0:number)
+.decl jn2(x0:number, x1:number)
+.decl VarPointsTo(x0:number, x1:number)
+.decl kv3(x0:number, x1:number)
+.decl jn4(x0:number, x1:number)
+.decl kv5(x0:number, x1:number)
+.decl k_6(x0:number)
+.decl jn7(x0:number, x1:number)
+.decl kv8(x0:number, x1:number)
+.decl k_9(x0:number)
+.decl jn10(x0:number, x1:number)
+.decl kv11(x0:number, x1:number)
+.decl k_12(x0:number)
+.decl jn13(x0:number, x1:number)
+.decl kv14(x0:number, x1:number)
+.decl jn15(x0:number, x1:number)
+.decl k_16(x0:number)
+.decl jn17(x0:number, x1:number)
+.decl kv18(x0:number, x1:number)
+.decl jn19(x0:number, x1:number)
+.decl jn20(x0:number, x1:number)
+.decl k_21(x0:number)
+.decl jn22(x0:number, x1:number)
+.decl kv23(x0:number, x1:number, x2:number, x3:number)
+.decl k_24(x0:number)
+.decl jn25(x0:number, x1:number, x2:number, x3:number)
+.decl k_26(x0:number)
+.decl jn27(x0:number, x1:number, x2:number, x3:number)
+.decl k_28(x0:number)
+.decl jn29(x0:number, x1:number, x2:number, x3:number)
+.decl kv30(x0:number, x1:number)
+.decl k_31(x0:number)
+.decl jn32(x0:number, x1:number)
+.decl kv33(x0:number, x1:number, x2:number, x3:number)
+.decl k_34(x0:number)
+.decl jn35(x0:number, x1:number, x2:number, x3:number)
+.decl kv36(x0:number, x1:number)
+.decl k_37(x0:number)
+.decl jn38(x0:number, x1:number)
+.decl kv39(x0:number, x1:number)
+.decl k_40(x0:number)
+.decl jn41(x0:number, x1:number)
+.decl k_42(x0:number)
+.decl jn43(x0:number, x1:number)
+.decl kv44(x0:number, x1:number)
+.decl k_45(x0:number)
+.decl jn46(x0:number, x1:number)
+.decl kv47(x0:number, x1:number)
+.decl k_48(x0:number)
+.decl jn49(x0:number, x1:number)
+.decl kv50(x0:number, x1:number)
+.decl jn51(x0:number, x1:number)
+.decl k_52(x0:number)
+.decl jn53(x0:number, x1:number)
+.decl k_54(x0:number)
+.decl jn55(x0:number, x1:number)
+.decl kv56(x0:number, x1:number)
+.decl jn57(x0:number, x1:number)
+.decl jn58(x0:number, x1:number)
+.decl k_59(x0:number)
+.decl jn60(x0:number, x1:number)
+.decl kv61(x0:number, x1:number)
+.decl k_62(x0:number)
+.decl jn63(x0:number, x1:number)
+.decl kv64(x0:number, x1:number)
+.decl kv65(x0:number, x1:number)
+.decl jn66(x0:number, x1:number)
+.decl jn67(x0:number, x1:number, x2:number)
+.decl kv68(x0:number, x1:number)
+.decl jn69(x0:number, x1:number, x2:number)
+.decl kv70(x0:number, x1:number, x2:number, x3:number)
+.decl kv71(x0:number, x1:number)
+.decl jn72(x0:number, x1:number, x2:number, x3:number)
+.decl kv73(x0:number, x1:number)
+.decl jn74(x0:number, x1:number, x2:number, x3:number)
+.decl jn75(x0:number, x1:number)
+.decl kv76(x0:number, x1:number, x2:number, x3:number)
+.decl jn77(x0:number, x1:number, x2:number, x3:number)
+.decl k_78(x0:number)
+.decl jn79(x0:number, x1:number)
+.decl k_80(x0:number)
+.decl jn81(x0:number, x1:number)
+.decl kv82(x0:number, x1:number, x2:number, x3:number)
+.decl k_83(x0:number)
+.decl jn84(x0:number, x1:number, x2:number, x3:number)
+.decl k_85(x0:number)
+.decl jn86(x0:number, x1:number, x2:number, x3:number)
+.decl kv87(x0:number, x1:number, x2:number)
+.decl kv88(x0:number, x1:number)
+.decl jn89(x0:number, x1:number, x2:number)
+.decl kv90(x0:number, x1:number)
+.decl jn91(x0:number, x1:number, x2:number)
+.decl kv92(x0:number, x1:number, x2:number, x3:number)
+.decl jn93(x0:number, x1:number, x2:number, x3:number)
+.decl k_94(x0:number)
+.decl jn95(x0:number, x1:number)
+.decl kv96(x0:number, x1:number, x2:number)
+.decl k_97(x0:number)
+.decl jn98(x0:number, x1:number, x2:number)
+.decl k_99(x0:number)
+.decl jn100(x0:number, x1:number, x2:number)
+.decl kv101(x0:number, x1:number)
+.decl k_102(x0:number)
+.decl jn103(x0:number, x1:number)
+.decl kv104(x0:number, x1:number, x2:number, x3:number)
+.decl k_105(x0:number)
+.decl jn106(x0:number, x1:number, x2:number, x3:number)
+.decl k_107(x0:number)
+.decl jn108(x0:number, x1:number, x2:number, x3:number)
+.decl kv109(x0:number, x1:number, x2:number)
+.decl kv110(x0:number, x1:number)
+.decl jn111(x0:number, x1:number, x2:number)
+.decl kv112(x0:number, x1:number, x2:number)
+.decl jn113(x0:number, x1:number)
+.decl kv114(x0:number, x1:number, x2:number)
+.decl jn115(x0:number, x1:number, x2:number)
+.decl k_116(x0:number)
+.decl jn117(x0:number, x1:number)
+.decl k_118(x0:number)
+.decl jn119(x0:number, x1:number)
+.decl k_120(x0:number)
+.decl jn121(x0:number, x1:number)
+.decl k_122(x0:number)
+.decl jn123(x0:number, x1:number)
+.decl kv124(x0:number, x1:number)
+.decl k_125(x0:number)
+.decl jn126(x0:number, x1:number)
+.decl kv127(x0:number, x1:number)
+.decl k_128(x0:number)
+.decl jn129(x0:number, x1:number)
+.decl k_130(x0:number)
+.decl jn131(x0:number, x1:number)
+.decl kv132(x0:number, x1:number)
+.decl k_133(x0:number)
+.decl jn134(x0:number, x1:number)
+.decl kv135(x0:number, x1:number)
+.decl k_136(x0:number)
+.decl jn137(x0:number, x1:number)
+.decl kv138(x0:number, x1:number)
+.decl k_139(x0:number)
+.decl jn140(x0:number, x1:number)
+.decl kv141(x0:number, x1:number)
+.decl k_142(x0:number)
+.decl jn143(x0:number, x1:number)
+.decl kv144(x0:number, x1:number)
+.decl k_145(x0:number)
+.decl jn146(x0:number, x1:number)
+.decl kv147(x0:number, x1:number, x2:number)
+.decl k_148(x0:number)
+.decl jn149(x0:number, x1:number, x2:number)
+.decl k_150(x0:number)
+.decl jn151(x0:number, x1:number, x2:number)
+.decl kv152(x0:number, x1:number)
+.decl kv153(x0:number, x1:number)
+.decl kv154(x0:number, x1:number)
+.decl kv155(x0:number, x1:number)
+.decl jn156(x0:number, x1:number)
+.decl jn157(x0:number, x1:number)
+.decl jn158(x0:number, x1:number, x2:number)
+.decl kv159(x0:number, x1:number)
+.decl kv160(x0:number, x1:number)
+.decl kv161(x0:number, x1:number)
+.decl jn162(x0:number, x1:number)
+.decl jn163(x0:number, x1:number)
+.decl jn164(x0:number, x1:number)
+.decl kv165(x0:number, x1:number, x2:number)
+.decl jn166(x0:number, x1:number, x2:number)
+.decl k_167(x0:number)
+.decl jn168(x0:number, x1:number)
+.decl kv169(x0:number, x1:number)
+.decl k_170(x0:number)
+.decl jn171(x0:number, x1:number)
+.decl kv172(x0:number, x1:number)
+.decl k_173(x0:number)
+.decl jn174(x0:number, x1:number)
+.decl jn175(x0:number, x1:number)
+.decl k_176(x0:number)
+.decl jn177(x0:number, x1:number)
+.decl k_178(x0:number)
+.decl jn179(x0:number, x1:number)
+.decl kv180(x0:number, x1:number)
+.decl k_181(x0:number)
+.decl jn182(x0:number, x1:number)
+.decl k_183(x0:number)
+.decl jn184(x0:number, x1:number)
+.decl kv185(x0:number, x1:number)
+.decl k_186(x0:number)
+.decl jn187(x0:number, x1:number)
+.decl kv188(x0:number, x1:number)
+.decl k_189(x0:number)
+.decl jn190(x0:number, x1:number)
+.decl kv191(x0:number, x1:number)
+.decl k_192(x0:number)
+.decl jn193(x0:number, x1:number)
+.decl kv194(x0:number, x1:number)
+.decl k_195(x0:number)
+.decl jn196(x0:number, x1:number)
+.decl kv197(x0:number, x1:number)
+.decl jn198(x0:number, x1:number)
+.decl k_199(x0:number)
+.decl jn200(x0:number, x1:number)
+.decl kv201(x0:number, x1:number, x2:number)
+.decl k_202(x0:number)
+.decl jn203(x0:number, x1:number, x2:number)
+.decl k_204(x0:number)
+.decl jn205(x0:number, x1:number, x2:number)
+.decl kv206(x0:number, x1:number)
+.decl kv207(x0:number, x1:number)
+.decl kv208(x0:number, x1:number)
+.decl jn209(x0:number, x1:number)
+.decl jn210(x0:number, x1:number, x2:number)
+.decl kv211(x0:number, x1:number)
+.decl kv212(x0:number, x1:number)
+.decl kv213(x0:number, x1:number)
+.decl jn214(x0:number, x1:number)
+.decl jn215(x0:number, x1:number)
+.decl jn216(x0:number, x1:number)
+.decl kv217(x0:number, x1:number)
+.decl jn218(x0:number, x1:number)
+.decl kv219(x0:number, x1:number, x2:number)
+.decl jn220(x0:number, x1:number)
+.decl jn221(x0:number, x1:number)
+.decl kv222(x0:number, x1:number)
+.decl jn223(x0:number, x1:number)
+.decl kv224(x0:number, x1:number, x2:number, x3:number)
+.decl jn225(x0:number, x1:number, x2:number, x3:number)
+.decl k_226(x0:number)
+.decl jn227(x0:number, x1:number)
+.decl kv228(x0:number, x1:number)
+.decl k_229(x0:number)
+.decl jn230(x0:number, x1:number)
+.decl k_231(x0:number)
+.decl jn232(x0:number, x1:number)
+.decl k_233(x0:number)
+.decl jn234(x0:number, x1:number)
+.decl kv235(x0:number, x1:number)
+.decl k_236(x0:number)
+.decl jn237(x0:number, x1:number)
+.decl kv238(x0:number, x1:number)
+.decl k_239(x0:number)
+.decl jn240(x0:number, x1:number)
+.decl kv241(x0:number, x1:number, x2:number, x3:number)
+.decl k_242(x0:number)
+.decl jn243(x0:number, x1:number, x2:number, x3:number)
+.decl k_244(x0:number)
+.decl jn245(x0:number, x1:number, x2:number, x3:number)
+.decl kv246(x0:number, x1:number, x2:number)
+.decl kv247(x0:number, x1:number)
+.decl jn248(x0:number, x1:number, x2:number)
+.decl kv249(x0:number, x1:number)
+.decl kv250(x0:number, x1:number)
+.decl jn251(x0:number, x1:number, x2:number)
+.decl jn252(x0:number, x1:number)
+.decl kv253(x0:number, x1:number)
+.decl k_254(x0:number)
+.decl jn255(x0:number, x1:number)
+.decl k_256(x0:number)
+.decl jn257(x0:number, x1:number)
+.decl kv258(x0:number, x1:number)
+.decl jn259(x0:number, x1:number)
+.decl k_260(x0:number)
+.decl jn261(x0:number, x1:number)
+.decl k_262(x0:number)
+.decl jn263(x0:number, x1:number)
+.decl kv264(x0:number, x1:number)
+.decl k_265(x0:number)
+.decl jn266(x0:number, x1:number)
+.decl kv267(x0:number, x1:number)
+.decl k_268(x0:number)
+.decl jn269(x0:number, x1:number)
+.decl k_270(x0:number)
+.decl jn271(x0:number, x1:number)
+.decl kv272(x0:number, x1:number)
+.decl jn273(x0:number, x1:number)
+.decl k_274(x0:number)
+.decl jn275(x0:number, x1:number)
+.decl k_276(x0:number)
+.decl kv277(x0:number, x1:number)
+.decl kv278(x0:number, x1:number)
+.decl jn279(x0:number, x1:number)
+.decl jn280(x0:number, x1:number)
+.decl kv281(x0:number, x1:number)
+.decl kv282(x0:number, x1:number)
+.decl jn283(x0:number, x1:number)
+.decl jn284(x0:number, x1:number)
+.decl kv285(x0:number, x1:number, x2:number)
+.decl jn286(x0:number, x1:number)
+.decl jn287(x0:number, x1:number)
+.decl kv288(x0:number, x1:number)
+.decl kv289(x0:number, x1:number, x2:number)
+.decl jn290(x0:number, x1:number)
+.decl jn291(x0:number, x1:number)
+.decl Instruction_Method_sip0f0(x0:number, x1:number)
+.decl VirtualMethodInvocation_Base_sip0f1(x0:number, x1:number)
+.decl VarPointsTo_sip0f2(x0:number, x1:number)
+.decl HeapAllocation_Type_sip0f3(x0:number, x1:number)
+.decl VirtualMethodInvocation_SimpleName_sip0f4(x0:number, x1:number)
+.decl VirtualMethodInvocation_Descriptor_sip0f5(x0:number, x1:number)
+.decl MethodLookup_sip0f6(x0:number, x1:number, x2:number, x3:number)
+.decl ThisVar_sip0f7(x0:number, x1:number)
+.decl MethodLookup_sip0f6_sip0b1(x0:number, x1:number, x2:number, x3:number)
+.decl VirtualMethodInvocation_Descriptor_sip0f5_sip0b2(x0:number, x1:number)
+.decl VirtualMethodInvocation_SimpleName_sip0f4_sip0b3(x0:number, x1:number)
+.decl HeapAllocation_Type_sip0f3_sip0b4(x0:number, x1:number)
+.decl VarPointsTo_sip0f2_sip0b5(x0:number, x1:number)
+.decl VirtualMethodInvocation_Base_sip0f1_sip0b6(x0:number, x1:number)
+.decl Instruction_Method_sip0f0_sip0b7(x0:number, x1:number)
+.decl StoreInstanceField_sip1f0(x0:number, x1:number, x2:number, x3:number)
+.decl VarPointsTo_sip1f1(x0:number, x1:number)
+.decl VarPointsTo_sip1f2(x0:number, x1:number)
+.decl StoreInstanceField_sip1f0_sip1b2(x0:number, x1:number, x2:number, x3:number)
+.decl InstanceFieldPointsTo(x0:number, x1:number, x2:number)
+.decl LoadInstanceField_sip2f0(x0:number, x1:number, x2:number, x3:number)
+.decl VarPointsTo_sip2f1(x0:number, x1:number)
+.decl InstanceFieldPointsTo_sip2f2(x0:number, x1:number, x2:number)
+.decl VarPointsTo_sip2f1_sip2b1(x0:number, x1:number)
+.decl LoadInstanceField_sip2f0_sip2b2(x0:number, x1:number, x2:number, x3:number)
+.decl StoreArrayIndex_sip3f0(x0:number, x1:number, x2:number)
+.decl VarPointsTo_sip3f1(x0:number, x1:number)
+.decl VarPointsTo_sip3f2(x0:number, x1:number)
+.decl HeapAllocation_Type_sip3f3(x0:number, x1:number)
+.decl HeapAllocation_Type_sip3f4(x0:number, x1:number)
+.decl ComponentType_sip3f5(x0:number, x1:number)
+.decl SupertypeOf_sip3f6(x0:number, x1:number)
+.decl ComponentType_sip3f5_sip3b1(x0:number, x1:number)
+.decl HeapAllocation_Type_sip3f4_sip3b2(x0:number, x1:number)
+.decl HeapAllocation_Type_sip3f3_sip3b3(x0:number, x1:number)
+.decl VarPointsTo_sip3f2_sip3b4(x0:number, x1:number)
+.decl VarPointsTo_sip3f1_sip3b5(x0:number, x1:number)
+.decl StoreArrayIndex_sip3f0_sip3b6(x0:number, x1:number, x2:number)
+.decl ArrayIndexPointsTo(x0:number, x1:number)
+.decl LoadArrayIndex_sip4f0(x0:number, x1:number, x2:number)
+.decl VarPointsTo_sip4f1(x0:number, x1:number)
+.decl ArrayIndexPointsTo_sip4f2(x0:number, x1:number)
+.decl Var_Type_sip4f3(x0:number, x1:number)
+.decl HeapAllocation_Type_sip4f4(x0:number, x1:number)
+.decl ComponentType_sip4f5(x0:number, x1:number)
+.decl SupertypeOf_sip4f6(x0:number, x1:number)
+.decl ComponentType_sip4f5_sip4b1(x0:number, x1:number)
+.decl HeapAllocation_Type_sip4f4_sip4b2(x0:number, x1:number)
+.decl Var_Type_sip4f3_sip4b3(x0:number, x1:number)
+.decl ArrayIndexPointsTo_sip4f2_sip4b4(x0:number, x1:number)
+.decl VarPointsTo_sip4f1_sip4b5(x0:number, x1:number)
+.decl LoadArrayIndex_sip4f0_sip4b6(x0:number, x1:number, x2:number)
+.decl AssignCast_sip7f0(x0:number, x1:number, x2:number, x3:number)
+.decl SupertypeOf_sip7f1(x0:number, x1:number)
+.decl HeapAllocation_Type_sip7f2(x0:number, x1:number)
+.decl VarPointsTo_sip7f3(x0:number, x1:number)
+.decl HeapAllocation_Type_sip7f2_sip7b1(x0:number, x1:number)
+.decl SupertypeOf_sip7f1_sip7b2(x0:number, x1:number)
+.decl AssignCast_sip7f0_sip7b3(x0:number, x1:number, x2:number, x3:number)
+.decl Instruction_Method_sip8f0(x0:number, x1:number)
+.decl SpecialMethodInvocation_Base_sip8f1(x0:number, x1:number)
+.decl VarPointsTo_sip8f2(x0:number, x1:number)
+.decl MethodInvocation_Method_sip8f3(x0:number, x1:number)
+.decl ThisVar_sip8f4(x0:number, x1:number)
+.decl MethodInvocation_Method_sip8f3_sip8b1(x0:number, x1:number)
+.decl SpecialMethodInvocation_Base_sip8f1_sip8b3(x0:number, x1:number)
+.decl Instruction_Method_sip8f0_sip8b4(x0:number, x1:number)
+.decl StaticFieldPointsTo(x0:number, x1:number)
 
 .printsize VarPointsTo
 
-VarPointsTo(heap, var) :-
-  AssignHeapAllocation(heap, var, inMethod),
-  Reachable(inMethod).
+// strata #0
+kv0(inMethod, heap, var) :- AssignHeapAllocation(heap, var, inMethod).
+k_1(inMethod) :- Reachable(inMethod).
+VarPointsTo(heap, var) :- kv0(_, heap, var), k_1(_).
 
-K_Reachable_(inmethod) :- Reachable(inmethod).
-
-
-Kv_LoadArrayIndex_(inmethod, base, to) :- LoadArrayIndex(base, to, inmethod).
-LoadArrayIndex_sip0f0(base, to, inmethod) :- Kv_LoadArrayIndex_(inmethod, base, to), K_Reachable_(inmethod).
-Kv_VarPointsTo_(base, baseheap) :- VarPointsTo(baseheap, base).
-K_LoadArrayIndex_sip0f0_(base) :- LoadArrayIndex_sip0f0(base, _, _).
-VarPointsTo_sip0f1(baseheap, base) :- Kv_VarPointsTo_(base, baseheap), K_LoadArrayIndex_sip0f0_(base).
-Kv_ArrayIndexPointsTo_(baseheap, heap) :- ArrayIndexPointsTo(baseheap, heap).
-K_VarPointsTo_sip0f1_(baseheap) :- VarPointsTo_sip0f1(baseheap, _).
-ArrayIndexPointsTo_sip0f2(baseheap, heap) :- Kv_ArrayIndexPointsTo_(baseheap, heap), K_VarPointsTo_sip0f1_(baseheap).
-Kv_Var_Type_(to, type) :- Var_Type(to, type).
-K_LoadArrayIndex_sip0f0_(to) :- LoadArrayIndex_sip0f0(_, to, _).
-Var_Type_sip0f3(to, type) :- Kv_Var_Type_(to, type), K_LoadArrayIndex_sip0f0_(to).
-Kv_HeapAllocation_Type_(baseheap, baseheaptype) :- HeapAllocation_Type(baseheap, baseheaptype).
-JnKvK_Kv_HeapAllocation_Type___K_VarPointsTo_sip0f1__(baseheap, baseheaptype) :- Kv_HeapAllocation_Type_(baseheap, baseheaptype), K_VarPointsTo_sip0f1_(baseheap).
-K_ArrayIndexPointsTo_sip0f2_(baseheap) :- ArrayIndexPointsTo_sip0f2(baseheap, _).
-HeapAllocation_Type_sip0f4(baseheap, baseheaptype) :- JnKvK_Kv_HeapAllocation_Type___K_VarPointsTo_sip0f1__(baseheap, baseheaptype), K_ArrayIndexPointsTo_sip0f2_(baseheap).
-Kv_ComponentType_(baseheaptype, basecomponenttype) :- ComponentType(baseheaptype, basecomponenttype).
-K_HeapAllocation_Type_sip0f4_(baseheaptype) :- HeapAllocation_Type_sip0f4(_, baseheaptype).
-ComponentType_sip0f5(baseheaptype, basecomponenttype) :- Kv_ComponentType_(baseheaptype, basecomponenttype), K_HeapAllocation_Type_sip0f4_(baseheaptype).
-Kv_SupertypeOf_(type, basecomponenttype) :- SupertypeOf(type, basecomponenttype).
-K_Var_Type_sip0f3_(type) :- Var_Type_sip0f3(_, type).
-JnKvK_Kv_SupertypeOf___K_Var_Type_sip0f3__(basecomponenttype, type) :- Kv_SupertypeOf_(type, basecomponenttype), K_Var_Type_sip0f3_(type).
-K_ComponentType_sip0f5_(basecomponenttype) :- ComponentType_sip0f5(_, basecomponenttype).
-SupertypeOf_sip0f6(type, basecomponenttype) :- JnKvK_Kv_SupertypeOf___K_Var_Type_sip0f3__(basecomponenttype, type), K_ComponentType_sip0f5_(basecomponenttype).
-Kv_ComponentType_sip0f5_(basecomponenttype, baseheaptype) :- ComponentType_sip0f5(baseheaptype, basecomponenttype).
-K_SupertypeOf_sip0f6_(basecomponenttype) :- SupertypeOf_sip0f6(_, basecomponenttype).
-ComponentType_sip0f5_sip0b1(baseheaptype, basecomponenttype) :- Kv_ComponentType_sip0f5_(basecomponenttype, baseheaptype), K_SupertypeOf_sip0f6_(basecomponenttype).
-Kv_HeapAllocation_Type_sip0f4_(baseheaptype, baseheap) :- HeapAllocation_Type_sip0f4(baseheap, baseheaptype).
-K_ComponentType_sip0f5_sip0b1_(baseheaptype) :- ComponentType_sip0f5_sip0b1(baseheaptype, _).
-HeapAllocation_Type_sip0f4_sip0b2(baseheap, baseheaptype) :- Kv_HeapAllocation_Type_sip0f4_(baseheaptype, baseheap), K_ComponentType_sip0f5_sip0b1_(baseheaptype).
-Kv_Var_Type_sip0f3_(type, to) :- Var_Type_sip0f3(to, type).
-K_SupertypeOf_sip0f6_(type) :- SupertypeOf_sip0f6(type, _).
-Var_Type_sip0f3_sip0b3(to, type) :- Kv_Var_Type_sip0f3_(type, to), K_SupertypeOf_sip0f6_(type).
-Kv_ArrayIndexPointsTo_sip0f2_(baseheap, heap) :- ArrayIndexPointsTo_sip0f2(baseheap, heap).
-K_HeapAllocation_Type_sip0f4_sip0b2_(baseheap) :- HeapAllocation_Type_sip0f4_sip0b2(baseheap, _).
-ArrayIndexPointsTo_sip0f2_sip0b4(baseheap, heap) :- Kv_ArrayIndexPointsTo_sip0f2_(baseheap, heap), K_HeapAllocation_Type_sip0f4_sip0b2_(baseheap).
-Kv_VarPointsTo_sip0f1_(baseheap, base) :- VarPointsTo_sip0f1(baseheap, base).
-JnKvK_Kv_VarPointsTo_sip0f1___K_HeapAllocation_Type_sip0f4_sip0b2__(baseheap, base) :- Kv_VarPointsTo_sip0f1_(baseheap, base), K_HeapAllocation_Type_sip0f4_sip0b2_(baseheap).
-K_ArrayIndexPointsTo_sip0f2_sip0b4_(baseheap) :- ArrayIndexPointsTo_sip0f2_sip0b4(baseheap, _).
-VarPointsTo_sip0f1_sip0b5(baseheap, base) :- JnKvK_Kv_VarPointsTo_sip0f1___K_HeapAllocation_Type_sip0f4_sip0b2__(baseheap, base), K_ArrayIndexPointsTo_sip0f2_sip0b4_(baseheap).
-Kv_LoadArrayIndex_sip0f0_(to, base, inmethod) :- LoadArrayIndex_sip0f0(base, to, inmethod).
-K_Var_Type_sip0f3_sip0b3_(to) :- Var_Type_sip0f3_sip0b3(to, _).
-JnKvK_Kv_LoadArrayIndex_sip0f0___K_Var_Type_sip0f3_sip0b3__(base, to, inmethod) :- Kv_LoadArrayIndex_sip0f0_(to, base, inmethod), K_Var_Type_sip0f3_sip0b3_(to).
-K_VarPointsTo_sip0f1_sip0b5_(base) :- VarPointsTo_sip0f1_sip0b5(_, base).
-LoadArrayIndex_sip0f0_sip0b6(base, to, inmethod) :- JnKvK_Kv_LoadArrayIndex_sip0f0___K_Var_Type_sip0f3_sip0b3__(base, to, inmethod), K_VarPointsTo_sip0f1_sip0b5_(base).
-Kv_HeapAllocation_Type_sip0f4_sip0b2_(baseheap, baseheaptype) :- HeapAllocation_Type_sip0f4_sip0b2(baseheap, baseheaptype).
-Kv_VarPointsTo_sip0f1_sip0b5_(base, baseheap) :- VarPointsTo_sip0f1_sip0b5(baseheap, base).
-Kv_LoadArrayIndex_sip0f0_sip0b6_(base, to) :- LoadArrayIndex_sip0f0_sip0b6(base, to, inmethod).
-JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6__(baseheap, to) :- Kv_VarPointsTo_sip0f1_sip0b5_(base, baseheap), Kv_LoadArrayIndex_sip0f0_sip0b6_(base, to).
-JnKvKv_Kv_HeapAllocation_Type_sip0f4_sip0b2___JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6___(baseheaptype, to, baseheap) :- Kv_HeapAllocation_Type_sip0f4_sip0b2_(baseheap, baseheaptype), JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6__(baseheap, to).
-Kv_ComponentType_sip0f5_sip0b1_(basecomponenttype, baseheaptype) :- ComponentType_sip0f5_sip0b1(baseheaptype, basecomponenttype).
-Kv_SupertypeOf_sip0f6_(type, basecomponenttype) :- SupertypeOf_sip0f6(type, basecomponenttype).
-Kv_Var_Type_sip0f3_sip0b3_(type, to) :- Var_Type_sip0f3_sip0b3(to, type).
-JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3__(basecomponenttype, to) :- Kv_SupertypeOf_sip0f6_(type, basecomponenttype), Kv_Var_Type_sip0f3_sip0b3_(type, to).
-JnKvKv_Kv_ComponentType_sip0f5_sip0b1___JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3___(baseheaptype, to) :- Kv_ComponentType_sip0f5_sip0b1_(basecomponenttype, baseheaptype), JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3__(basecomponenttype, to).
-JnKvK_JnKvKv_Kv_HeapAllocation_Type_sip0f4_sip0b2___JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6_____JnKvKv_Kv_ComponentType_sip0f5_sip0b1___JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3____(baseheap, to) :- JnKvKv_Kv_HeapAllocation_Type_sip0f4_sip0b2___JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6___(baseheaptype, to, baseheap), JnKvKv_Kv_ComponentType_sip0f5_sip0b1___JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3___(baseheaptype, to).
-Kv_ArrayIndexPointsTo_sip0f2_sip0b4_(baseheap, heap) :- ArrayIndexPointsTo_sip0f2_sip0b4(baseheap, heap).
-VarPointsTo(heap, to) :- JnKvK_JnKvKv_Kv_HeapAllocation_Type_sip0f4_sip0b2___JnKvKv_Kv_VarPointsTo_sip0f1_sip0b5___Kv_LoadArrayIndex_sip0f0_sip0b6_____JnKvKv_Kv_ComponentType_sip0f5_sip0b1___JnKvKv_Kv_SupertypeOf_sip0f6___Kv_Var_Type_sip0f3_sip0b3____(baseheap, to), Kv_ArrayIndexPointsTo_sip0f2_sip0b4_(baseheap, heap).
-Kv_LoadInstanceField_(inmethod, base, signature, to) :- LoadInstanceField(base, signature, to, inmethod).
-LoadInstanceField_sip1f0(base, signature, to, inmethod) :- Kv_LoadInstanceField_(inmethod, base, signature, to), K_Reachable_(inmethod).
-K_LoadInstanceField_sip1f0_(base) :- LoadInstanceField_sip1f0(base, _, _, _).
-VarPointsTo_sip1f1(baseheap, base) :- Kv_VarPointsTo_(base, baseheap), K_LoadInstanceField_sip1f0_(base).
-Kv_InstanceFieldPointsTo_(signature, baseheap, heap) :- InstanceFieldPointsTo(heap, signature, baseheap).
-K_LoadInstanceField_sip1f0_(signature) :- LoadInstanceField_sip1f0(_, signature, _, _).
-JnKvK_Kv_InstanceFieldPointsTo___K_LoadInstanceField_sip1f0__(baseheap, heap, signature) :- Kv_InstanceFieldPointsTo_(signature, baseheap, heap), K_LoadInstanceField_sip1f0_(signature).
-K_VarPointsTo_sip1f1_(baseheap) :- VarPointsTo_sip1f1(baseheap, _).
-InstanceFieldPointsTo_sip1f2(heap, signature, baseheap) :- JnKvK_Kv_InstanceFieldPointsTo___K_LoadInstanceField_sip1f0__(baseheap, heap, signature), K_VarPointsTo_sip1f1_(baseheap).
-Kv_VarPointsTo_sip1f1_(baseheap, base) :- VarPointsTo_sip1f1(baseheap, base).
-K_InstanceFieldPointsTo_sip1f2_(baseheap) :- InstanceFieldPointsTo_sip1f2(_, _, baseheap).
-VarPointsTo_sip1f1_sip1b1(baseheap, base) :- Kv_VarPointsTo_sip1f1_(baseheap, base), K_InstanceFieldPointsTo_sip1f2_(baseheap).
-Kv_LoadInstanceField_sip1f0_(signature, base, to, inmethod) :- LoadInstanceField_sip1f0(base, signature, to, inmethod).
-K_InstanceFieldPointsTo_sip1f2_(signature) :- InstanceFieldPointsTo_sip1f2(_, signature, _).
-JnKvK_Kv_LoadInstanceField_sip1f0___K_InstanceFieldPointsTo_sip1f2__(base, signature, to, inmethod) :- Kv_LoadInstanceField_sip1f0_(signature, base, to, inmethod), K_InstanceFieldPointsTo_sip1f2_(signature).
-K_VarPointsTo_sip1f1_sip1b1_(base) :- VarPointsTo_sip1f1_sip1b1(_, base).
-LoadInstanceField_sip1f0_sip1b2(base, signature, to, inmethod) :- JnKvK_Kv_LoadInstanceField_sip1f0___K_InstanceFieldPointsTo_sip1f2__(base, signature, to, inmethod), K_VarPointsTo_sip1f1_sip1b1_(base).
-Kv_LoadInstanceField_sip1f0_sip1b2_(base, signature, to) :- LoadInstanceField_sip1f0_sip1b2(base, signature, to, inmethod).
-Kv_VarPointsTo_sip1f1_sip1b1_(base, baseheap) :- VarPointsTo_sip1f1_sip1b1(baseheap, base).
-JnKvKv_Kv_LoadInstanceField_sip1f0_sip1b2___Kv_VarPointsTo_sip1f1_sip1b1__(signature, baseheap, to) :- Kv_LoadInstanceField_sip1f0_sip1b2_(base, signature, to), Kv_VarPointsTo_sip1f1_sip1b1_(base, baseheap).
-Kv_InstanceFieldPointsTo_sip1f2_(signature, baseheap, heap) :- InstanceFieldPointsTo_sip1f2(heap, signature, baseheap).
-VarPointsTo(heap, to) :- JnKvKv_Kv_LoadInstanceField_sip1f0_sip1b2___Kv_VarPointsTo_sip1f1_sip1b1__(signature, baseheap, to), Kv_InstanceFieldPointsTo_sip1f2_(signature, baseheap, heap).
-Kv_StoreInstanceField_(inmethod, from, base, fld) :- StoreInstanceField(from, base, fld, inmethod).
-StoreInstanceField_sip2f0(from, base, fld, inmethod) :- Kv_StoreInstanceField_(inmethod, from, base, fld), K_Reachable_(inmethod).
-K_StoreInstanceField_sip2f0_(from) :- StoreInstanceField_sip2f0(from, _, _, _).
-VarPointsTo_sip2f1(heap, from) :- Kv_VarPointsTo_(from, heap), K_StoreInstanceField_sip2f0_(from).
-K_StoreInstanceField_sip2f0_(base) :- StoreInstanceField_sip2f0(_, base, _, _).
-VarPointsTo_sip2f2(baseheap, base) :- Kv_VarPointsTo_(base, baseheap), K_StoreInstanceField_sip2f0_(base).
-Kv_StoreInstanceField_sip2f0_(base, from, fld, inmethod) :- StoreInstanceField_sip2f0(from, base, fld, inmethod).
-K_VarPointsTo_sip2f2_(base) :- VarPointsTo_sip2f2(_, base).
-JnKvK_Kv_StoreInstanceField_sip2f0___K_VarPointsTo_sip2f2__(from, base, fld, inmethod) :- Kv_StoreInstanceField_sip2f0_(base, from, fld, inmethod), K_VarPointsTo_sip2f2_(base).
-K_VarPointsTo_sip2f1_(from) :- VarPointsTo_sip2f1(_, from).
-StoreInstanceField_sip2f0_sip2b2(from, base, fld, inmethod) :- JnKvK_Kv_StoreInstanceField_sip2f0___K_VarPointsTo_sip2f2__(from, base, fld, inmethod), K_VarPointsTo_sip2f1_(from).
-Kv_StoreInstanceField_sip2f0_sip2b2_(from, base, fld) :- StoreInstanceField_sip2f0_sip2b2(from, base, fld, inmethod).
-Kv_VarPointsTo_sip2f1_(from, heap) :- VarPointsTo_sip2f1(heap, from).
-JnKvKv_Kv_StoreInstanceField_sip2f0_sip2b2___Kv_VarPointsTo_sip2f1__(base, fld, heap) :- Kv_StoreInstanceField_sip2f0_sip2b2_(from, base, fld), Kv_VarPointsTo_sip2f1_(from, heap).
-Kv_VarPointsTo_sip2f2_(base, baseheap) :- VarPointsTo_sip2f2(baseheap, base).
-InstanceFieldPointsTo(heap, fld, baseheap) :- JnKvKv_Kv_StoreInstanceField_sip2f0_sip2b2___Kv_VarPointsTo_sip2f1__(base, fld, heap), Kv_VarPointsTo_sip2f2_(base, baseheap).
-Kv_StoreArrayIndex_(inmethod, from, base) :- StoreArrayIndex(from, base, inmethod).
-StoreArrayIndex_sip3f0(from, base, inmethod) :- Kv_StoreArrayIndex_(inmethod, from, base), K_Reachable_(inmethod).
-K_StoreArrayIndex_sip3f0_(base) :- StoreArrayIndex_sip3f0(_, base, _).
-VarPointsTo_sip3f1(baseheap, base) :- Kv_VarPointsTo_(base, baseheap), K_StoreArrayIndex_sip3f0_(base).
-K_StoreArrayIndex_sip3f0_(from) :- StoreArrayIndex_sip3f0(from, _, _).
-VarPointsTo_sip3f2(heap, from) :- Kv_VarPointsTo_(from, heap), K_StoreArrayIndex_sip3f0_(from).
-K_VarPointsTo_sip3f2_(heap) :- VarPointsTo_sip3f2(heap, _).
-HeapAllocation_Type_sip3f3(heap, heaptype) :- Kv_HeapAllocation_Type_(heap, heaptype), K_VarPointsTo_sip3f2_(heap).
-K_VarPointsTo_sip3f1_(baseheap) :- VarPointsTo_sip3f1(baseheap, _).
-HeapAllocation_Type_sip3f4(baseheap, baseheaptype) :- Kv_HeapAllocation_Type_(baseheap, baseheaptype), K_VarPointsTo_sip3f1_(baseheap).
-K_HeapAllocation_Type_sip3f4_(baseheaptype) :- HeapAllocation_Type_sip3f4(_, baseheaptype).
-ComponentType_sip3f5(baseheaptype, componenttype) :- Kv_ComponentType_(baseheaptype, componenttype), K_HeapAllocation_Type_sip3f4_(baseheaptype).
-Kv_SupertypeOf_(heaptype, componenttype) :- SupertypeOf(componenttype, heaptype).
-K_HeapAllocation_Type_sip3f3_(heaptype) :- HeapAllocation_Type_sip3f3(_, heaptype).
-JnKvK_Kv_SupertypeOf___K_HeapAllocation_Type_sip3f3__(componenttype, heaptype) :- Kv_SupertypeOf_(heaptype, componenttype), K_HeapAllocation_Type_sip3f3_(heaptype).
-K_ComponentType_sip3f5_(componenttype) :- ComponentType_sip3f5(_, componenttype).
-SupertypeOf_sip3f6(componenttype, heaptype) :- JnKvK_Kv_SupertypeOf___K_HeapAllocation_Type_sip3f3__(componenttype, heaptype), K_ComponentType_sip3f5_(componenttype).
-Kv_ComponentType_sip3f5_(componenttype, baseheaptype) :- ComponentType_sip3f5(baseheaptype, componenttype).
-K_SupertypeOf_sip3f6_(componenttype) :- SupertypeOf_sip3f6(componenttype, _).
-ComponentType_sip3f5_sip3b1(baseheaptype, componenttype) :- Kv_ComponentType_sip3f5_(componenttype, baseheaptype), K_SupertypeOf_sip3f6_(componenttype).
-Kv_HeapAllocation_Type_sip3f4_(baseheaptype, baseheap) :- HeapAllocation_Type_sip3f4(baseheap, baseheaptype).
-K_ComponentType_sip3f5_sip3b1_(baseheaptype) :- ComponentType_sip3f5_sip3b1(baseheaptype, _).
-HeapAllocation_Type_sip3f4_sip3b2(baseheap, baseheaptype) :- Kv_HeapAllocation_Type_sip3f4_(baseheaptype, baseheap), K_ComponentType_sip3f5_sip3b1_(baseheaptype).
-Kv_HeapAllocation_Type_sip3f3_(heaptype, heap) :- HeapAllocation_Type_sip3f3(heap, heaptype).
-K_SupertypeOf_sip3f6_(heaptype) :- SupertypeOf_sip3f6(_, heaptype).
-HeapAllocation_Type_sip3f3_sip3b3(heap, heaptype) :- Kv_HeapAllocation_Type_sip3f3_(heaptype, heap), K_SupertypeOf_sip3f6_(heaptype).
-Kv_VarPointsTo_sip3f2_(heap, from) :- VarPointsTo_sip3f2(heap, from).
-K_HeapAllocation_Type_sip3f3_sip3b3_(heap) :- HeapAllocation_Type_sip3f3_sip3b3(heap, _).
-VarPointsTo_sip3f2_sip3b4(heap, from) :- Kv_VarPointsTo_sip3f2_(heap, from), K_HeapAllocation_Type_sip3f3_sip3b3_(heap).
-Kv_VarPointsTo_sip3f1_(baseheap, base) :- VarPointsTo_sip3f1(baseheap, base).
-K_HeapAllocation_Type_sip3f4_sip3b2_(baseheap) :- HeapAllocation_Type_sip3f4_sip3b2(baseheap, _).
-VarPointsTo_sip3f1_sip3b5(baseheap, base) :- Kv_VarPointsTo_sip3f1_(baseheap, base), K_HeapAllocation_Type_sip3f4_sip3b2_(baseheap).
-Kv_StoreArrayIndex_sip3f0_(from, base, inmethod) :- StoreArrayIndex_sip3f0(from, base, inmethod).
-K_VarPointsTo_sip3f2_sip3b4_(from) :- VarPointsTo_sip3f2_sip3b4(_, from).
-JnKvK_Kv_StoreArrayIndex_sip3f0___K_VarPointsTo_sip3f2_sip3b4__(base, from, inmethod) :- Kv_StoreArrayIndex_sip3f0_(from, base, inmethod), K_VarPointsTo_sip3f2_sip3b4_(from).
-K_VarPointsTo_sip3f1_sip3b5_(base) :- VarPointsTo_sip3f1_sip3b5(_, base).
-StoreArrayIndex_sip3f0_sip3b6(from, base, inmethod) :- JnKvK_Kv_StoreArrayIndex_sip3f0___K_VarPointsTo_sip3f2_sip3b4__(base, from, inmethod), K_VarPointsTo_sip3f1_sip3b5_(base).
-Kv_HeapAllocation_Type_sip3f3_sip3b3_(heap, heaptype) :- HeapAllocation_Type_sip3f3_sip3b3(heap, heaptype).
-Kv_VarPointsTo_sip3f2_sip3b4_(from, heap) :- VarPointsTo_sip3f2_sip3b4(heap, from).
-Kv_StoreArrayIndex_sip3f0_sip3b6_(base, from) :- StoreArrayIndex_sip3f0_sip3b6(from, base, inmethod).
-Kv_VarPointsTo_sip3f1_sip3b5_(base, baseheap) :- VarPointsTo_sip3f1_sip3b5(baseheap, base).
-JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5__(from, baseheap) :- Kv_StoreArrayIndex_sip3f0_sip3b6_(base, from), Kv_VarPointsTo_sip3f1_sip3b5_(base, baseheap).
-JnKvKv_Kv_VarPointsTo_sip3f2_sip3b4___JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5___(heap, baseheap) :- Kv_VarPointsTo_sip3f2_sip3b4_(from, heap), JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5__(from, baseheap).
-JnKvKv_Kv_HeapAllocation_Type_sip3f3_sip3b3___JnKvKv_Kv_VarPointsTo_sip3f2_sip3b4___JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5____(heaptype, baseheap, heap) :- Kv_HeapAllocation_Type_sip3f3_sip3b3_(heap, heaptype), JnKvKv_Kv_VarPointsTo_sip3f2_sip3b4___JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5___(heap, baseheap).
-Kv_SupertypeOf_sip3f6_(componenttype, heaptype) :- SupertypeOf_sip3f6(componenttype, heaptype).
-Kv_ComponentType_sip3f5_sip3b1_(baseheaptype, componenttype) :- ComponentType_sip3f5_sip3b1(baseheaptype, componenttype).
-Kv_HeapAllocation_Type_sip3f4_sip3b2_(baseheaptype, baseheap) :- HeapAllocation_Type_sip3f4_sip3b2(baseheap, baseheaptype).
-JnKvKv_Kv_ComponentType_sip3f5_sip3b1___Kv_HeapAllocation_Type_sip3f4_sip3b2__(componenttype, baseheap) :- Kv_ComponentType_sip3f5_sip3b1_(baseheaptype, componenttype), Kv_HeapAllocation_Type_sip3f4_sip3b2_(baseheaptype, baseheap).
-JnKvKv_Kv_SupertypeOf_sip3f6___JnKvKv_Kv_ComponentType_sip3f5_sip3b1___Kv_HeapAllocation_Type_sip3f4_sip3b2___(heaptype, baseheap) :- Kv_SupertypeOf_sip3f6_(componenttype, heaptype), JnKvKv_Kv_ComponentType_sip3f5_sip3b1___Kv_HeapAllocation_Type_sip3f4_sip3b2__(componenttype, baseheap).
-ArrayIndexPointsTo(baseheap, heap) :- JnKvKv_Kv_HeapAllocation_Type_sip3f3_sip3b3___JnKvKv_Kv_VarPointsTo_sip3f2_sip3b4___JnKvKv_Kv_StoreArrayIndex_sip3f0_sip3b6___Kv_VarPointsTo_sip3f1_sip3b5____(heaptype, baseheap, heap), JnKvKv_Kv_SupertypeOf_sip3f6___JnKvKv_Kv_ComponentType_sip3f5_sip3b1___Kv_HeapAllocation_Type_sip3f4_sip3b2___(heaptype, baseheap).
-Kv_AssignLocal_(inmethod, from, to) :- AssignLocal(from, to, inmethod).
-JnKvK_Kv_AssignLocal___K_Reachable__(from, to) :- Kv_AssignLocal_(inmethod, from, to), K_Reachable_(inmethod).
-VarPointsTo(heap, to) :- Kv_VarPointsTo_(from, heap), JnKvK_Kv_AssignLocal___K_Reachable__(from, to).
-Kv_Instruction_Method_(inMethod, invocation) :- Instruction_Method(invocation, inMethod).
-Instruction_Method_sip5f0(invocation, inMethod) :- Kv_Instruction_Method_(inMethod, invocation), K_Reachable_(inMethod).
-Kv_VirtualMethodInvocation_Base_(invocation, base) :- VirtualMethodInvocation_Base(invocation, base).
-K_Instruction_Method_sip5f0_(invocation) :- Instruction_Method_sip5f0(invocation, _).
-VirtualMethodInvocation_Base_sip5f1(invocation, base) :- Kv_VirtualMethodInvocation_Base_(invocation, base), K_Instruction_Method_sip5f0_(invocation).
-K_VirtualMethodInvocation_Base_sip5f1_(base) :- VirtualMethodInvocation_Base_sip5f1(_, base).
-VarPointsTo_sip5f2(heap, base) :- Kv_VarPointsTo_(base, heap), K_VirtualMethodInvocation_Base_sip5f1_(base).
-K_VarPointsTo_sip5f2_(heap) :- VarPointsTo_sip5f2(heap, _).
-HeapAllocation_Type_sip5f3(heap, heaptype) :- Kv_HeapAllocation_Type_(heap, heaptype), K_VarPointsTo_sip5f2_(heap).
-Kv_VirtualMethodInvocation_SimpleName_(invocation, simplename) :- VirtualMethodInvocation_SimpleName(invocation, simplename).
-JnKvK_Kv_VirtualMethodInvocation_SimpleName___K_Instruction_Method_sip5f0__(invocation, simplename) :- Kv_VirtualMethodInvocation_SimpleName_(invocation, simplename), K_Instruction_Method_sip5f0_(invocation).
-K_VirtualMethodInvocation_Base_sip5f1_(invocation) :- VirtualMethodInvocation_Base_sip5f1(invocation, _).
-VirtualMethodInvocation_SimpleName_sip5f4(invocation, simplename) :- JnKvK_Kv_VirtualMethodInvocation_SimpleName___K_Instruction_Method_sip5f0__(invocation, simplename), K_VirtualMethodInvocation_Base_sip5f1_(invocation).
-Kv_VirtualMethodInvocation_Descriptor_(invocation, descriptor) :- VirtualMethodInvocation_Descriptor(invocation, descriptor).
-JnKvK_Kv_VirtualMethodInvocation_Descriptor___K_Instruction_Method_sip5f0__(invocation, descriptor) :- Kv_VirtualMethodInvocation_Descriptor_(invocation, descriptor), K_Instruction_Method_sip5f0_(invocation).
-JnKvK_JnKvK_Kv_VirtualMethodInvocation_Descriptor___K_Instruction_Method_sip5f0____K_VirtualMethodInvocation_Base_sip5f1__(invocation, descriptor) :- JnKvK_Kv_VirtualMethodInvocation_Descriptor___K_Instruction_Method_sip5f0__(invocation, descriptor), K_VirtualMethodInvocation_Base_sip5f1_(invocation).
-K_VirtualMethodInvocation_SimpleName_sip5f4_(invocation) :- VirtualMethodInvocation_SimpleName_sip5f4(invocation, _).
-VirtualMethodInvocation_Descriptor_sip5f5(invocation, descriptor) :- JnKvK_JnKvK_Kv_VirtualMethodInvocation_Descriptor___K_Instruction_Method_sip5f0____K_VirtualMethodInvocation_Base_sip5f1__(invocation, descriptor), K_VirtualMethodInvocation_SimpleName_sip5f4_(invocation).
-Kv_MethodLookup_(heaptype, simplename, descriptor, toMethod) :- MethodLookup(simplename, descriptor, heaptype, toMethod).
-K_HeapAllocation_Type_sip5f3_(heaptype) :- HeapAllocation_Type_sip5f3(_, heaptype).
-JnKvK_Kv_MethodLookup___K_HeapAllocation_Type_sip5f3__(simplename, descriptor, heaptype, toMethod) :- Kv_MethodLookup_(heaptype, simplename, descriptor, toMethod), K_HeapAllocation_Type_sip5f3_(heaptype).
-K_VirtualMethodInvocation_SimpleName_sip5f4_(simplename) :- VirtualMethodInvocation_SimpleName_sip5f4(_, simplename).
-JnKvK_JnKvK_Kv_MethodLookup___K_HeapAllocation_Type_sip5f3____K_VirtualMethodInvocation_SimpleName_sip5f4__(descriptor, simplename, heaptype, toMethod) :- JnKvK_Kv_MethodLookup___K_HeapAllocation_Type_sip5f3__(simplename, descriptor, heaptype, toMethod), K_VirtualMethodInvocation_SimpleName_sip5f4_(simplename).
-K_VirtualMethodInvocation_Descriptor_sip5f5_(descriptor) :- VirtualMethodInvocation_Descriptor_sip5f5(_, descriptor).
-MethodLookup_sip5f6(simplename, descriptor, heaptype, toMethod) :- JnKvK_JnKvK_Kv_MethodLookup___K_HeapAllocation_Type_sip5f3____K_VirtualMethodInvocation_SimpleName_sip5f4__(descriptor, simplename, heaptype, toMethod), K_VirtualMethodInvocation_Descriptor_sip5f5_(descriptor).
-Kv_ThisVar_(toMethod, this) :- ThisVar(toMethod, this).
-K_MethodLookup_sip5f6_(toMethod) :- MethodLookup_sip5f6(_, _, _, toMethod).
-ThisVar_sip5f7(toMethod, this) :- Kv_ThisVar_(toMethod, this), K_MethodLookup_sip5f6_(toMethod).
-Kv_MethodLookup_sip5f6_(toMethod, simplename, descriptor, heaptype) :- MethodLookup_sip5f6(simplename, descriptor, heaptype, toMethod).
-K_ThisVar_sip5f7_(toMethod) :- ThisVar_sip5f7(toMethod, _).
-MethodLookup_sip5f6_sip5b1(simplename, descriptor, heaptype, toMethod) :- Kv_MethodLookup_sip5f6_(toMethod, simplename, descriptor, heaptype), K_ThisVar_sip5f7_(toMethod).
-Kv_VirtualMethodInvocation_Descriptor_sip5f5_(descriptor, invocation) :- VirtualMethodInvocation_Descriptor_sip5f5(invocation, descriptor).
-K_MethodLookup_sip5f6_sip5b1_(descriptor) :- MethodLookup_sip5f6_sip5b1(_, descriptor, _, _).
-VirtualMethodInvocation_Descriptor_sip5f5_sip5b2(invocation, descriptor) :- Kv_VirtualMethodInvocation_Descriptor_sip5f5_(descriptor, invocation), K_MethodLookup_sip5f6_sip5b1_(descriptor).
-Kv_VirtualMethodInvocation_SimpleName_sip5f4_(simplename, invocation) :- VirtualMethodInvocation_SimpleName_sip5f4(invocation, simplename).
-K_MethodLookup_sip5f6_sip5b1_(simplename) :- MethodLookup_sip5f6_sip5b1(simplename, _, _, _).
-JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4___K_MethodLookup_sip5f6_sip5b1__(invocation, simplename) :- Kv_VirtualMethodInvocation_SimpleName_sip5f4_(simplename, invocation), K_MethodLookup_sip5f6_sip5b1_(simplename).
-K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2_(invocation) :- VirtualMethodInvocation_Descriptor_sip5f5_sip5b2(invocation, _).
-VirtualMethodInvocation_SimpleName_sip5f4_sip5b3(invocation, simplename) :- JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4___K_MethodLookup_sip5f6_sip5b1__(invocation, simplename), K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2_(invocation).
-Kv_HeapAllocation_Type_sip5f3_(heaptype, heap) :- HeapAllocation_Type_sip5f3(heap, heaptype).
-K_MethodLookup_sip5f6_sip5b1_(heaptype) :- MethodLookup_sip5f6_sip5b1(_, _, heaptype, _).
-HeapAllocation_Type_sip5f3_sip5b4(heap, heaptype) :- Kv_HeapAllocation_Type_sip5f3_(heaptype, heap), K_MethodLookup_sip5f6_sip5b1_(heaptype).
-Kv_VarPointsTo_sip5f2_(heap, base) :- VarPointsTo_sip5f2(heap, base).
-K_HeapAllocation_Type_sip5f3_sip5b4_(heap) :- HeapAllocation_Type_sip5f3_sip5b4(heap, _).
-VarPointsTo_sip5f2_sip5b5(heap, base) :- Kv_VarPointsTo_sip5f2_(heap, base), K_HeapAllocation_Type_sip5f3_sip5b4_(heap).
-Kv_VirtualMethodInvocation_Base_sip5f1_(invocation, base) :- VirtualMethodInvocation_Base_sip5f1(invocation, base).
-JnKvK_Kv_VirtualMethodInvocation_Base_sip5f1___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(invocation, base) :- Kv_VirtualMethodInvocation_Base_sip5f1_(invocation, base), K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2_(invocation).
-K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3_(invocation) :- VirtualMethodInvocation_SimpleName_sip5f4_sip5b3(invocation, _).
-JnKvK_JnKvK_Kv_VirtualMethodInvocation_Base_sip5f1___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2____K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3__(base, invocation) :- JnKvK_Kv_VirtualMethodInvocation_Base_sip5f1___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(invocation, base), K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3_(invocation).
-K_VarPointsTo_sip5f2_sip5b5_(base) :- VarPointsTo_sip5f2_sip5b5(_, base).
-VirtualMethodInvocation_Base_sip5f1_sip5b6(invocation, base) :- JnKvK_JnKvK_Kv_VirtualMethodInvocation_Base_sip5f1___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2____K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3__(base, invocation), K_VarPointsTo_sip5f2_sip5b5_(base).
-Kv_Instruction_Method_sip5f0_(invocation, inMethod) :- Instruction_Method_sip5f0(invocation, inMethod).
-JnKvK_Kv_Instruction_Method_sip5f0___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(invocation, inMethod) :- Kv_Instruction_Method_sip5f0_(invocation, inMethod), K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2_(invocation).
-JnKvK_JnKvK_Kv_Instruction_Method_sip5f0___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2____K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3__(invocation, inMethod) :- JnKvK_Kv_Instruction_Method_sip5f0___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(invocation, inMethod), K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3_(invocation).
-K_VirtualMethodInvocation_Base_sip5f1_sip5b6_(invocation) :- VirtualMethodInvocation_Base_sip5f1_sip5b6(invocation, _).
-Instruction_Method_sip5f0_sip5b7(invocation, inMethod) :- JnKvK_JnKvK_Kv_Instruction_Method_sip5f0___K_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2____K_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3__(invocation, inMethod), K_VirtualMethodInvocation_Base_sip5f1_sip5b6_(invocation).
-Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3_(invocation, simplename) :- VirtualMethodInvocation_SimpleName_sip5f4_sip5b3(invocation, simplename).
-K_Instruction_Method_sip5f0_sip5b7_(invocation) :- Instruction_Method_sip5f0_sip5b7(invocation, inMethod).
-JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7__(invocation, simplename) :- Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3_(invocation, simplename), K_Instruction_Method_sip5f0_sip5b7_(invocation).
-Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6_(base, invocation) :- VirtualMethodInvocation_Base_sip5f1_sip5b6(invocation, base).
-Kv_VarPointsTo_sip5f2_sip5b5_(base, heap) :- VarPointsTo_sip5f2_sip5b5(heap, base).
-JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5__(invocation, heap) :- Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6_(base, invocation), Kv_VarPointsTo_sip5f2_sip5b5_(base, heap).
-JnKvKv_JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7____JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5___(invocation, simplename, heap) :- JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7__(invocation, simplename), JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5__(invocation, heap).
-Kv_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2_(invocation, descriptor) :- VirtualMethodInvocation_Descriptor_sip5f5_sip5b2(invocation, descriptor).
-JnKvKv_JnKvKv_JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7____JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5_____Kv_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(simplename, descriptor, heap) :- JnKvKv_JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7____JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5___(invocation, simplename, heap), Kv_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2_(invocation, descriptor).
-Kv_MethodLookup_sip5f6_sip5b1_(heaptype, simplename, descriptor, toMethod) :- MethodLookup_sip5f6_sip5b1(simplename, descriptor, heaptype, toMethod).
-Kv_HeapAllocation_Type_sip5f3_sip5b4_(heaptype, heap) :- HeapAllocation_Type_sip5f3_sip5b4(heap, heaptype).
-JnKvKv_Kv_MethodLookup_sip5f6_sip5b1___Kv_HeapAllocation_Type_sip5f3_sip5b4__(toMethod, simplename, descriptor, heap) :- Kv_MethodLookup_sip5f6_sip5b1_(heaptype, simplename, descriptor, toMethod), Kv_HeapAllocation_Type_sip5f3_sip5b4_(heaptype, heap).
-Kv_ThisVar_sip5f7_(toMethod, this) :- ThisVar_sip5f7(toMethod, this).
-JnKvKv_JnKvKv_Kv_MethodLookup_sip5f6_sip5b1___Kv_HeapAllocation_Type_sip5f3_sip5b4____Kv_ThisVar_sip5f7__(simplename, descriptor, heap, this) :- JnKvKv_Kv_MethodLookup_sip5f6_sip5b1___Kv_HeapAllocation_Type_sip5f3_sip5b4__(toMethod, simplename, descriptor, heap), Kv_ThisVar_sip5f7_(toMethod, this).
-VarPointsTo(heap, this) :- JnKvKv_JnKvKv_JnKvK_Kv_VirtualMethodInvocation_SimpleName_sip5f4_sip5b3___K_Instruction_Method_sip5f0_sip5b7____JnKvKv_Kv_VirtualMethodInvocation_Base_sip5f1_sip5b6___Kv_VarPointsTo_sip5f2_sip5b5_____Kv_VirtualMethodInvocation_Descriptor_sip5f5_sip5b2__(simplename, descriptor, heap), JnKvKv_JnKvKv_Kv_MethodLookup_sip5f6_sip5b1___Kv_HeapAllocation_Type_sip5f3_sip5b4____Kv_ThisVar_sip5f7__(simplename, descriptor, heap, this).
-Kv_AssignCast_(inmethod, type, from, to) :- AssignCast(type, from, to, inmethod).
-AssignCast_sip6f0(type, from, to, inmethod) :- Kv_AssignCast_(inmethod, type, from, to), K_Reachable_(inmethod).
-K_AssignCast_sip6f0_(from) :- AssignCast_sip6f0(_, from, _, _).
-VarPointsTo_sip6f1(heap, from) :- Kv_VarPointsTo_(from, heap), K_AssignCast_sip6f0_(from).
-K_VarPointsTo_sip6f1_(heap) :- VarPointsTo_sip6f1(heap, _).
-HeapAllocation_Type_sip6f2(heap, heaptype) :- Kv_HeapAllocation_Type_(heap, heaptype), K_VarPointsTo_sip6f1_(heap).
-K_AssignCast_sip6f0_(type) :- AssignCast_sip6f0(type, _, _, _).
-JnKvK_Kv_SupertypeOf___K_AssignCast_sip6f0__(heaptype, type) :- Kv_SupertypeOf_(type, heaptype), K_AssignCast_sip6f0_(type).
-K_HeapAllocation_Type_sip6f2_(heaptype) :- HeapAllocation_Type_sip6f2(_, heaptype).
-SupertypeOf_sip6f3(type, heaptype) :- JnKvK_Kv_SupertypeOf___K_AssignCast_sip6f0__(heaptype, type), K_HeapAllocation_Type_sip6f2_(heaptype).
-Kv_HeapAllocation_Type_sip6f2_(heaptype, heap) :- HeapAllocation_Type_sip6f2(heap, heaptype).
-K_SupertypeOf_sip6f3_(heaptype) :- SupertypeOf_sip6f3(_, heaptype).
-HeapAllocation_Type_sip6f2_sip6b1(heap, heaptype) :- Kv_HeapAllocation_Type_sip6f2_(heaptype, heap), K_SupertypeOf_sip6f3_(heaptype).
-Kv_VarPointsTo_sip6f1_(heap, from) :- VarPointsTo_sip6f1(heap, from).
-K_HeapAllocation_Type_sip6f2_sip6b1_(heap) :- HeapAllocation_Type_sip6f2_sip6b1(heap, _).
-VarPointsTo_sip6f1_sip6b2(heap, from) :- Kv_VarPointsTo_sip6f1_(heap, from), K_HeapAllocation_Type_sip6f2_sip6b1_(heap).
-Kv_AssignCast_sip6f0_(type, from, to, inmethod) :- AssignCast_sip6f0(type, from, to, inmethod).
-K_SupertypeOf_sip6f3_(type) :- SupertypeOf_sip6f3(type, _).
-JnKvK_Kv_AssignCast_sip6f0___K_SupertypeOf_sip6f3__(from, type, to, inmethod) :- Kv_AssignCast_sip6f0_(type, from, to, inmethod), K_SupertypeOf_sip6f3_(type).
-K_VarPointsTo_sip6f1_sip6b2_(from) :- VarPointsTo_sip6f1_sip6b2(_, from).
-AssignCast_sip6f0_sip6b3(type, from, to, inmethod) :- JnKvK_Kv_AssignCast_sip6f0___K_SupertypeOf_sip6f3__(from, type, to, inmethod), K_VarPointsTo_sip6f1_sip6b2_(from).
-Kv_AssignCast_sip6f0_sip6b3_(from, type, to) :- AssignCast_sip6f0_sip6b3(type, from, to, inmethod).
-Kv_VarPointsTo_sip6f1_sip6b2_(from, heap) :- VarPointsTo_sip6f1_sip6b2(heap, from).
-JnKvKv_Kv_AssignCast_sip6f0_sip6b3___Kv_VarPointsTo_sip6f1_sip6b2__(type, heap, to) :- Kv_AssignCast_sip6f0_sip6b3_(from, type, to), Kv_VarPointsTo_sip6f1_sip6b2_(from, heap).
-Kv_SupertypeOf_sip6f3_(heaptype, type) :- SupertypeOf_sip6f3(type, heaptype).
-Kv_HeapAllocation_Type_sip6f2_sip6b1_(heaptype, heap) :- HeapAllocation_Type_sip6f2_sip6b1(heap, heaptype).
-JnKvKv_Kv_SupertypeOf_sip6f3___Kv_HeapAllocation_Type_sip6f2_sip6b1__(type, heap) :- Kv_SupertypeOf_sip6f3_(heaptype, type), Kv_HeapAllocation_Type_sip6f2_sip6b1_(heaptype, heap).
-VarPointsTo(heap, to) :- JnKvKv_Kv_AssignCast_sip6f0_sip6b3___Kv_VarPointsTo_sip6f1_sip6b2__(type, heap, to), JnKvKv_Kv_SupertypeOf_sip6f3___Kv_HeapAllocation_Type_sip6f2_sip6b1__(type, heap).
-Kv_Assign_(from, to) :- Assign(from, to).
-VarPointsTo(heap, to) :- Kv_VarPointsTo_(from, heap), Kv_Assign_(from, to).
-Kv_StoreStaticField_(inmethod, from, fld) :- StoreStaticField(from, fld, inmethod).
-JnKvK_Kv_StoreStaticField___K_Reachable__(from, fld) :- Kv_StoreStaticField_(inmethod, from, fld), K_Reachable_(inmethod).
-StaticFieldPointsTo(heap, fld) :- Kv_VarPointsTo_(from, heap), JnKvK_Kv_StoreStaticField___K_Reachable__(from, fld).
-Kv_StaticFieldPointsTo_(fld, heap) :- StaticFieldPointsTo(heap, fld).
-Kv_LoadStaticField_(inmethod, fld, to) :- LoadStaticField(fld, to, inmethod).
-JnKvK_Kv_LoadStaticField___K_Reachable__(fld, to) :- Kv_LoadStaticField_(inmethod, fld, to), K_Reachable_(inmethod).
-VarPointsTo(heap, to) :- Kv_StaticFieldPointsTo_(fld, heap), JnKvK_Kv_LoadStaticField___K_Reachable__(fld, to).
-Instruction_Method_sip10f0(invocation, inmethod) :- JnKvK_Kv_Instruction_Method___K_Reachable__(invocation, inmethod).
-Kv_SpecialMethodInvocation_Base_(invocation, base) :- SpecialMethodInvocation_Base(invocation, base).
-K_Instruction_Method_sip10f0_(invocation) :- Instruction_Method_sip10f0(invocation, _).
-SpecialMethodInvocation_Base_sip10f1(invocation, base) :- Kv_SpecialMethodInvocation_Base_(invocation, base), K_Instruction_Method_sip10f0_(invocation).
-K_SpecialMethodInvocation_Base_sip10f1_(base) :- SpecialMethodInvocation_Base_sip10f1(_, base).
-VarPointsTo_sip10f2(heap, base) :- Kv_VarPointsTo_(base, heap), K_SpecialMethodInvocation_Base_sip10f1_(base).
-Kv_MethodInvocation_Method_(invocation, tomethod) :- MethodInvocation_Method(invocation, tomethod).
-JnKvK_Kv_MethodInvocation_Method___K_Instruction_Method_sip10f0__(invocation, tomethod) :- Kv_MethodInvocation_Method_(invocation, tomethod), K_Instruction_Method_sip10f0_(invocation).
-K_SpecialMethodInvocation_Base_sip10f1_(invocation) :- SpecialMethodInvocation_Base_sip10f1(invocation, _).
-MethodInvocation_Method_sip10f3(invocation, tomethod) :- JnKvK_Kv_MethodInvocation_Method___K_Instruction_Method_sip10f0__(invocation, tomethod), K_SpecialMethodInvocation_Base_sip10f1_(invocation).
-K_MethodInvocation_Method_sip10f3_(tomethod) :- MethodInvocation_Method_sip10f3(_, tomethod).
-ThisVar_sip10f4(tomethod, this) :- Kv_ThisVar_(tomethod, this), K_MethodInvocation_Method_sip10f3_(tomethod).
-Kv_MethodInvocation_Method_sip10f3_(tomethod, invocation) :- MethodInvocation_Method_sip10f3(invocation, tomethod).
-K_ThisVar_sip10f4_(tomethod) :- ThisVar_sip10f4(tomethod, _).
-MethodInvocation_Method_sip10f3_sip10b1(invocation, tomethod) :- Kv_MethodInvocation_Method_sip10f3_(tomethod, invocation), K_ThisVar_sip10f4_(tomethod).
-Kv_SpecialMethodInvocation_Base_sip10f1_(invocation, base) :- SpecialMethodInvocation_Base_sip10f1(invocation, base).
-K_MethodInvocation_Method_sip10f3_sip10b1_(invocation) :- MethodInvocation_Method_sip10f3_sip10b1(invocation, _).
-JnKvK_Kv_SpecialMethodInvocation_Base_sip10f1___K_MethodInvocation_Method_sip10f3_sip10b1__(base, invocation) :- Kv_SpecialMethodInvocation_Base_sip10f1_(invocation, base), K_MethodInvocation_Method_sip10f3_sip10b1_(invocation).
-K_VarPointsTo_sip10f2_(base) :- VarPointsTo_sip10f2(_, base).
-SpecialMethodInvocation_Base_sip10f1_sip10b3(invocation, base) :- JnKvK_Kv_SpecialMethodInvocation_Base_sip10f1___K_MethodInvocation_Method_sip10f3_sip10b1__(base, invocation), K_VarPointsTo_sip10f2_(base).
-Kv_Instruction_Method_sip10f0_(invocation, inmethod) :- Instruction_Method_sip10f0(invocation, inmethod).
-JnKvK_Kv_Instruction_Method_sip10f0___K_MethodInvocation_Method_sip10f3_sip10b1__(invocation, inmethod) :- Kv_Instruction_Method_sip10f0_(invocation, inmethod), K_MethodInvocation_Method_sip10f3_sip10b1_(invocation).
-K_SpecialMethodInvocation_Base_sip10f1_sip10b3_(invocation) :- SpecialMethodInvocation_Base_sip10f1_sip10b3(invocation, _).
-Instruction_Method_sip10f0_sip10b4(invocation, inmethod) :- JnKvK_Kv_Instruction_Method_sip10f0___K_MethodInvocation_Method_sip10f3_sip10b1__(invocation, inmethod), K_SpecialMethodInvocation_Base_sip10f1_sip10b3_(invocation).
-K_Instruction_Method_sip10f0_sip10b4_(invocation) :- Instruction_Method_sip10f0_sip10b4(invocation, inmethod).
-Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3_(base, invocation) :- SpecialMethodInvocation_Base_sip10f1_sip10b3(invocation, base).
-Kv_VarPointsTo_sip10f2_(base, heap) :- VarPointsTo_sip10f2(heap, base).
-JnKvKv_Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3___Kv_VarPointsTo_sip10f2__(invocation, heap) :- Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3_(base, invocation), Kv_VarPointsTo_sip10f2_(base, heap).
-JnKKv_K_Instruction_Method_sip10f0_sip10b4___JnKvKv_Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3___Kv_VarPointsTo_sip10f2___(invocation, heap) :- K_Instruction_Method_sip10f0_sip10b4_(invocation), JnKvKv_Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3___Kv_VarPointsTo_sip10f2__(invocation, heap).
-Kv_MethodInvocation_Method_sip10f3_sip10b1_(tomethod, invocation) :- MethodInvocation_Method_sip10f3_sip10b1(invocation, tomethod).
-Kv_ThisVar_sip10f4_(tomethod, this) :- ThisVar_sip10f4(tomethod, this).
-JnKvKv_Kv_MethodInvocation_Method_sip10f3_sip10b1___Kv_ThisVar_sip10f4__(invocation, this) :- Kv_MethodInvocation_Method_sip10f3_sip10b1_(tomethod, invocation), Kv_ThisVar_sip10f4_(tomethod, this).
-VarPointsTo(heap, this) :- JnKKv_K_Instruction_Method_sip10f0_sip10b4___JnKvKv_Kv_SpecialMethodInvocation_Base_sip10f1_sip10b3___Kv_VarPointsTo_sip10f2___(invocation, heap), JnKvKv_Kv_MethodInvocation_Method_sip10f3_sip10b1___Kv_ThisVar_sip10f4__(invocation, this).
+// strata #1 (recursive)
+kv3(inMethod, invocation) :- Instruction_Method(invocation, inMethod).
+Instruction_Method_sip0f0(invocation, inMethod) :- kv3(inMethod, invocation), k_1(inMethod).
+kv5(invocation, base) :- VirtualMethodInvocation_Base(invocation, base).
+k_6(invocation) :- Instruction_Method_sip0f0(invocation, _).
+VirtualMethodInvocation_Base_sip0f1(invocation, base) :- kv5(invocation, base), k_6(invocation).
+kv8(base, heap) :- VarPointsTo(heap, base).
+k_9(base) :- VirtualMethodInvocation_Base_sip0f1(_, base).
+VarPointsTo_sip0f2(heap, base) :- kv8(base, heap), k_9(base).
+kv11(heap, heaptype) :- HeapAllocation_Type(heap, heaptype).
+k_12(heap) :- VarPointsTo_sip0f2(heap, _).
+HeapAllocation_Type_sip0f3(heap, heaptype) :- kv11(heap, heaptype), k_12(heap).
+kv14(invocation, simplename) :- VirtualMethodInvocation_SimpleName(invocation, simplename).
+jn15(invocation, simplename) :- kv14(invocation, simplename), k_6(invocation).
+k_16(invocation) :- VirtualMethodInvocation_Base_sip0f1(invocation, _).
+VirtualMethodInvocation_SimpleName_sip0f4(invocation, simplename) :- jn15(invocation, simplename), k_16(invocation).
+kv18(invocation, descriptor) :- VirtualMethodInvocation_Descriptor(invocation, descriptor).
+jn19(invocation, descriptor) :- kv18(invocation, descriptor), k_6(invocation).
+jn20(invocation, descriptor) :- jn19(invocation, descriptor), k_16(invocation).
+k_21(invocation) :- VirtualMethodInvocation_SimpleName_sip0f4(invocation, _).
+VirtualMethodInvocation_Descriptor_sip0f5(invocation, descriptor) :- jn20(invocation, descriptor), k_21(invocation).
+kv23(heaptype, simplename, descriptor, toMethod) :- MethodLookup(simplename, descriptor, heaptype, toMethod).
+k_24(heaptype) :- HeapAllocation_Type_sip0f3(_, heaptype).
+jn25(simplename, descriptor, heaptype, toMethod) :- kv23(heaptype, simplename, descriptor, toMethod), k_24(heaptype).
+k_26(simplename) :- VirtualMethodInvocation_SimpleName_sip0f4(_, simplename).
+jn27(descriptor, simplename, heaptype, toMethod) :- jn25(simplename, descriptor, heaptype, toMethod), k_26(simplename).
+k_28(descriptor) :- VirtualMethodInvocation_Descriptor_sip0f5(_, descriptor).
+MethodLookup_sip0f6(simplename, descriptor, heaptype, toMethod) :- jn27(descriptor, simplename, heaptype, toMethod), k_28(descriptor).
+kv30(toMethod, this) :- ThisVar(toMethod, this).
+k_31(toMethod) :- MethodLookup_sip0f6(_, _, _, toMethod).
+ThisVar_sip0f7(toMethod, this) :- kv30(toMethod, this), k_31(toMethod).
+kv33(toMethod, simplename, descriptor, heaptype) :- MethodLookup_sip0f6(simplename, descriptor, heaptype, toMethod).
+k_34(toMethod) :- ThisVar_sip0f7(toMethod, _).
+MethodLookup_sip0f6_sip0b1(simplename, descriptor, heaptype, toMethod) :- kv33(toMethod, simplename, descriptor, heaptype), k_34(toMethod).
+kv36(descriptor, invocation) :- VirtualMethodInvocation_Descriptor_sip0f5(invocation, descriptor).
+k_37(descriptor) :- MethodLookup_sip0f6_sip0b1(_, descriptor, _, _).
+VirtualMethodInvocation_Descriptor_sip0f5_sip0b2(invocation, descriptor) :- kv36(descriptor, invocation), k_37(descriptor).
+kv39(simplename, invocation) :- VirtualMethodInvocation_SimpleName_sip0f4(invocation, simplename).
+k_40(simplename) :- MethodLookup_sip0f6_sip0b1(simplename, _, _, _).
+jn41(invocation, simplename) :- kv39(simplename, invocation), k_40(simplename).
+k_42(invocation) :- VirtualMethodInvocation_Descriptor_sip0f5_sip0b2(invocation, _).
+VirtualMethodInvocation_SimpleName_sip0f4_sip0b3(invocation, simplename) :- jn41(invocation, simplename), k_42(invocation).
+kv44(heaptype, heap) :- HeapAllocation_Type_sip0f3(heap, heaptype).
+k_45(heaptype) :- MethodLookup_sip0f6_sip0b1(_, _, heaptype, _).
+HeapAllocation_Type_sip0f3_sip0b4(heap, heaptype) :- kv44(heaptype, heap), k_45(heaptype).
+kv47(heap, base) :- VarPointsTo_sip0f2(heap, base).
+k_48(heap) :- HeapAllocation_Type_sip0f3_sip0b4(heap, _).
+VarPointsTo_sip0f2_sip0b5(heap, base) :- kv47(heap, base), k_48(heap).
+kv50(invocation, base) :- VirtualMethodInvocation_Base_sip0f1(invocation, base).
+jn51(invocation, base) :- kv50(invocation, base), k_42(invocation).
+k_52(invocation) :- VirtualMethodInvocation_SimpleName_sip0f4_sip0b3(invocation, _).
+jn53(base, invocation) :- jn51(invocation, base), k_52(invocation).
+k_54(base) :- VarPointsTo_sip0f2_sip0b5(_, base).
+VirtualMethodInvocation_Base_sip0f1_sip0b6(invocation, base) :- jn53(base, invocation), k_54(base).
+kv56(invocation, inMethod) :- Instruction_Method_sip0f0(invocation, inMethod).
+jn57(invocation, inMethod) :- kv56(invocation, inMethod), k_42(invocation).
+jn58(invocation, inMethod) :- jn57(invocation, inMethod), k_52(invocation).
+k_59(invocation) :- VirtualMethodInvocation_Base_sip0f1_sip0b6(invocation, _).
+Instruction_Method_sip0f0_sip0b7(invocation, inMethod) :- jn58(invocation, inMethod), k_59(invocation).
+kv61(invocation, simplename) :- VirtualMethodInvocation_SimpleName_sip0f4_sip0b3(invocation, simplename).
+k_62(invocation) :- Instruction_Method_sip0f0_sip0b7(invocation, _).
+jn63(invocation, simplename) :- kv61(invocation, simplename), k_62(invocation).
+kv64(base, invocation) :- VirtualMethodInvocation_Base_sip0f1_sip0b6(invocation, base).
+kv65(base, heap) :- VarPointsTo_sip0f2_sip0b5(heap, base).
+jn66(invocation, heap) :- kv64(_, invocation), kv65(_, heap).
+jn67(invocation, simplename, heap) :- jn63(invocation, simplename), jn66(invocation, heap).
+kv68(invocation, descriptor) :- VirtualMethodInvocation_Descriptor_sip0f5_sip0b2(invocation, descriptor).
+jn69(simplename, descriptor, heap) :- jn67(_, simplename, heap), kv68(_, descriptor).
+kv70(heaptype, simplename, descriptor, toMethod) :- MethodLookup_sip0f6_sip0b1(simplename, descriptor, heaptype, toMethod).
+kv71(heaptype, heap) :- HeapAllocation_Type_sip0f3_sip0b4(heap, heaptype).
+jn72(toMethod, simplename, descriptor, heap) :- kv70(_, simplename, descriptor, toMethod), kv71(_, heap).
+kv73(toMethod, this) :- ThisVar_sip0f7(toMethod, this).
+jn74(simplename, descriptor, heap, this) :- jn72(_, simplename, descriptor, heap), kv73(_, this).
+VarPointsTo(heap, this) :- jn69(_, _, heap), jn74(_, _, heap, this).
+kv76(inmethod, from, base, fld) :- StoreInstanceField(from, base, fld, inmethod).
+StoreInstanceField_sip1f0(from, base, fld, inmethod) :- kv76(inmethod, from, base, fld), k_1(inmethod).
+k_78(from) :- StoreInstanceField_sip1f0(from, _, _, _).
+VarPointsTo_sip1f1(heap, from) :- kv8(from, heap), k_78(from).
+k_80(base) :- StoreInstanceField_sip1f0(_, base, _, _).
+VarPointsTo_sip1f2(baseheap, base) :- kv8(base, baseheap), k_80(base).
+kv82(base, from, fld, inmethod) :- StoreInstanceField_sip1f0(from, base, fld, inmethod).
+k_83(base) :- VarPointsTo_sip1f2(_, base).
+jn84(from, base, fld, inmethod) :- kv82(base, from, fld, inmethod), k_83(base).
+k_85(from) :- VarPointsTo_sip1f1(_, from).
+StoreInstanceField_sip1f0_sip1b2(from, base, fld, inmethod) :- jn84(from, base, fld, inmethod), k_85(from).
+kv87(from, base, fld) :- StoreInstanceField_sip1f0_sip1b2(from, base, fld, _).
+kv88(from, heap) :- VarPointsTo_sip1f1(heap, from).
+jn89(base, fld, heap) :- kv87(_, base, fld), kv88(_, heap).
+kv90(base, baseheap) :- VarPointsTo_sip1f2(baseheap, base).
+InstanceFieldPointsTo(heap, fld, baseheap) :- jn89(_, fld, heap), kv90(_, baseheap).
+kv92(inmethod, base, signature, to) :- LoadInstanceField(base, signature, to, inmethod).
+LoadInstanceField_sip2f0(base, signature, to, inmethod) :- kv92(inmethod, base, signature, to), k_1(inmethod).
+k_94(base) :- LoadInstanceField_sip2f0(base, _, _, _).
+VarPointsTo_sip2f1(baseheap, base) :- kv8(base, baseheap), k_94(base).
+kv96(signature, baseheap, heap) :- InstanceFieldPointsTo(heap, signature, baseheap).
+k_97(signature) :- LoadInstanceField_sip2f0(_, signature, _, _).
+jn98(baseheap, heap, signature) :- kv96(signature, baseheap, heap), k_97(signature).
+k_99(baseheap) :- VarPointsTo_sip2f1(baseheap, _).
+InstanceFieldPointsTo_sip2f2(heap, signature, baseheap) :- jn98(baseheap, heap, signature), k_99(baseheap).
+kv101(baseheap, base) :- VarPointsTo_sip2f1(baseheap, base).
+k_102(baseheap) :- InstanceFieldPointsTo_sip2f2(_, _, baseheap).
+VarPointsTo_sip2f1_sip2b1(baseheap, base) :- kv101(baseheap, base), k_102(baseheap).
+kv104(signature, base, to, inmethod) :- LoadInstanceField_sip2f0(base, signature, to, inmethod).
+k_105(signature) :- InstanceFieldPointsTo_sip2f2(_, signature, _).
+jn106(base, signature, to, inmethod) :- kv104(signature, base, to, inmethod), k_105(signature).
+k_107(base) :- VarPointsTo_sip2f1_sip2b1(_, base).
+LoadInstanceField_sip2f0_sip2b2(base, signature, to, inmethod) :- jn106(base, signature, to, inmethod), k_107(base).
+kv109(base, signature, to) :- LoadInstanceField_sip2f0_sip2b2(base, signature, to, _).
+kv110(base, baseheap) :- VarPointsTo_sip2f1_sip2b1(baseheap, base).
+jn111(signature, baseheap, to) :- kv109(_, signature, to), kv110(_, baseheap).
+kv112(signature, baseheap, heap) :- InstanceFieldPointsTo_sip2f2(heap, signature, baseheap).
+VarPointsTo(heap, to) :- jn111(_, _, to), kv112(_, _, heap).
+kv114(inmethod, from, base) :- StoreArrayIndex(from, base, inmethod).
+StoreArrayIndex_sip3f0(from, base, inmethod) :- kv114(inmethod, from, base), k_1(inmethod).
+k_116(base) :- StoreArrayIndex_sip3f0(_, base, _).
+VarPointsTo_sip3f1(baseheap, base) :- kv8(base, baseheap), k_116(base).
+k_118(from) :- StoreArrayIndex_sip3f0(from, _, _).
+VarPointsTo_sip3f2(heap, from) :- kv8(from, heap), k_118(from).
+k_120(heap) :- VarPointsTo_sip3f2(heap, _).
+HeapAllocation_Type_sip3f3(heap, heaptype) :- kv11(heap, heaptype), k_120(heap).
+k_122(baseheap) :- VarPointsTo_sip3f1(baseheap, _).
+HeapAllocation_Type_sip3f4(baseheap, baseheaptype) :- kv11(baseheap, baseheaptype), k_122(baseheap).
+kv124(baseheaptype, componenttype) :- ComponentType(baseheaptype, componenttype).
+k_125(baseheaptype) :- HeapAllocation_Type_sip3f4(_, baseheaptype).
+ComponentType_sip3f5(baseheaptype, componenttype) :- kv124(baseheaptype, componenttype), k_125(baseheaptype).
+kv127(heaptype, componenttype) :- SupertypeOf(componenttype, heaptype).
+k_128(heaptype) :- HeapAllocation_Type_sip3f3(_, heaptype).
+jn129(componenttype, heaptype) :- kv127(heaptype, componenttype), k_128(heaptype).
+k_130(componenttype) :- ComponentType_sip3f5(_, componenttype).
+SupertypeOf_sip3f6(componenttype, heaptype) :- jn129(componenttype, heaptype), k_130(componenttype).
+kv132(componenttype, baseheaptype) :- ComponentType_sip3f5(baseheaptype, componenttype).
+k_133(componenttype) :- SupertypeOf_sip3f6(componenttype, _).
+ComponentType_sip3f5_sip3b1(baseheaptype, componenttype) :- kv132(componenttype, baseheaptype), k_133(componenttype).
+kv135(baseheaptype, baseheap) :- HeapAllocation_Type_sip3f4(baseheap, baseheaptype).
+k_136(baseheaptype) :- ComponentType_sip3f5_sip3b1(baseheaptype, _).
+HeapAllocation_Type_sip3f4_sip3b2(baseheap, baseheaptype) :- kv135(baseheaptype, baseheap), k_136(baseheaptype).
+kv138(heaptype, heap) :- HeapAllocation_Type_sip3f3(heap, heaptype).
+k_139(heaptype) :- SupertypeOf_sip3f6(_, heaptype).
+HeapAllocation_Type_sip3f3_sip3b3(heap, heaptype) :- kv138(heaptype, heap), k_139(heaptype).
+kv141(heap, from) :- VarPointsTo_sip3f2(heap, from).
+k_142(heap) :- HeapAllocation_Type_sip3f3_sip3b3(heap, _).
+VarPointsTo_sip3f2_sip3b4(heap, from) :- kv141(heap, from), k_142(heap).
+kv144(baseheap, base) :- VarPointsTo_sip3f1(baseheap, base).
+k_145(baseheap) :- HeapAllocation_Type_sip3f4_sip3b2(baseheap, _).
+VarPointsTo_sip3f1_sip3b5(baseheap, base) :- kv144(baseheap, base), k_145(baseheap).
+kv147(from, base, inmethod) :- StoreArrayIndex_sip3f0(from, base, inmethod).
+k_148(from) :- VarPointsTo_sip3f2_sip3b4(_, from).
+jn149(base, from, inmethod) :- kv147(from, base, inmethod), k_148(from).
+k_150(base) :- VarPointsTo_sip3f1_sip3b5(_, base).
+StoreArrayIndex_sip3f0_sip3b6(from, base, inmethod) :- jn149(base, from, inmethod), k_150(base).
+kv152(heap, heaptype) :- HeapAllocation_Type_sip3f3_sip3b3(heap, heaptype).
+kv153(from, heap) :- VarPointsTo_sip3f2_sip3b4(heap, from).
+kv154(base, from) :- StoreArrayIndex_sip3f0_sip3b6(from, base, _).
+kv155(base, baseheap) :- VarPointsTo_sip3f1_sip3b5(baseheap, base).
+jn156(from, baseheap) :- kv154(_, from), kv155(_, baseheap).
+jn157(heap, baseheap) :- kv153(_, heap), jn156(_, baseheap).
+jn158(heaptype, baseheap, heap) :- kv152(heap, heaptype), jn157(heap, baseheap).
+kv159(componenttype, heaptype) :- SupertypeOf_sip3f6(componenttype, heaptype).
+kv160(baseheaptype, componenttype) :- ComponentType_sip3f5_sip3b1(baseheaptype, componenttype).
+kv161(baseheaptype, baseheap) :- HeapAllocation_Type_sip3f4_sip3b2(baseheap, baseheaptype).
+jn162(componenttype, baseheap) :- kv160(_, componenttype), kv161(_, baseheap).
+jn163(heaptype, baseheap) :- kv159(_, heaptype), jn162(_, baseheap).
+ArrayIndexPointsTo(baseheap, heap) :- jn158(_, baseheap, heap), jn163(_, baseheap).
+kv165(inmethod, base, to) :- LoadArrayIndex(base, to, inmethod).
+LoadArrayIndex_sip4f0(base, to, inmethod) :- kv165(inmethod, base, to), k_1(inmethod).
+k_167(base) :- LoadArrayIndex_sip4f0(base, _, _).
+VarPointsTo_sip4f1(baseheap, base) :- kv8(base, baseheap), k_167(base).
+kv169(baseheap, heap) :- ArrayIndexPointsTo(baseheap, heap).
+k_170(baseheap) :- VarPointsTo_sip4f1(baseheap, _).
+ArrayIndexPointsTo_sip4f2(baseheap, heap) :- kv169(baseheap, heap), k_170(baseheap).
+kv172(to, type) :- Var_Type(to, type).
+k_173(to) :- LoadArrayIndex_sip4f0(_, to, _).
+Var_Type_sip4f3(to, type) :- kv172(to, type), k_173(to).
+jn175(baseheap, baseheaptype) :- kv11(baseheap, baseheaptype), k_170(baseheap).
+k_176(baseheap) :- ArrayIndexPointsTo_sip4f2(baseheap, _).
+HeapAllocation_Type_sip4f4(baseheap, baseheaptype) :- jn175(baseheap, baseheaptype), k_176(baseheap).
+k_178(baseheaptype) :- HeapAllocation_Type_sip4f4(_, baseheaptype).
+ComponentType_sip4f5(baseheaptype, basecomponenttype) :- kv124(baseheaptype, basecomponenttype), k_178(baseheaptype).
+kv180(type, basecomponenttype) :- SupertypeOf(type, basecomponenttype).
+k_181(type) :- Var_Type_sip4f3(_, type).
+jn182(basecomponenttype, type) :- kv180(type, basecomponenttype), k_181(type).
+k_183(basecomponenttype) :- ComponentType_sip4f5(_, basecomponenttype).
+SupertypeOf_sip4f6(type, basecomponenttype) :- jn182(basecomponenttype, type), k_183(basecomponenttype).
+kv185(basecomponenttype, baseheaptype) :- ComponentType_sip4f5(baseheaptype, basecomponenttype).
+k_186(basecomponenttype) :- SupertypeOf_sip4f6(_, basecomponenttype).
+ComponentType_sip4f5_sip4b1(baseheaptype, basecomponenttype) :- kv185(basecomponenttype, baseheaptype), k_186(basecomponenttype).
+kv188(baseheaptype, baseheap) :- HeapAllocation_Type_sip4f4(baseheap, baseheaptype).
+k_189(baseheaptype) :- ComponentType_sip4f5_sip4b1(baseheaptype, _).
+HeapAllocation_Type_sip4f4_sip4b2(baseheap, baseheaptype) :- kv188(baseheaptype, baseheap), k_189(baseheaptype).
+kv191(type, to) :- Var_Type_sip4f3(to, type).
+k_192(type) :- SupertypeOf_sip4f6(type, _).
+Var_Type_sip4f3_sip4b3(to, type) :- kv191(type, to), k_192(type).
+kv194(baseheap, heap) :- ArrayIndexPointsTo_sip4f2(baseheap, heap).
+k_195(baseheap) :- HeapAllocation_Type_sip4f4_sip4b2(baseheap, _).
+ArrayIndexPointsTo_sip4f2_sip4b4(baseheap, heap) :- kv194(baseheap, heap), k_195(baseheap).
+kv197(baseheap, base) :- VarPointsTo_sip4f1(baseheap, base).
+jn198(baseheap, base) :- kv197(baseheap, base), k_195(baseheap).
+k_199(baseheap) :- ArrayIndexPointsTo_sip4f2_sip4b4(baseheap, _).
+VarPointsTo_sip4f1_sip4b5(baseheap, base) :- jn198(baseheap, base), k_199(baseheap).
+kv201(to, base, inmethod) :- LoadArrayIndex_sip4f0(base, to, inmethod).
+k_202(to) :- Var_Type_sip4f3_sip4b3(to, _).
+jn203(base, to, inmethod) :- kv201(to, base, inmethod), k_202(to).
+k_204(base) :- VarPointsTo_sip4f1_sip4b5(_, base).
+LoadArrayIndex_sip4f0_sip4b6(base, to, inmethod) :- jn203(base, to, inmethod), k_204(base).
+kv206(baseheap, baseheaptype) :- HeapAllocation_Type_sip4f4_sip4b2(baseheap, baseheaptype).
+kv207(base, baseheap) :- VarPointsTo_sip4f1_sip4b5(baseheap, base).
+kv208(base, to) :- LoadArrayIndex_sip4f0_sip4b6(base, to, _).
+jn209(baseheap, to) :- kv207(_, baseheap), kv208(_, to).
+jn210(baseheaptype, to, baseheap) :- kv206(baseheap, baseheaptype), jn209(baseheap, to).
+kv211(basecomponenttype, baseheaptype) :- ComponentType_sip4f5_sip4b1(baseheaptype, basecomponenttype).
+kv212(type, basecomponenttype) :- SupertypeOf_sip4f6(type, basecomponenttype).
+kv213(type, to) :- Var_Type_sip4f3_sip4b3(to, type).
+jn214(basecomponenttype, to) :- kv212(_, basecomponenttype), kv213(_, to).
+jn215(baseheaptype, to) :- kv211(_, baseheaptype), jn214(_, to).
+jn216(baseheap, to) :- jn210(_, to, baseheap), jn215(_, to).
+kv217(baseheap, heap) :- ArrayIndexPointsTo_sip4f2_sip4b4(baseheap, heap).
+VarPointsTo(heap, to) :- jn216(_, to), kv217(_, heap).
+kv219(inmethod, from, to) :- AssignLocal(from, to, inmethod).
+jn220(from, to) :- kv219(_, from, to), k_1(_).
+VarPointsTo(heap, to) :- kv8(_, heap), jn220(_, to).
+kv222(from, to) :- Assign(from, to).
+VarPointsTo(heap, to) :- kv8(_, heap), kv222(_, to).
+kv224(inmethod, type, from, to) :- AssignCast(type, from, to, inmethod).
+AssignCast_sip7f0(type, from, to, inmethod) :- kv224(inmethod, type, from, to), k_1(inmethod).
+k_226(type) :- AssignCast_sip7f0(type, _, _, _).
+SupertypeOf_sip7f1(type, heaptype) :- kv180(type, heaptype), k_226(type).
+kv228(heaptype, heap) :- HeapAllocation_Type(heap, heaptype).
+k_229(heaptype) :- SupertypeOf_sip7f1(_, heaptype).
+HeapAllocation_Type_sip7f2(heap, heaptype) :- kv228(heaptype, heap), k_229(heaptype).
+k_231(from) :- AssignCast_sip7f0(_, from, _, _).
+jn232(heap, from) :- kv8(from, heap), k_231(from).
+k_233(heap) :- HeapAllocation_Type_sip7f2(heap, _).
+VarPointsTo_sip7f3(heap, from) :- jn232(heap, from), k_233(heap).
+kv235(heap, heaptype) :- HeapAllocation_Type_sip7f2(heap, heaptype).
+k_236(heap) :- VarPointsTo_sip7f3(heap, _).
+HeapAllocation_Type_sip7f2_sip7b1(heap, heaptype) :- kv235(heap, heaptype), k_236(heap).
+kv238(heaptype, type) :- SupertypeOf_sip7f1(type, heaptype).
+k_239(heaptype) :- HeapAllocation_Type_sip7f2_sip7b1(_, heaptype).
+SupertypeOf_sip7f1_sip7b2(type, heaptype) :- kv238(heaptype, type), k_239(heaptype).
+kv241(from, type, to, inmethod) :- AssignCast_sip7f0(type, from, to, inmethod).
+k_242(from) :- VarPointsTo_sip7f3(_, from).
+jn243(type, from, to, inmethod) :- kv241(from, type, to, inmethod), k_242(from).
+k_244(type) :- SupertypeOf_sip7f1_sip7b2(type, _).
+AssignCast_sip7f0_sip7b3(type, from, to, inmethod) :- jn243(type, from, to, inmethod), k_244(type).
+kv246(type, from, to) :- AssignCast_sip7f0_sip7b3(type, from, to, _).
+kv247(type, heaptype) :- SupertypeOf_sip7f1_sip7b2(type, heaptype).
+jn248(from, heaptype, to) :- kv246(_, from, to), kv247(_, heaptype).
+kv249(heap, from) :- VarPointsTo_sip7f3(heap, from).
+kv250(heap, heaptype) :- HeapAllocation_Type_sip7f2_sip7b1(heap, heaptype).
+jn251(from, heaptype, heap) :- kv249(heap, from), kv250(heap, heaptype).
+VarPointsTo(heap, to) :- jn248(_, _, to), jn251(_, _, heap).
+Instruction_Method_sip8f0(invocation, inmethod) :- jn4(invocation, inmethod).
+kv253(invocation, base) :- SpecialMethodInvocation_Base(invocation, base).
+k_254(invocation) :- Instruction_Method_sip8f0(invocation, _).
+SpecialMethodInvocation_Base_sip8f1(invocation, base) :- kv253(invocation, base), k_254(invocation).
+k_256(base) :- SpecialMethodInvocation_Base_sip8f1(_, base).
+VarPointsTo_sip8f2(heap, base) :- kv8(base, heap), k_256(base).
+kv258(invocation, tomethod) :- MethodInvocation_Method(invocation, tomethod).
+jn259(invocation, tomethod) :- kv258(invocation, tomethod), k_254(invocation).
+k_260(invocation) :- SpecialMethodInvocation_Base_sip8f1(invocation, _).
+MethodInvocation_Method_sip8f3(invocation, tomethod) :- jn259(invocation, tomethod), k_260(invocation).
+k_262(tomethod) :- MethodInvocation_Method_sip8f3(_, tomethod).
+ThisVar_sip8f4(tomethod, this) :- kv30(tomethod, this), k_262(tomethod).
+kv264(tomethod, invocation) :- MethodInvocation_Method_sip8f3(invocation, tomethod).
+k_265(tomethod) :- ThisVar_sip8f4(tomethod, _).
+MethodInvocation_Method_sip8f3_sip8b1(invocation, tomethod) :- kv264(tomethod, invocation), k_265(tomethod).
+kv267(invocation, base) :- SpecialMethodInvocation_Base_sip8f1(invocation, base).
+k_268(invocation) :- MethodInvocation_Method_sip8f3_sip8b1(invocation, _).
+jn269(base, invocation) :- kv267(invocation, base), k_268(invocation).
+k_270(base) :- VarPointsTo_sip8f2(_, base).
+SpecialMethodInvocation_Base_sip8f1_sip8b3(invocation, base) :- jn269(base, invocation), k_270(base).
+kv272(invocation, inmethod) :- Instruction_Method_sip8f0(invocation, inmethod).
+jn273(invocation, inmethod) :- kv272(invocation, inmethod), k_268(invocation).
+k_274(invocation) :- SpecialMethodInvocation_Base_sip8f1_sip8b3(invocation, _).
+Instruction_Method_sip8f0_sip8b4(invocation, inmethod) :- jn273(invocation, inmethod), k_274(invocation).
+k_276(invocation) :- Instruction_Method_sip8f0_sip8b4(invocation, _).
+kv277(base, invocation) :- SpecialMethodInvocation_Base_sip8f1_sip8b3(invocation, base).
+kv278(base, heap) :- VarPointsTo_sip8f2(heap, base).
+jn279(invocation, heap) :- kv277(_, invocation), kv278(_, heap).
+jn280(invocation, heap) :- k_276(invocation), jn279(invocation, heap).
+kv281(tomethod, invocation) :- MethodInvocation_Method_sip8f3_sip8b1(invocation, tomethod).
+kv282(tomethod, this) :- ThisVar_sip8f4(tomethod, this).
+jn283(invocation, this) :- kv281(_, invocation), kv282(_, this).
+VarPointsTo(heap, this) :- jn280(_, heap), jn283(_, this).
+kv285(inmethod, from, fld) :- StoreStaticField(from, fld, inmethod).
+jn286(from, fld) :- kv285(_, from, fld), k_1(_).
+StaticFieldPointsTo(heap, fld) :- kv8(_, heap), jn286(_, fld).
+kv288(fld, heap) :- StaticFieldPointsTo(heap, fld).
+kv289(inmethod, fld, to) :- LoadStaticField(fld, to, inmethod).
+jn290(fld, to) :- kv289(_, fld, to), k_1(_).
+VarPointsTo(heap, to) :- kv288(_, heap), jn290(_, to).
