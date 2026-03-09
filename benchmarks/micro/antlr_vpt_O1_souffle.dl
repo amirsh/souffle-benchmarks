@@ -1,0 +1,201 @@
+.decl Reachable(method:number)
+.decl Assign(to:number, from:number)
+.decl AssignHeapAllocation(heap:number, to:number, inmethod:number)
+.decl AssignLocal(from:number, to:number, inmethod:number)
+.decl AssignCast(type:number, from:number, to:number, inmethod:number)
+.decl SupertypeOf(supertype:number, type:number)
+.decl HeapAllocation_Type(heap:number, type:number)
+.decl StoreArrayIndex(from:number, base:number, inmethod:number)
+.decl ComponentType(arrayType:number, componentType:number)
+.decl LoadArrayIndex(base:number, to:number, inmethod:number)
+.decl Var_Type(var:number, type:number)
+.decl LoadInstanceField(base:number, sig:number, to:number, inmethod:number)
+.decl StoreInstanceField(from:number, base:number, signature:number, inmethod:number)
+.decl LoadStaticField(sig:number, to:number, inmethod:number)
+.decl StoreStaticField(from:number, signature:number, inmethod:number)
+.decl Instruction_Method(insn:number, inMethod:number)
+.decl VirtualMethodInvocation_Base(invocation:number, base:number)
+.decl VirtualMethodInvocation_SimpleName(invocation:number, simplename:number)
+.decl VirtualMethodInvocation_Descriptor(invocation:number, descriptor:number)
+.decl MethodLookup(simplename:number, descriptor:number, type:number, method:number)
+.decl ThisVar(method:number, var:number)
+.decl SpecialMethodInvocation_Base(invocation:number, base:number)
+.decl MethodInvocation_Method(invocation:number, signature:number)
+.input Reachable(IO=file, filename="Reachable.csv", delimiter=",")
+.input Assign(IO=file, filename="Assign.csv", delimiter=",")
+.input AssignHeapAllocation(IO=file, filename="AssignHeapAllocation.csv", delimiter=",")
+.input AssignLocal(IO=file, filename="AssignLocal.csv", delimiter=",")
+.input AssignCast(IO=file, filename="AssignCast.csv", delimiter=",")
+.input SupertypeOf(IO=file, filename="SupertypeOf.csv", delimiter=",")
+.input HeapAllocation_Type(IO=file, filename="HeapAllocation_Type.csv", delimiter=",")
+.input StoreArrayIndex(IO=file, filename="StoreArrayIndex.csv", delimiter=",")
+.input ComponentType(IO=file, filename="ComponentType.csv", delimiter=",")
+.input LoadArrayIndex(IO=file, filename="LoadArrayIndex.csv", delimiter=",")
+.input Var_Type(IO=file, filename="Var_Type.csv", delimiter=",")
+.input LoadInstanceField(IO=file, filename="LoadInstanceField.csv", delimiter=",")
+.input StoreInstanceField(IO=file, filename="StoreInstanceField.csv", delimiter=",")
+.input LoadStaticField(IO=file, filename="LoadStaticField.csv", delimiter=",")
+.input StoreStaticField(IO=file, filename="StoreStaticField.csv", delimiter=",")
+.input Instruction_Method(IO=file, filename="Instruction_Method.csv", delimiter=",")
+.input VirtualMethodInvocation_Base(IO=file, filename="VirtualMethodInvocation_Base.csv", delimiter=",")
+.input VirtualMethodInvocation_SimpleName(IO=file, filename="VirtualMethodInvocation_SimpleName.csv", delimiter=",")
+.input VirtualMethodInvocation_Descriptor(IO=file, filename="VirtualMethodInvocation_Descriptor.csv", delimiter=",")
+.input MethodLookup(IO=file, filename="MethodLookup.csv", delimiter=",")
+.input ThisVar(IO=file, filename="ThisVar.csv", delimiter=",")
+.input SpecialMethodInvocation_Base(IO=file, filename="SpecialMethodInvocation_Base.csv", delimiter=",")
+.input MethodInvocation_Method(IO=file, filename="MethodInvocation_Method.csv", delimiter=",")
+
+
+// IDBs
+.decl VarPointsTo(x0:number, x1:number)
+.decl StaticFieldPointsTo(x0:number, x1:number)
+.decl LoadInstanceField_sip2f0(x0:number, x1:number, x2:number, x3:number)
+.decl VarPointsTo_sip2f1(x0:number, x1:number)
+.decl InstanceFieldPointsTo_sip2f2(x0:number, x1:number, x2:number)
+.decl VarPointsTo_sip2f1_sip2b1(x0:number, x1:number)
+.decl LoadInstanceField_sip2f0_sip2b2(x0:number, x1:number, x2:number, x3:number)
+.decl StoreArrayIndex_sip3f0(x0:number, x1:number, x2:number)
+.decl VarPointsTo_sip3f1(x0:number, x1:number)
+.decl VarPointsTo_sip3f2(x0:number, x1:number)
+.decl HeapAllocation_Type_sip3f3(x0:number, x1:number)
+.decl HeapAllocation_Type_sip3f4(x0:number, x1:number)
+.decl ComponentType_sip3f5(x0:number, x1:number)
+.decl SupertypeOf_sip3f6(x0:number, x1:number)
+.decl ComponentType_sip3f5_sip3b1(x0:number, x1:number)
+.decl HeapAllocation_Type_sip3f4_sip3b2(x0:number, x1:number)
+.decl HeapAllocation_Type_sip3f3_sip3b3(x0:number, x1:number)
+.decl VarPointsTo_sip3f2_sip3b4(x0:number, x1:number)
+.decl VarPointsTo_sip3f1_sip3b5(x0:number, x1:number)
+.decl StoreArrayIndex_sip3f0_sip3b6(x0:number, x1:number, x2:number)
+.decl ArrayIndexPointsTo(x0:number, x1:number)
+.decl LoadArrayIndex_sip4f0(x0:number, x1:number, x2:number)
+.decl VarPointsTo_sip4f1(x0:number, x1:number)
+.decl ArrayIndexPointsTo_sip4f2(x0:number, x1:number)
+.decl Var_Type_sip4f3(x0:number, x1:number)
+.decl HeapAllocation_Type_sip4f4(x0:number, x1:number)
+.decl ComponentType_sip4f5(x0:number, x1:number)
+.decl SupertypeOf_sip4f6(x0:number, x1:number)
+.decl ComponentType_sip4f5_sip4b1(x0:number, x1:number)
+.decl HeapAllocation_Type_sip4f4_sip4b2(x0:number, x1:number)
+.decl Var_Type_sip4f3_sip4b3(x0:number, x1:number)
+.decl ArrayIndexPointsTo_sip4f2_sip4b4(x0:number, x1:number)
+.decl VarPointsTo_sip4f1_sip4b5(x0:number, x1:number)
+.decl LoadArrayIndex_sip4f0_sip4b6(x0:number, x1:number, x2:number)
+.decl Instruction_Method_sip5f0(x0:number, x1:number)
+.decl SpecialMethodInvocation_Base_sip5f1(x0:number, x1:number)
+.decl VarPointsTo_sip5f2(x0:number, x1:number)
+.decl MethodInvocation_Method_sip5f3(x0:number, x1:number)
+.decl ThisVar_sip5f4(x0:number, x1:number)
+.decl MethodInvocation_Method_sip5f3_sip5b1(x0:number, x1:number)
+.decl SpecialMethodInvocation_Base_sip5f1_sip5b3(x0:number, x1:number)
+.decl Instruction_Method_sip5f0_sip5b4(x0:number, x1:number)
+.decl StoreInstanceField_sip6f0(x0:number, x1:number, x2:number, x3:number)
+.decl VarPointsTo_sip6f1(x0:number, x1:number)
+.decl VarPointsTo_sip6f2(x0:number, x1:number)
+.decl StoreInstanceField_sip6f0_sip6b2(x0:number, x1:number, x2:number, x3:number)
+.decl InstanceFieldPointsTo(x0:number, x1:number, x2:number)
+.decl AssignCast_sip7f0(x0:number, x1:number, x2:number, x3:number)
+.decl SupertypeOf_sip7f1(x0:number, x1:number)
+.decl HeapAllocation_Type_sip7f2(x0:number, x1:number)
+.decl VarPointsTo_sip7f3(x0:number, x1:number)
+.decl HeapAllocation_Type_sip7f2_sip7b1(x0:number, x1:number)
+.decl SupertypeOf_sip7f1_sip7b2(x0:number, x1:number)
+.decl AssignCast_sip7f0_sip7b3(x0:number, x1:number, x2:number, x3:number)
+.decl Instruction_Method_sip8f0(x0:number, x1:number)
+.decl VirtualMethodInvocation_Base_sip8f1(x0:number, x1:number)
+.decl VarPointsTo_sip8f2(x0:number, x1:number)
+.decl HeapAllocation_Type_sip8f3(x0:number, x1:number)
+.decl VirtualMethodInvocation_SimpleName_sip8f4(x0:number, x1:number)
+.decl VirtualMethodInvocation_Descriptor_sip8f5(x0:number, x1:number)
+.decl MethodLookup_sip8f6(x0:number, x1:number, x2:number, x3:number)
+.decl ThisVar_sip8f7(x0:number, x1:number)
+.decl MethodLookup_sip8f6_sip8b1(x0:number, x1:number, x2:number, x3:number)
+.decl VirtualMethodInvocation_Descriptor_sip8f5_sip8b2(x0:number, x1:number)
+.decl VirtualMethodInvocation_SimpleName_sip8f4_sip8b3(x0:number, x1:number)
+.decl HeapAllocation_Type_sip8f3_sip8b4(x0:number, x1:number)
+.decl VarPointsTo_sip8f2_sip8b5(x0:number, x1:number)
+.decl VirtualMethodInvocation_Base_sip8f1_sip8b6(x0:number, x1:number)
+.decl Instruction_Method_sip8f0_sip8b7(x0:number, x1:number)
+
+.output VarPointsTo
+
+// strata #0
+VarPointsTo(heap, var) :- AssignHeapAllocation(heap, var, inMethod), Reachable(inMethod).
+
+// strata #1 (recursive)
+StaticFieldPointsTo(heap, fld) :- Reachable(inmethod), StoreStaticField(from, fld, inmethod), VarPointsTo(heap, from).
+VarPointsTo(heap, to) :- Reachable(inmethod), LoadStaticField(fld, to, inmethod), StaticFieldPointsTo(heap, fld).
+LoadInstanceField_sip2f0(base, signature, to, inmethod) :- LoadInstanceField(base, signature, to, inmethod), Reachable(inmethod).
+VarPointsTo_sip2f1(baseheap, base) :- VarPointsTo(baseheap, base), LoadInstanceField_sip2f0(base, _, _, _).
+InstanceFieldPointsTo_sip2f2(heap, signature, baseheap) :- InstanceFieldPointsTo(heap, signature, baseheap), LoadInstanceField_sip2f0(_, signature, _, _), VarPointsTo_sip2f1(baseheap, _).
+VarPointsTo_sip2f1_sip2b1(baseheap, base) :- VarPointsTo_sip2f1(baseheap, base), InstanceFieldPointsTo_sip2f2(_, _, baseheap).
+LoadInstanceField_sip2f0_sip2b2(base, signature, to, inmethod) :- LoadInstanceField_sip2f0(base, signature, to, inmethod), InstanceFieldPointsTo_sip2f2(_, signature, _), VarPointsTo_sip2f1_sip2b1(_, base).
+VarPointsTo(heap, to) :- LoadInstanceField_sip2f0_sip2b2(base, signature, to, inmethod), VarPointsTo_sip2f1_sip2b1(baseheap, base), InstanceFieldPointsTo_sip2f2(heap, signature, baseheap).
+StoreArrayIndex_sip3f0(from, base, inmethod) :- StoreArrayIndex(from, base, inmethod), Reachable(inmethod).
+VarPointsTo_sip3f1(baseheap, base) :- VarPointsTo(baseheap, base), StoreArrayIndex_sip3f0(_, base, _).
+VarPointsTo_sip3f2(heap, from) :- VarPointsTo(heap, from), StoreArrayIndex_sip3f0(from, _, _).
+HeapAllocation_Type_sip3f3(heap, heaptype) :- HeapAllocation_Type(heap, heaptype), VarPointsTo_sip3f2(heap, _).
+HeapAllocation_Type_sip3f4(baseheap, baseheaptype) :- HeapAllocation_Type(baseheap, baseheaptype), VarPointsTo_sip3f1(baseheap, _).
+ComponentType_sip3f5(baseheaptype, componenttype) :- ComponentType(baseheaptype, componenttype), HeapAllocation_Type_sip3f4(_, baseheaptype).
+SupertypeOf_sip3f6(componenttype, heaptype) :- SupertypeOf(componenttype, heaptype), HeapAllocation_Type_sip3f3(_, heaptype), ComponentType_sip3f5(_, componenttype).
+ComponentType_sip3f5_sip3b1(baseheaptype, componenttype) :- ComponentType_sip3f5(baseheaptype, componenttype), SupertypeOf_sip3f6(componenttype, _).
+HeapAllocation_Type_sip3f4_sip3b2(baseheap, baseheaptype) :- HeapAllocation_Type_sip3f4(baseheap, baseheaptype), ComponentType_sip3f5_sip3b1(baseheaptype, _).
+HeapAllocation_Type_sip3f3_sip3b3(heap, heaptype) :- HeapAllocation_Type_sip3f3(heap, heaptype), SupertypeOf_sip3f6(_, heaptype).
+VarPointsTo_sip3f2_sip3b4(heap, from) :- VarPointsTo_sip3f2(heap, from), HeapAllocation_Type_sip3f3_sip3b3(heap, _).
+VarPointsTo_sip3f1_sip3b5(baseheap, base) :- VarPointsTo_sip3f1(baseheap, base), HeapAllocation_Type_sip3f4_sip3b2(baseheap, _).
+StoreArrayIndex_sip3f0_sip3b6(from, base, inmethod) :- StoreArrayIndex_sip3f0(from, base, inmethod), VarPointsTo_sip3f2_sip3b4(_, from), VarPointsTo_sip3f1_sip3b5(_, base).
+ArrayIndexPointsTo(baseheap, heap) :- StoreArrayIndex_sip3f0_sip3b6(from, base, inmethod), VarPointsTo_sip3f1_sip3b5(baseheap, base), VarPointsTo_sip3f2_sip3b4(heap, from), HeapAllocation_Type_sip3f3_sip3b3(heap, heaptype), HeapAllocation_Type_sip3f4_sip3b2(baseheap, baseheaptype), ComponentType_sip3f5_sip3b1(baseheaptype, componenttype), SupertypeOf_sip3f6(componenttype, heaptype).
+LoadArrayIndex_sip4f0(base, to, inmethod) :- LoadArrayIndex(base, to, inmethod), Reachable(inmethod).
+VarPointsTo_sip4f1(baseheap, base) :- VarPointsTo(baseheap, base), LoadArrayIndex_sip4f0(base, _, _).
+ArrayIndexPointsTo_sip4f2(baseheap, heap) :- ArrayIndexPointsTo(baseheap, heap), VarPointsTo_sip4f1(baseheap, _).
+Var_Type_sip4f3(to, type) :- Var_Type(to, type), LoadArrayIndex_sip4f0(_, to, _).
+HeapAllocation_Type_sip4f4(baseheap, baseheaptype) :- HeapAllocation_Type(baseheap, baseheaptype), VarPointsTo_sip4f1(baseheap, _), ArrayIndexPointsTo_sip4f2(baseheap, _).
+ComponentType_sip4f5(baseheaptype, basecomponenttype) :- ComponentType(baseheaptype, basecomponenttype), HeapAllocation_Type_sip4f4(_, baseheaptype).
+SupertypeOf_sip4f6(type, basecomponenttype) :- SupertypeOf(type, basecomponenttype), Var_Type_sip4f3(_, type), ComponentType_sip4f5(_, basecomponenttype).
+ComponentType_sip4f5_sip4b1(baseheaptype, basecomponenttype) :- ComponentType_sip4f5(baseheaptype, basecomponenttype), SupertypeOf_sip4f6(_, basecomponenttype).
+HeapAllocation_Type_sip4f4_sip4b2(baseheap, baseheaptype) :- HeapAllocation_Type_sip4f4(baseheap, baseheaptype), ComponentType_sip4f5_sip4b1(baseheaptype, _).
+Var_Type_sip4f3_sip4b3(to, type) :- Var_Type_sip4f3(to, type), SupertypeOf_sip4f6(type, _).
+ArrayIndexPointsTo_sip4f2_sip4b4(baseheap, heap) :- ArrayIndexPointsTo_sip4f2(baseheap, heap), HeapAllocation_Type_sip4f4_sip4b2(baseheap, _).
+VarPointsTo_sip4f1_sip4b5(baseheap, base) :- VarPointsTo_sip4f1(baseheap, base), HeapAllocation_Type_sip4f4_sip4b2(baseheap, _), ArrayIndexPointsTo_sip4f2_sip4b4(baseheap, _).
+LoadArrayIndex_sip4f0_sip4b6(base, to, inmethod) :- LoadArrayIndex_sip4f0(base, to, inmethod), Var_Type_sip4f3_sip4b3(to, _), VarPointsTo_sip4f1_sip4b5(_, base).
+VarPointsTo(heap, to) :- LoadArrayIndex_sip4f0_sip4b6(base, to, inmethod), VarPointsTo_sip4f1_sip4b5(baseheap, base), ArrayIndexPointsTo_sip4f2_sip4b4(baseheap, heap), Var_Type_sip4f3_sip4b3(to, type), HeapAllocation_Type_sip4f4_sip4b2(baseheap, baseheaptype), ComponentType_sip4f5_sip4b1(baseheaptype, basecomponenttype), SupertypeOf_sip4f6(type, basecomponenttype).
+Instruction_Method_sip5f0(invocation, inmethod) :- Instruction_Method(invocation, inmethod), Reachable(inmethod).
+SpecialMethodInvocation_Base_sip5f1(invocation, base) :- SpecialMethodInvocation_Base(invocation, base), Instruction_Method_sip5f0(invocation, _).
+VarPointsTo_sip5f2(heap, base) :- VarPointsTo(heap, base), SpecialMethodInvocation_Base_sip5f1(_, base).
+MethodInvocation_Method_sip5f3(invocation, tomethod) :- MethodInvocation_Method(invocation, tomethod), Instruction_Method_sip5f0(invocation, _), SpecialMethodInvocation_Base_sip5f1(invocation, _).
+ThisVar_sip5f4(tomethod, this) :- ThisVar(tomethod, this), MethodInvocation_Method_sip5f3(_, tomethod).
+MethodInvocation_Method_sip5f3_sip5b1(invocation, tomethod) :- MethodInvocation_Method_sip5f3(invocation, tomethod), ThisVar_sip5f4(tomethod, _).
+SpecialMethodInvocation_Base_sip5f1_sip5b3(invocation, base) :- SpecialMethodInvocation_Base_sip5f1(invocation, base), MethodInvocation_Method_sip5f3_sip5b1(invocation, _), VarPointsTo_sip5f2(_, base).
+Instruction_Method_sip5f0_sip5b4(invocation, inmethod) :- Instruction_Method_sip5f0(invocation, inmethod), MethodInvocation_Method_sip5f3_sip5b1(invocation, _), SpecialMethodInvocation_Base_sip5f1_sip5b3(invocation, _).
+VarPointsTo(heap, this) :- Instruction_Method_sip5f0_sip5b4(invocation, inmethod), SpecialMethodInvocation_Base_sip5f1_sip5b3(invocation, base), VarPointsTo_sip5f2(heap, base), MethodInvocation_Method_sip5f3_sip5b1(invocation, tomethod), ThisVar_sip5f4(tomethod, this).
+StoreInstanceField_sip6f0(from, base, fld, inmethod) :- StoreInstanceField(from, base, fld, inmethod), Reachable(inmethod).
+VarPointsTo_sip6f1(heap, from) :- VarPointsTo(heap, from), StoreInstanceField_sip6f0(from, _, _, _).
+VarPointsTo_sip6f2(baseheap, base) :- VarPointsTo(baseheap, base), StoreInstanceField_sip6f0(_, base, _, _).
+StoreInstanceField_sip6f0_sip6b2(from, base, fld, inmethod) :- StoreInstanceField_sip6f0(from, base, fld, inmethod), VarPointsTo_sip6f2(_, base), VarPointsTo_sip6f1(_, from).
+InstanceFieldPointsTo(heap, fld, baseheap) :- StoreInstanceField_sip6f0_sip6b2(from, base, fld, inmethod), VarPointsTo_sip6f1(heap, from), VarPointsTo_sip6f2(baseheap, base).
+AssignCast_sip7f0(type, from, to, inmethod) :- AssignCast(type, from, to, inmethod), Reachable(inmethod).
+SupertypeOf_sip7f1(type, heaptype) :- SupertypeOf(type, heaptype), AssignCast_sip7f0(type, _, _, _).
+HeapAllocation_Type_sip7f2(heap, heaptype) :- HeapAllocation_Type(heap, heaptype), SupertypeOf_sip7f1(_, heaptype).
+VarPointsTo_sip7f3(heap, from) :- VarPointsTo(heap, from), AssignCast_sip7f0(_, from, _, _), HeapAllocation_Type_sip7f2(heap, _).
+HeapAllocation_Type_sip7f2_sip7b1(heap, heaptype) :- HeapAllocation_Type_sip7f2(heap, heaptype), VarPointsTo_sip7f3(heap, _).
+SupertypeOf_sip7f1_sip7b2(type, heaptype) :- SupertypeOf_sip7f1(type, heaptype), HeapAllocation_Type_sip7f2_sip7b1(_, heaptype).
+AssignCast_sip7f0_sip7b3(type, from, to, inmethod) :- AssignCast_sip7f0(type, from, to, inmethod), VarPointsTo_sip7f3(_, from), SupertypeOf_sip7f1_sip7b2(type, _).
+VarPointsTo(heap, to) :- AssignCast_sip7f0_sip7b3(type, from, to, inmethod), SupertypeOf_sip7f1_sip7b2(type, heaptype), HeapAllocation_Type_sip7f2_sip7b1(heap, heaptype), VarPointsTo_sip7f3(heap, from).
+Instruction_Method_sip8f0(invocation, inMethod) :- Instruction_Method(invocation, inMethod), Reachable(inMethod).
+VirtualMethodInvocation_Base_sip8f1(invocation, base) :- VirtualMethodInvocation_Base(invocation, base), Instruction_Method_sip8f0(invocation, _).
+VarPointsTo_sip8f2(heap, base) :- VarPointsTo(heap, base), VirtualMethodInvocation_Base_sip8f1(_, base).
+HeapAllocation_Type_sip8f3(heap, heaptype) :- HeapAllocation_Type(heap, heaptype), VarPointsTo_sip8f2(heap, _).
+VirtualMethodInvocation_SimpleName_sip8f4(invocation, simplename) :- VirtualMethodInvocation_SimpleName(invocation, simplename), Instruction_Method_sip8f0(invocation, _), VirtualMethodInvocation_Base_sip8f1(invocation, _).
+VirtualMethodInvocation_Descriptor_sip8f5(invocation, descriptor) :- VirtualMethodInvocation_Descriptor(invocation, descriptor), Instruction_Method_sip8f0(invocation, _), VirtualMethodInvocation_Base_sip8f1(invocation, _), VirtualMethodInvocation_SimpleName_sip8f4(invocation, _).
+MethodLookup_sip8f6(simplename, descriptor, heaptype, toMethod) :- MethodLookup(simplename, descriptor, heaptype, toMethod), HeapAllocation_Type_sip8f3(_, heaptype), VirtualMethodInvocation_SimpleName_sip8f4(_, simplename), VirtualMethodInvocation_Descriptor_sip8f5(_, descriptor).
+ThisVar_sip8f7(toMethod, this) :- ThisVar(toMethod, this), MethodLookup_sip8f6(_, _, _, toMethod).
+MethodLookup_sip8f6_sip8b1(simplename, descriptor, heaptype, toMethod) :- MethodLookup_sip8f6(simplename, descriptor, heaptype, toMethod), ThisVar_sip8f7(toMethod, _).
+VirtualMethodInvocation_Descriptor_sip8f5_sip8b2(invocation, descriptor) :- VirtualMethodInvocation_Descriptor_sip8f5(invocation, descriptor), MethodLookup_sip8f6_sip8b1(_, descriptor, _, _).
+VirtualMethodInvocation_SimpleName_sip8f4_sip8b3(invocation, simplename) :- VirtualMethodInvocation_SimpleName_sip8f4(invocation, simplename), MethodLookup_sip8f6_sip8b1(simplename, _, _, _), VirtualMethodInvocation_Descriptor_sip8f5_sip8b2(invocation, _).
+HeapAllocation_Type_sip8f3_sip8b4(heap, heaptype) :- HeapAllocation_Type_sip8f3(heap, heaptype), MethodLookup_sip8f6_sip8b1(_, _, heaptype, _).
+VarPointsTo_sip8f2_sip8b5(heap, base) :- VarPointsTo_sip8f2(heap, base), HeapAllocation_Type_sip8f3_sip8b4(heap, _).
+VirtualMethodInvocation_Base_sip8f1_sip8b6(invocation, base) :- VirtualMethodInvocation_Base_sip8f1(invocation, base), VirtualMethodInvocation_Descriptor_sip8f5_sip8b2(invocation, _), VirtualMethodInvocation_SimpleName_sip8f4_sip8b3(invocation, _), VarPointsTo_sip8f2_sip8b5(_, base).
+Instruction_Method_sip8f0_sip8b7(invocation, inMethod) :- Instruction_Method_sip8f0(invocation, inMethod), VirtualMethodInvocation_Descriptor_sip8f5_sip8b2(invocation, _), VirtualMethodInvocation_SimpleName_sip8f4_sip8b3(invocation, _), VirtualMethodInvocation_Base_sip8f1_sip8b6(invocation, _).
+VarPointsTo(heap, this) :- Instruction_Method_sip8f0_sip8b7(invocation, inMethod), VirtualMethodInvocation_Base_sip8f1_sip8b6(invocation, base), VarPointsTo_sip8f2_sip8b5(heap, base), HeapAllocation_Type_sip8f3_sip8b4(heap, heaptype), VirtualMethodInvocation_SimpleName_sip8f4_sip8b3(invocation, simplename), VirtualMethodInvocation_Descriptor_sip8f5_sip8b2(invocation, descriptor), MethodLookup_sip8f6_sip8b1(simplename, descriptor, heaptype, toMethod), ThisVar_sip8f7(toMethod, this).
+VarPointsTo(heap, to) :- Reachable(inmethod), AssignLocal(from, to, inmethod), VarPointsTo(heap, from).
+VarPointsTo(heap, to) :- Assign(from, to), VarPointsTo(heap, from).
